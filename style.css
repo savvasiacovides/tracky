@@ -339,3 +339,27 @@ details p { margin: 10px 0 0; }
 .drive .last { margin-top: 10px; display: grid; grid-template-columns: 1fr auto; align-items: end; }
 .drive .last small { grid-column: 1 / -1; }
 .drive .last .hi { font-weight: 800; font-size: 15px; }
+
+/* Instrument looks (the clusters drawn over exported videos) */
+.looks-stage { display: grid; gap: 22px; }
+.looktabs { display: flex; flex-wrap: wrap; gap: 10px; }
+.looktabs [role="tab"] { font: inherit; font-size: 15px; font-weight: 600; cursor: pointer; padding: 9px 18px; border-radius: 999px; border: 0;
+  background: none; color: var(--fog); box-shadow: inset 0 0 0 1.5px var(--rule); }
+.looktabs [role="tab"]:hover { color: var(--ink); }
+.looktabs [aria-selected="true"] { background: var(--line); color: var(--night); box-shadow: none; }
+.clusters { background: radial-gradient(80% 120% at 50% 100%, #12233f 0%, #070e1b 70%); padding: 3% 2%; box-sizing: border-box; }
+.clusters text, .mini-video text { font-family: "Archivo", sans-serif; }
+.clusters .box, .mini-video .box { fill: none; stroke: #3a434d; stroke-width: 1.5; }
+.clusters .lbl, .mini-video .lbl { fill: #8c96a0; font-size: 12px; text-anchor: middle; letter-spacing: .6px; }
+.clusters .val, .mini-video .val { fill: #f2f4f6; font-size: 34px; font-weight: 700; text-anchor: middle; font-stretch: 110%; }
+.clusters .val.sm, .mini-video .val.sm { font-size: 24px; }
+.clusters .val.huge { font-size: 120px; font-weight: 800; }
+.clusters .dn { fill: #c9d1dd; font-size: 13px; font-weight: 600; text-anchor: middle; }
+.clusters .car, .mini-video .car { fill: #fff; stroke: #0b0f14; }
+.clusters .lcdv { fill: #1d2a1a; font-size: 56px; font-weight: 600; text-anchor: middle; font-stretch: 90%; }
+.clusters .lcdv.big { font-size: 110px; font-weight: 800; }
+.clusters .lcdl { fill: #3b4a33; font-size: 13px; font-weight: 700; text-anchor: middle; letter-spacing: 1px; }
+.looks-stage .caption { margin: 0; color: var(--fog); font-size: 15px; max-width: 70ch; }
+.mini-video { background: #070e1b; padding: 4px; }
+.pb small { display: block; }
+.you .ini { font-size: 11px; }

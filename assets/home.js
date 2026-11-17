@@ -1,129 +1,104 @@
-// The home page's example lap: one simulated lap of the example circuit drives the live
-// screen, the map dots, the graph cursor and the video overlay. Example figures only.
+// The home page replays one real lap (a Lotus Exige at Achna Speedway, 1:11.572, OBD revs and
+// throttle at 25 Hz, resampled to 10 Hz) through the live screen, the map dots and every
+// instrument look. Paused off screen; one still frame for reduced motion.
 (function () {
   "use strict";
   var raw = document.getElementById("lap-data");
   if (!raw) return;
-  var data = JSON.parse(raw.textContent);
-  var P = data.p, V = data.v, LAP = data.lap, N = P.length;
+  var L = JSON.parse(raw.textContent), N = L.t.length, LAP = L.lap;
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  // Distance and time along the lap; time is scaled so the lap takes LAP seconds.
-  var D = [0], T = [0];
-  for (var i = 1; i <= N; i++) {
-    var a = P[i - 1], b = P[i % N];
-    var ds = Math.hypot(b[0] - a[0], b[1] - a[1]);
-    D.push(D[i - 1] + ds);
-    T.push(T[i - 1] + ds / ((V[i - 1] + V[i % N]) / 2));
-  }
-  var scale = LAP / T[N];
-  for (i = 0; i <= N; i++) T[i] *= scale;
+  // Distance along the lap, for the graph cursor.
+  var D = [0];
+  for (var i = 1; i < N; i++) D.push(D[i - 1] + Math.hypot(L.x[i] - L.x[i - 1], L.y[i] - L.y[i - 1]));
 
   function at(t) {
     t = ((t % LAP) + LAP) % LAP;
-    var lo = 0, hi = N;
-    while (hi - lo > 1) { var m = (lo + hi) >> 1; if (T[m] <= t) lo = m; else hi = m; }
-    var f = (t - T[lo]) / (T[hi] - T[lo] || 1);
-    var a = P[lo], b = P[hi % N], va = V[lo], vb = V[hi % N];
-    var speed = va + (vb - va) * f;
-    var gears = [[0, 2], [82, 3], [112, 4], [142, 5], [176, 6]], g = 2, from = 0, to = 82;
-    for (var k = 0; k < gears.length; k++) if (speed >= gears[k][0]) { g = gears[k][1]; from = gears[k][0]; to = (gears[k + 1] || [215])[0]; }
-    var rpm = 4300 + (speed - Math.max(from, 45)) / (to - Math.max(from, 45)) * 3300;
-    return {
-      t: t, x: a[0] + (b[0] - a[0]) * f, y: a[1] + (b[1] - a[1]) * f,
-      d: (D[lo] + (D[hi] - D[lo]) * f) / D[N], speed: speed, gear: g,
-      rpm: Math.max(3600, Math.min(7900, rpm)), pedal: vb > va + 0.3 ? 1 : (vb < va - 0.3 ? 0 : 0.55),
-      gap: -0.42 + 0.31 * Math.sin(t / LAP * Math.PI * 2 * 2 + 0.6)
-    };
+    var k = Math.min(N - 2, Math.floor(t * 10)), f = Math.max(0, Math.min(1, (t - L.t[k]) / 0.1));
+    function mix(a) { return a[k] + (a[k + 1] - a[k]) * f; }
+    return { t: t, x: mix(L.x), y: mix(L.y), v: mix(L.v), rpm: mix(L.rpm), thr: mix(L.thr),
+      gear: L.gear[f < 0.5 ? k : k + 1], gl: mix(L.gl), gt: mix(L.gt), gap: mix(L.gap), d: mix(D) / D[N - 1] };
   }
-
-  function clock(t) { var m = Math.floor(t / 60), s = t - m * 60; return m + ":" + (s < 10 ? "0" : "") + s.toFixed(2); }
-  function clock3(t) { var m = Math.floor(t / 60), s = t - m * 60; return m + ":" + (s < 10 ? "0" : "") + s.toFixed(3); }
+  function clock(t, n) { var m = Math.floor(t / 60), s = t - m * 60; return m + ":" + (s < 10 ? "0" : "") + s.toFixed(n); }
+  function revs(r) { return (Math.round(r / 10) * 10).toLocaleString("en-GB"); }
+  function gapText(g) { return (g > 0.004 ? "+" : g < -0.004 ? "−" : "") + Math.abs(g).toFixed(2); }
   function $(id) { return document.getElementById(id); }
-  function rpmText(r) { return (Math.round(r / 10) * 10).toLocaleString("en-GB"); }
+  function all(sel) { return Array.prototype.slice.call(document.querySelectorAll(sel)); }
 
-  // Live screen
-  var lClock = $("clock"), lGap = $("l-gap"), lTile = $("l-gaptile"), lBar = $("l-gapbar"), lSpeed = $("l-speed"), lRevs = $("l-revs");
-  // Session pages
+  var lClock = $("clock"), lGap = $("l-gap"), lTile = $("l-gaptile"), lBar = $("l-gapbar"), lSpeed = $("l-speed"), lRevs = $("l-revs"), lThr = $("l-thr");
   var oDot = $("o-dot"), gCur = $("g-cur");
-  // Video
-  var vSpeed = $("v-speed"), vGear = $("v-gear"), vRpm = $("v-rpm"), vLap = $("v-lap"), vPedal = $("v-pedal"), vDot = $("v-dot"), road = $("v-road");
-  var segs = document.querySelectorAll(".scene .rv");
+  var fields = all("[data-f]"), needles = all("[data-needle]"), bars = all("[data-segs]"), shifts = all("[data-shift]");
+  var dots = all("[data-dot]"), thrBars = all("[data-thr]"), gDots = all("[data-g]"), gapBoxes = all("[data-gapbox]");
 
-  // The road: centre-line dashes and kerb stripes laid out in perspective.
-  var dashes = [], stripes = [], NS = "http://www.w3.org/2000/svg";
-  if (road) {
-    for (i = 0; i < 14; i++) {
-      var p1 = document.createElementNS(NS, "polygon"); p1.setAttribute("fill", "#f4f4f4"); road.appendChild(p1); dashes.push(p1);
-      var p2 = document.createElementNS(NS, "polygon"); p2.setAttribute("fill", "#f4f4f4"); road.appendChild(p2); stripes.push(p2);
-    }
-  }
-  var H = 262, B = 600;                       // horizon and bottom of the picture
-  function edge(x0, x1, y) { return x0 + (x1 - x0) * (y - H) / (B - H); }
-  function quad(el, za, zb, l0, l1, r0, r1) {   // between depths za and zb, between two lines
-    if (zb <= za) { el.setAttribute("points", ""); return; }
-    var ya = H + (B - H) / za, yb = H + (B - H) / zb;
-    if (ya > B + 40) ya = B + 40;
-    el.setAttribute("points", [edge(l0, l1, ya), ya, edge(r0, r1, ya), ya, edge(r0, r1, yb), yb, edge(l0, l1, yb), yb].join(" "));
-  }
-  var travelled = 0;
-  function drawRoad(speed, dt) {
-    if (!road) return;
-    travelled += speed * dt * 0.06;
-    var step = 3, off = travelled % (2 * step);
-    for (var k = 0; k < dashes.length; k++) {
-      var z = 0.6 + k * step - (travelled % step);
-      quad(dashes[k], Math.max(z, 0.55), Math.max(z + step * 0.45, 0.55), 486, 500, 494, 522);
-      var zs = 0.6 + k * 2 * step - off;
-      quad(stripes[k], Math.max(zs, 0.55), Math.max(zs + step, 0.55), 560, 1180, 586, 1240);
-    }
-  }
-
-  function render(s, dt) {
-    if (lClock) lClock.textContent = clock(s.t);
-    if (lGap) {
-      var g = s.gap, behind = g > 0.0049;
-      lGap.textContent = (behind ? "+" : "−") + Math.abs(g).toFixed(2);
-      lTile.classList.toggle("behind", behind);
-      lBar.style.setProperty("--f", Math.min(1, Math.abs(g) / 0.8).toFixed(3));
-      lSpeed.textContent = Math.round(s.speed);
-      lRevs.textContent = rpmText(s.rpm);
+  function render(s) {
+    var text = { speed: Math.round(s.v), gear: s.gear, rpm: Math.round(s.rpm / 10) * 10, "rpm-label": revs(s.rpm) + " rpm",
+      lap: clock(s.t, 2), lap3: clock(s.t, 3), gap: gapText(s.gap) };
+    if (lClock) {
+      lClock.textContent = clock(s.t, 2);
+      lGap.textContent = gapText(s.gap);
+      lTile.classList.toggle("behind", s.gap > 0.004);
+      lBar.style.setProperty("--f", Math.min(1, Math.abs(s.gap)).toFixed(3));
+      lSpeed.textContent = Math.round(s.v); lRevs.textContent = revs(s.rpm); lThr.textContent = Math.round(s.thr);
     }
     if (oDot) { oDot.setAttribute("cx", s.x.toFixed(1)); oDot.setAttribute("cy", s.y.toFixed(1)); }
     if (gCur) { var gx = (s.d * 300).toFixed(1); gCur.setAttribute("x1", gx); gCur.setAttribute("x2", gx); }
-    if (vSpeed) {
-      vSpeed.textContent = Math.round(s.speed);
-      vGear.textContent = s.gear;
-      vRpm.textContent = rpmText(s.rpm) + " rpm";
-      vLap.textContent = clock3(s.t);
-      vPedal.setAttribute("width", (200 * s.pedal).toFixed(0));
-      vDot.setAttribute("cx", s.x.toFixed(1)); vDot.setAttribute("cy", s.y.toFixed(1));
-      var lit = Math.round(s.rpm / 8000 * segs.length);
-      for (var k = 0; k < segs.length; k++) segs[k].setAttribute("opacity", k < lit ? "1" : ".16");
-      drawRoad(s.speed, dt);
-    }
+    fields.forEach(function (el) { var v = text[el.getAttribute("data-f")]; if (v !== undefined) el.textContent = v; });
+    needles.forEach(function (el) {
+      var top = +el.getAttribute("data-top"), v = el.getAttribute("data-needle") === "rpm" ? s.rpm : s.v;
+      var a = -135 + 270 * Math.max(0, Math.min(1, v / top));
+      el.setAttribute("transform", "rotate(" + a.toFixed(1) + " " + el.getAttribute("data-cx") + " " + el.getAttribute("data-cy") + ")");
+    });
+    bars.forEach(function (g) {
+      var kids = g.children, lit = Math.round(s.rpm / +g.getAttribute("data-segs") * kids.length);
+      for (var k = 0; k < kids.length; k++) kids[k].setAttribute("opacity", k < lit ? "1" : ".14");
+    });
+    shifts.forEach(function (g) {   // none below 70 % of 8,000 rpm, all from 97 %
+      var kids = g.children, lit = Math.max(0, Math.min(kids.length, Math.ceil((s.rpm / 8000 - 0.7) / 0.27 * kids.length)));
+      for (var k = 0; k < kids.length; k++) kids[k].setAttribute("opacity", k < lit ? "1" : ".15");
+    });
+    dots.forEach(function (c) { c.setAttribute("cx", s.x.toFixed(1)); c.setAttribute("cy", s.y.toFixed(1)); });
+    thrBars.forEach(function (r) { r.setAttribute("width", (2.1 * Math.max(0, Math.min(100, s.thr))).toFixed(0)); });
+    gDots.forEach(function (c) { c.setAttribute("cx", (760 + s.gt * 60).toFixed(1)); c.setAttribute("cy", (120 - s.gl * 60).toFixed(1)); });
+    gapBoxes.forEach(function (r) { r.setAttribute("fill", s.gap > 0.004 ? "#d8463c" : "#2f9e5b"); });
   }
 
-  var start = 64.38 - LAP;                     // the live screen opens at 1:04.38 into the lap
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) { render(at(48.21), 0); return; }
-
-  // Run only while some part of it is on screen.
-  var visible = 0, running = false, last = 0, t0 = 0;
-  function frame(now) {
-    if (!visible) { running = false; return; }
-    var dt = last ? Math.min(0.1, (now - last) / 1000) : 0; last = now;
-    render(at((now - t0) / 1000 + start + LAP), dt);
-    requestAnimationFrame(frame);
+  if (reduced) { render(at(28)); }
+  else {
+    var visible = 0, running = false, t0 = performance.now() - 6000;
+    var frame = function (now) {
+      if (!visible) { running = false; return; }
+      render(at((now - t0) / 1000));
+      requestAnimationFrame(frame);
+    };
+    var shown = new Set();
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (es) {
+        es.forEach(function (e) { if (e.isIntersecting) shown.add(e.target); else shown.delete(e.target); });
+        visible = shown.size;
+        if (visible && !running) { running = true; requestAnimationFrame(frame); }
+      });
+      all(".phone, .scene").forEach(function (el) { io.observe(el); });
+    } else { visible = 1; running = true; requestAnimationFrame(frame); }
   }
-  t0 = performance.now();
-  var watched = document.querySelectorAll(".phone, .scene");
-  if (!("IntersectionObserver" in window)) { visible = 1; requestAnimationFrame(frame); return; }
-  var shown = new Set();
-  var io = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) { if (e.isIntersecting) shown.add(e.target); else shown.delete(e.target); });
-    visible = shown.size;
-    if (visible && !running) { running = true; last = 0; requestAnimationFrame(frame); }
+
+  // Instrument looks: tabs show one look at a time.
+  var lookTabs = all(".looktabs [role=tab]");
+  function showLook(k, focus) {
+    lookTabs.forEach(function (t, j) {
+      var on = j === k; t.setAttribute("aria-selected", String(on)); t.tabIndex = on ? 0 : -1;
+      var g = document.querySelector('.clusters [data-look="' + t.getAttribute("data-show") + '"]');
+      if (g) { if (on) g.removeAttribute("hidden"); else g.setAttribute("hidden", ""); }
+    });
+    if (focus) lookTabs[k].focus();
+  }
+  lookTabs.forEach(function (t, j) {
+    t.addEventListener("click", function () { showLook(j); });
+    t.addEventListener("keydown", function (e) {
+      var to = { ArrowRight: 1, ArrowLeft: -1 }[e.key]; if (to === undefined) return;
+      e.preventDefault(); showLook((j + to + lookTabs.length) % lookTabs.length, true);
+    });
   });
-  watched.forEach(function (el) { io.observe(el); });
+  if (lookTabs.length) showLook(0);
 })();
 
 // App tour: tabs choose a screen; it moves on by itself every few seconds until the visitor
@@ -134,9 +109,13 @@
   if (!tour) return;
   var tabs = Array.prototype.slice.call(tour.querySelectorAll('[role="tab"]'));
   var slides = tour.querySelector(".slides"), track = tour.querySelector(".track"), caption = tour.querySelector(".tour-caption"), pause = tour.querySelector(".pause");
-  var DWELL = 6000, index = 0, timer = 0, playing = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var DWELL = 6000, index = 0, timer = 0, visible = true, playing = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   tour.style.setProperty("--dwell", DWELL / 1000 + "s");
 
+  function schedule() {
+    clearTimeout(timer);
+    if (playing && visible) timer = setTimeout(function () { show(index + 1); }, DWELL);
+  }
   function show(i, focus) {
     index = (i + tabs.length) % tabs.length;
     tabs.forEach(function (t, k) {
@@ -147,17 +126,11 @@
     });
     track.style.transform = "translateX(" + (-100 * index) + "%)";
     if (caption) caption.textContent = tabs[index].querySelector("span").textContent;
-    var tab = tabs[index];
+    var tab = tabs[index], list = tab.parentElement;
     if (focus) tab.focus();
-    var list = tab.parentElement;
     if (list.scrollWidth > list.clientWidth) list.scrollTo({ left: tab.offsetLeft - 20, behavior: "smooth" });
-    // restart the progress bar
     var bar = tab.querySelector(".prog"); bar.style.display = "none"; void bar.offsetWidth; bar.style.display = "";
     schedule();
-  }
-  function schedule() {
-    clearTimeout(timer);
-    if (playing && visible) timer = setTimeout(function () { show(index + 1); }, DWELL);
   }
   function setPlaying(on) {
     playing = on;
@@ -183,7 +156,6 @@
     if (x0 === null) return; var dx = e.clientX - x0; x0 = null;
     if (Math.abs(dx) > 40) { setPlaying(false); show(index + (dx < 0 ? 1 : -1)); }
   });
-  var visible = true;
   if ("IntersectionObserver" in window) {
     new IntersectionObserver(function (es) { visible = es[0].isIntersecting; schedule(); }, { threshold: 0.35 }).observe(tour);
   }
