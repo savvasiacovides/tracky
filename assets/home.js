@@ -189,3 +189,31 @@
   document.querySelector(".gear .prev").addEventListener("click", function () { by(-1); });
   document.querySelector(".gear .next").addEventListener("click", function () { by(1); });
 })();
+
+// Testers: the form adds one request to the tester list (insert only; nobody can read the list
+// through the website). A repeat of the same email counts as already on the list.
+(function () {
+  var form = document.querySelector(".tester-form");
+  if (!form) return;
+  var status = form.querySelector(".form-status"), button = form.querySelector("button[type=submit]");
+  function say(text, kind) { status.textContent = text; status.className = "form-status" + (kind ? " " + kind : ""); }
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var email = form.email.value.trim();
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { say("Enter your email address.", "bad"); form.email.focus(); return; }
+    if (!form.consent.checked) { say("Tick the box so we can email you about testing.", "bad"); form.consent.focus(); return; }
+    var cfg = window.TRACKY_ACCOUNTS;
+    if (!cfg) { say("This form isn't available right now. Write to info@trackyapp.eu instead.", "bad"); return; }
+    var gear = Array.prototype.map.call(form.querySelectorAll("input[name=gear]:checked"), function (c) { return c.value; });
+    button.disabled = true; say("Sending…");
+    fetch(cfg.url + "/rest/v1/tester_requests", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", apikey: cfg.key, Authorization: "Bearer " + cfg.key, Prefer: "return=minimal" },
+      body: JSON.stringify({ email: email, iphone: form.iphone.value || null, gear: gear, note: form.note.value.trim() || null, consent: true })
+    }).then(function (r) {
+      if (r.ok || r.status === 409) { form.reset(); say(r.status === 409 ? "You're already on the list. We'll be in touch." : "Thanks. You're on the tester list, and we'll email you when there's a place.", "ok"); }
+      else { say("That didn't go through. Try again, or write to info@trackyapp.eu.", "bad"); }
+    }).catch(function () { say("No connection. Try again, or write to info@trackyapp.eu.", "bad"); })
+      .then(function () { button.disabled = false; });
+  });
+})();
