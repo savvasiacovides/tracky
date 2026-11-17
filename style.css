@@ -403,3 +403,23 @@ details p { margin: 10px 0 0; }
   .tprev { left: -22px; } .tnext { right: -22px; }
 }
 @media (max-width: 380px) { .tour-phone .phone { width: 270px; } .tprev { left: -14px; } .tnext { right: -14px; } }
+
+/* Circuits: a strip of outlines that runs sideways, a dot lapping each */
+.circuits .intro { font-size: 19px; color: var(--fog); margin: -40px 0 48px; }
+.circ-strip { display: flex; overflow: hidden; padding: 8px 0 4px;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
+.circ-strip ul { list-style: none; margin: 0; padding: 0; display: flex; flex-shrink: 0; gap: 22px; padding-right: 22px; }
+.circ-strip li { width: 210px; flex: none; background: var(--deck); border-radius: 22px; padding: 18px 18px 20px; }
+.circ-strip svg { display: block; width: 100%; height: 150px; margin-bottom: 14px; overflow: visible; }
+.circ-strip path { fill: none; stroke: var(--line); stroke-width: 2.6; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.circ-strip circle { fill: #fff; offset-rotate: 0deg; }
+.circ-strip b { display: block; font-stretch: 112%; font-weight: 750; font-size: 17px; line-height: 1.2; }
+.circ-strip span { color: var(--fog); font-size: 14px; }
+@media (prefers-reduced-motion: no-preference) {
+  .circ-strip ul { animation: slide 70s linear infinite; }
+  .circ-strip:hover ul { animation-play-state: paused; }
+  .circ-strip circle { animation: lap linear infinite; }
+}
+@media (prefers-reduced-motion: reduce) { .circ-strip { overflow-x: auto; } .circ-strip ul[aria-hidden] { display: none; } }
+@keyframes lap { from { offset-distance: 0%; } to { offset-distance: 100%; } }
+.fine a { color: inherit; }
