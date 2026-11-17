@@ -497,3 +497,20 @@ footer span { font-size: 13px; color: #5d6a80; }
 .hero .mega img { width: .82em; height: .82em; border-radius: .19em; flex: none;
   box-shadow: 0 0 0 2px rgba(211,250,106,.25), 0 24px 60px -12px rgba(211,250,106,.3); }
 @media (max-width: 640px) { .hero .mega { margin-bottom: 18px; } }
+
+/* Free and Pro */
+.plans { background: var(--night); }
+.plans .intro { font-size: 19px; color: var(--fog); margin: 0 0 34px; max-width: 52ch; }
+.plan-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.plan { background: var(--deck); border-radius: 24px; padding: 30px; }
+.plan h3 { font-size: 22px; margin: 0 0 6px; }
+.plan .price { font-size: 40px; font-weight: 800; font-stretch: 125%; margin: 0 0 20px; }
+.plan .price span { font-size: 16px; font-weight: 600; color: var(--fog); font-stretch: 100%; }
+.plan ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+.plan li { padding-left: 26px; position: relative; color: var(--fog); }
+.plan li::before { content: ""; position: absolute; left: 0; top: .55em; width: 12px; height: 2px; background: var(--fog); }
+.plan.pro { outline: 2px solid var(--line); }
+.plan.pro .price, .plan.pro li { color: #fff; }
+.plan.pro li::before { background: var(--line); }
+.plans .fine { margin-top: 20px; }
+@media (max-width: 760px) { .plan-grid { grid-template-columns: 1fr; } }
