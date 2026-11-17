@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tracky – Your account</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0b0d10">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="account.css">
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="../"><span class="mark" aria-hidden="true"></span>Tracky</a>
+  <nav><a href="../#features">Features</a><a href="../support/">Support</a><a href="./" aria-current="page">Account</a></nav>
+</div></header>
+
+<main class="doc">
+  <h1 id="title">Your Tracky account</h1>
+  <p class="meta" id="lead">The same account as in the app. Sign in to see your profile, cars and privacy choices.</p>
+  <div id="notice" class="notice" role="status" hidden></div>
+
+  <!-- Signed out -->
+  <section id="signed-out" class="panel" hidden>
+    <div class="tabs" role="tablist">
+      <button type="button" role="tab" data-tab="signin" aria-selected="true">Sign in</button>
+      <button type="button" role="tab" data-tab="signup" aria-selected="false">Create account</button>
+    </div>
+    <form id="signin" class="form">
+      <label>Email<input name="email" type="email" autocomplete="email" required></label>
+      <label>Password<input name="password" type="password" autocomplete="current-password" required></label>
+      <button class="btn primary" type="submit">Sign in</button>
+      <button class="link" type="button" id="forgot">Forgotten your password?</button>
+    </form>
+    <form id="signup" class="form" hidden>
+      <label>Driver name<input name="driver" maxlength="60" autocomplete="nickname" required></label>
+      <label>Email<input name="email" type="email" autocomplete="email" required></label>
+      <label>Password <span class="hint">(at least 12 characters)</span><input name="password" type="password" minlength="12" autocomplete="new-password" required></label>
+      <p class="hint">By creating an account you agree to the <a href="../privacy/">Privacy Policy</a>. We send an email to confirm the address.</p>
+      <button class="btn primary" type="submit">Create account</button>
+    </form>
+  </section>
+
+  <!-- Choosing a new password (from the reset email) -->
+  <section id="new-password" class="panel" hidden>
+    <h2>Choose a new password</h2>
+    <form id="set-password" class="form">
+      <label>New password <span class="hint">(at least 12 characters)</span><input name="password" type="password" minlength="12" autocomplete="new-password" required></label>
+      <button class="btn primary" type="submit">Save password</button>
+    </form>
+  </section>
+
+  <!-- Signed in -->
+  <section id="signed-in" hidden>
+    <div class="panel">
+      <div class="who"><div class="avatar" id="initials" aria-hidden="true"></div>
+        <div><strong id="who-name"></strong><br><span class="hint" id="who-email"></span></div></div>
+      <form id="profile" class="form inline">
+        <label>Driver name<input name="driver" maxlength="60" required></label>
+        <button class="btn ghost" type="submit">Save</button>
+      </form>
+    </div>
+
+    <h2>Cars</h2>
+    <div class="panel">
+      <ul id="cars" class="list"></ul>
+      <form id="add-car" class="form inline">
+        <label>Add a car<input name="name" maxlength="80" placeholder="e.g. Porsche 718 Cayman GT4 RS" required></label>
+        <button class="btn ghost" type="submit">Add</button>
+      </form>
+    </div>
+
+    <h2>Privacy choices</h2>
+    <div class="panel" id="consents"></div>
+
+    <h2>Account</h2>
+    <div class="panel actions">
+      <button class="btn ghost" type="button" id="sign-out">Sign out</button>
+      <button class="btn danger" type="button" id="delete">Delete account…</button>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap">
+  <span>© 2026 Tracky</span>
+  <span><a href="../support/">Support</a> · <a href="../privacy/">Privacy Policy</a></span>
+</div></footer>
+<script src="config.js"></script>
+<script src="account.js"></script>
+</body>
+</html>
