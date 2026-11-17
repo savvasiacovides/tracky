@@ -1,3 +1,4 @@
+[hidden] { display: none !important; }
 :root {
   --bg: #0b0d10; --panel: #14181d; --line: #262c34; --text: #f2f4f7; --muted: #9aa3ae;
   --accent: #34c759; --accent-ink: #06210f; --bad: #ff453a;
