@@ -500,6 +500,9 @@ footer span { font-size: 13px; color: #5d6a80; }
 
 /* Free and Pro */
 .plans { background: var(--night); }
+.band .plans-title { max-width: none; font-size: clamp(30px, 8.2vw, 84px); line-height: .98; letter-spacing: -0.02em; margin-bottom: 26px; }
+.band .plans-title span { display: block; }
+.band .plans-title span + span { color: var(--line); }
 .plans .intro { font-size: 19px; color: var(--fog); margin: 0 0 34px; max-width: 52ch; }
 .compare-wrap { overflow-x: auto; }
 .compare { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 16px; min-width: 560px; }
@@ -517,7 +520,7 @@ footer span { font-size: 13px; color: #5d6a80; }
 .compare .y i { display: inline-block; width: 18px; height: 10px; border-left: 3px solid var(--line); border-bottom: 3px solid var(--line); transform: rotate(-45deg) translate(2px, -3px); }
 .compare td:not(:last-child).y i { border-color: var(--fog); }
 .compare .n { color: rgba(255,255,255,.3); font-size: 20px; }
-.carplay-demo { margin: 56px 0 0; display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); gap: 40px; align-items: center; }
+.carplay-demo { margin: 8px 0 64px; display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); gap: 40px; align-items: center; }
 .cp-dash { padding: 20px; border-radius: 28px; background: linear-gradient(160deg, #1d2636, #070b12 70%); box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 40px 70px -30px rgba(0,0,0,.8); }
 .cp-screen { position: relative; background: #000; border-radius: 12px; overflow: hidden; aspect-ratio: 1.85 / 1; color: #fff;
   font-family: -apple-system, "SF Pro Text", "Helvetica Neue", Arial, sans-serif; display: grid; grid-template-columns: 13% 1fr; }
@@ -539,3 +542,13 @@ footer span { font-size: 13px; color: #5d6a80; }
 .carplay-demo figcaption { color: var(--fog); font-size: 17px; }
 .carplay-demo figcaption strong { color: #fff; display: block; font-size: 22px; margin-bottom: 8px; }
 @media (max-width: 760px) { .carplay-demo { grid-template-columns: 1fr; } .cp-dash { padding: 10px; border-radius: 18px; } }
+@media (max-width: 600px) {
+  .compare { min-width: 0; font-size: 14px; }
+  .compare th, .compare td { padding: 12px 8px; }
+  .compare tbody th { width: 44%; }
+  .compare td { width: 28%; }
+  .compare thead th { font-size: 15px; }
+  .compare thead th span { font-size: 22px; }
+  .compare thead th span small { display: block; font-size: 12px; }
+  .compare td small { font-size: 12px; }
+}
