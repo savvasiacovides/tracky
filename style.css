@@ -481,7 +481,7 @@ footer span { font-size: 13px; color: #5d6a80; }
 /* Hero: the name, huge, with the phone standing in front of it */
 .hero .frame { gap: 0; }
 .hero .mega { margin: 8px 0 -0.22em; font-stretch: 125%; font-weight: 900; letter-spacing: -0.04em; line-height: .9;
-  font-size: clamp(74px, 19vw, 250px); color: var(--line); position: relative; z-index: 0; white-space: nowrap;
+  font-size: clamp(56px, 15vw, 196px); color: var(--line); position: relative; z-index: 0; white-space: nowrap;
   text-shadow: 0 30px 80px rgba(211,250,106,.18); }
 .hero .stage { position: relative; z-index: 1; }
 .hero .pitch { margin-top: 40px; }
@@ -490,3 +490,10 @@ footer span { font-size: 13px; color: #5d6a80; }
   .mega { animation: rise 1s cubic-bezier(.2,.7,.2,1) both; }
 }
 @media (max-width: 640px) { .hero .mega { margin-bottom: -0.08em; } }
+
+/* Home: the name and icon lead the page; the header keeps only the links */
+.home .top .brand { visibility: hidden; }
+.hero .mega { display: flex; align-items: center; justify-content: center; gap: .16em; }
+.hero .mega img { width: .82em; height: .82em; border-radius: .19em; flex: none;
+  box-shadow: 0 0 0 2px rgba(211,250,106,.25), 0 24px 60px -12px rgba(211,250,106,.3); }
+@media (max-width: 640px) { .hero .mega { margin-bottom: 18px; } }
