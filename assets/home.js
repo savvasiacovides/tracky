@@ -1,4 +1,4 @@
-// The home page replays one real lap (a Lotus Exige at Achna Speedway, 1:11.572, OBD revs and
+// The home page replays one real lap (Achna Speedway, 1:11.572, OBD revs and
 // throttle at 25 Hz, resampled to 10 Hz) through the live screen, the map dots and every
 // instrument look. Paused off screen. The figures change even with reduced motion (nothing
 // moves across the screen); the sliding and blinking parts are off then.
