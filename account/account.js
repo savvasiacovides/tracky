@@ -202,8 +202,25 @@
 
   function clean(t) { return String(t || "").trim().toLowerCase(); }
 
-  // ---- Arriving from an email link (#access_token=…&type=signup|recovery) or with an error ----
+  // ---- Arriving from an email link ----
+  // Account emails link here (?token_hash=…&type=signup|recovery) so no link in them leaves
+  // trackyapp.eu; the page asks Supabase to verify the token. Older links arrive with
+  // #access_token=… after Supabase verified them itself.
   async function arrive() {
+    const q = new URLSearchParams(location.search);
+    if (q.get("token_hash") && q.get("type")) {
+      const type = q.get("type");
+      history.replaceState(null, "", HERE);
+      try {
+        const t = await call("auth/v1/verify", { method: "POST", body: { type, token_hash: q.get("token_hash") } });
+        keep(t);
+        if (type === "recovery") { say("Choose a new password for your account."); return show("password"); }
+        say("Your email is confirmed. Welcome to Tracky. You can sign in with this account in the app too.");
+      } catch (e) {
+        say(/expired|invalid/i.test(e.message) ? "This link has expired or was already used. Sign in, or ask for a new link." : e.message, true);
+      }
+      return show();
+    }
     const h = new URLSearchParams(location.hash.slice(1));
     if (h.get("error_description")) { say(h.get("error_description").replace(/\+/g, " "), true); history.replaceState(null, "", HERE); }
     if (h.get("access_token")) {
