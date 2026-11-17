@@ -125,3 +125,79 @@
   });
   watched.forEach(function (el) { io.observe(el); });
 })();
+
+// App tour: tabs choose a screen; it moves on by itself every few seconds until the visitor
+// takes over (a tab, a swipe, focus) or presses Pause. Still for reduced motion.
+(function () {
+  "use strict";
+  var tour = document.querySelector(".tour");
+  if (!tour) return;
+  var tabs = Array.prototype.slice.call(tour.querySelectorAll('[role="tab"]'));
+  var slides = tour.querySelector(".slides"), track = tour.querySelector(".track"), caption = tour.querySelector(".tour-caption"), pause = tour.querySelector(".pause");
+  var DWELL = 6000, index = 0, timer = 0, playing = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  tour.style.setProperty("--dwell", DWELL / 1000 + "s");
+
+  function show(i, focus) {
+    index = (i + tabs.length) % tabs.length;
+    tabs.forEach(function (t, k) {
+      var on = k === index;
+      t.setAttribute("aria-selected", String(on));
+      t.tabIndex = on ? 0 : -1;
+      document.getElementById(t.getAttribute("aria-controls")).setAttribute("aria-hidden", String(!on));
+    });
+    track.style.transform = "translateX(" + (-100 * index) + "%)";
+    if (caption) caption.textContent = tabs[index].querySelector("span").textContent;
+    var tab = tabs[index];
+    if (focus) tab.focus();
+    var list = tab.parentElement;
+    if (list.scrollWidth > list.clientWidth) list.scrollTo({ left: tab.offsetLeft - 20, behavior: "smooth" });
+    // restart the progress bar
+    var bar = tab.querySelector(".prog"); bar.style.display = "none"; void bar.offsetWidth; bar.style.display = "";
+    schedule();
+  }
+  function schedule() {
+    clearTimeout(timer);
+    if (playing && visible) timer = setTimeout(function () { show(index + 1); }, DWELL);
+  }
+  function setPlaying(on) {
+    playing = on;
+    tour.classList.toggle("playing", on);
+    pause.textContent = on ? "Pause" : "Play";
+    pause.setAttribute("aria-label", on ? "Stop moving through the screens" : "Move through the screens by themselves");
+    if (on) show(index + 1); else clearTimeout(timer);
+  }
+  tabs.forEach(function (t, k) {
+    t.addEventListener("click", function () { setPlaying(false); show(k); });
+    t.addEventListener("keydown", function (e) {
+      var to = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
+      if (e.key === "Home") to = -index; if (e.key === "End") to = tabs.length - 1 - index;
+      if (to === undefined) return;
+      e.preventDefault(); setPlaying(false); show(index + to, true);
+    });
+  });
+  pause.addEventListener("click", function () { setPlaying(!playing); });
+  tour.addEventListener("focusin", function (e) { if (e.target !== pause && playing) setPlaying(false); });
+  var x0 = null;
+  slides.addEventListener("pointerdown", function (e) { x0 = e.clientX; });
+  slides.addEventListener("pointerup", function (e) {
+    if (x0 === null) return; var dx = e.clientX - x0; x0 = null;
+    if (Math.abs(dx) > 40) { setPlaying(false); show(index + (dx < 0 ? 1 : -1)); }
+  });
+  var visible = true;
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(function (es) { visible = es[0].isIntersecting; schedule(); }, { threshold: 0.35 }).observe(tour);
+  }
+  tour.classList.toggle("playing", playing);
+  pause.textContent = playing ? "Pause" : "Play";
+  if (!playing) pause.hidden = true;
+  show(0);
+})();
+
+// Gear: the arrows move the row by one card.
+(function () {
+  var row = document.querySelector(".gear-row");
+  if (!row) return;
+  function by(dir) { var card = row.querySelector(".gear-card"); row.scrollBy({ left: dir * (card.offsetWidth + 20), behavior: "smooth" }); }
+  document.querySelector(".gear .prev").addEventListener("click", function () { by(-1); });
+  document.querySelector(".gear .next").addEventListener("click", function () { by(1); });
+})();
