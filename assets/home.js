@@ -163,6 +163,8 @@
     });
   });
   pause.addEventListener("click", function () { setPlaying(!playing); });
+  tour.querySelector(".tprev").addEventListener("click", function () { setPlaying(false); show(index - 1); });
+  tour.querySelector(".tnext").addEventListener("click", function () { setPlaying(false); show(index + 1); });
   tour.addEventListener("focusin", function (e) { if (e.target !== pause && playing) setPlaying(false); });
   var x0 = null;
   slides.addEventListener("pointerdown", function (e) { x0 = e.clientX; });

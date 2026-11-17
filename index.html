@@ -59,7 +59,10 @@
     <div class="frame">
       <h2 class="wide" id="tour-h">Everything in one app.</h2>
       <div class="tour-grid" role="region" aria-roledescription="carousel" aria-label="Tracky's screens">
-        <div class="tour-phone"><div class="phone"><div class="slides"><div class="track"><div class="pane" role="tabpanel" id="pane-drive" aria-labelledby="tab-drive"><div class="screen drive">
+        <div class="tablist" role="tablist" aria-label="Screens"><button type="button" role="tab" id="tab-drive" aria-controls="pane-drive" aria-selected="true" tabindex="0"><b>Drive</b><span>One button. Tracky finds the track, the car and your devices.</span><i class="prog"></i></button><button type="button" role="tab" id="tab-overview" aria-controls="pane-overview" aria-selected="false" tabindex="-1"><b>Sessions</b><span>Every lap timed. Best, optimal, top speed and the track coloured by speed.</span><i class="prog"></i></button><button type="button" role="tab" id="tab-laps" aria-controls="pane-laps" aria-selected="false" tabindex="-1"><b>Laps</b><span>Lap and sector times side by side, with your best and optimal marked.</span><i class="prog"></i></button><button type="button" role="tab" id="tab-graphs" aria-controls="pane-graphs" aria-selected="false" tabindex="-1"><b>Graphs</b><span>Speed and time gained against any other lap. Pinch in on a single corner.</span><i class="prog"></i></button><button type="button" role="tab" id="tab-video" aria-controls="pane-video" aria-selected="false" tabindex="-1"><b>Video</b><span>Watch any lap back and export it with your figures drawn on.</span><i class="prog"></i></button><button type="button" role="tab" id="tab-you" aria-controls="pane-you" aria-selected="false" tabindex="-1"><b>You</b><span>Your driver card, personal bests, tracks, cars and friends.</span><i class="prog"></i></button></div>
+        <div class="tour-stage">
+          <button type="button" class="tarrow tprev" aria-label="Previous screen">‹</button>
+          <div class="tour-phone"><div class="phone"><div class="slides"><div class="track"><div class="pane" role="tabpanel" id="pane-drive" aria-labelledby="tab-drive"><div class="screen drive">
   <h4>Drive</h4>
   <div class="two"><div class="card"><small>Track</small>Achna Speedway</div><div class="card"><small>Car</small>GT4 RS</div></div>
   <div class="start"><span>START</span></div>
@@ -114,11 +117,11 @@
   <div class="pb"><span>GT4 RS</span><b>19 laps</b></div>
   <div class="pb"><span>Exige</span><b>1 lap</b></div>
   <div class="tiles"><span>Tracks</span><span>Cars</span><span>Friends</span><span>Community</span></div>
-</div></div></div></div></div><p class="tour-caption">One button. Tracky finds the track, the car and your devices.</p></div>
-        <div class="tour-side">
-          <div class="tablist" role="tablist" aria-label="Screens"><button type="button" role="tab" id="tab-drive" aria-controls="pane-drive" aria-selected="true" tabindex="0"><b>Drive</b><span>One button. Tracky finds the track, the car and your devices.</span><i class="prog"></i></button><button type="button" role="tab" id="tab-overview" aria-controls="pane-overview" aria-selected="false" tabindex="-1"><b>Sessions</b><span>Every lap timed. Best, optimal, top speed and the track coloured by speed.</span><i class="prog"></i></button><button type="button" role="tab" id="tab-laps" aria-controls="pane-laps" aria-selected="false" tabindex="-1"><b>Laps</b><span>Lap and sector times side by side, with your best and optimal marked.</span><i class="prog"></i></button><button type="button" role="tab" id="tab-graphs" aria-controls="pane-graphs" aria-selected="false" tabindex="-1"><b>Graphs</b><span>Speed and time gained against any other lap. Pinch in on a single corner.</span><i class="prog"></i></button><button type="button" role="tab" id="tab-video" aria-controls="pane-video" aria-selected="false" tabindex="-1"><b>Video</b><span>Watch any lap back and export it with your figures drawn on.</span><i class="prog"></i></button><button type="button" role="tab" id="tab-you" aria-controls="pane-you" aria-selected="false" tabindex="-1"><b>You</b><span>Your driver card, personal bests, tracks, cars and friends.</span><i class="prog"></i></button></div>
-          <button type="button" class="pause" data-playing="true">Pause</button>
+</div></div></div></div></div></div>
+          <button type="button" class="tarrow tnext" aria-label="Next screen">›</button>
         </div>
+        <p class="tour-caption" aria-live="polite">One button. Tracky finds the track, the car and your devices.</p>
+        <button type="button" class="pause" data-playing="true">Pause</button>
       </div>
     </div>
   </section>
