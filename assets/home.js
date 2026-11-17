@@ -1,6 +1,7 @@
 // The home page replays one real lap (a Lotus Exige at Achna Speedway, 1:11.572, OBD revs and
 // throttle at 25 Hz, resampled to 10 Hz) through the live screen, the map dots and every
-// instrument look. Paused off screen; one still frame for reduced motion.
+// instrument look. Paused off screen. The figures change even with reduced motion (nothing
+// moves across the screen); the sliding and blinking parts are off then.
 (function () {
   "use strict";
   var raw = document.getElementById("lap-data");
@@ -12,11 +13,11 @@
   var D = [0];
   for (var i = 1; i < N; i++) D.push(D[i - 1] + Math.hypot(L.x[i] - L.x[i - 1], L.y[i] - L.y[i - 1]));
 
-  function at(t) {
-    t = ((t % LAP) + LAP) % LAP;
-    var k = Math.min(N - 2, Math.floor(t * 10)), f = Math.max(0, Math.min(1, (t - L.t[k]) / 0.1));
+  function at(elapsed) {
+    var t = ((elapsed % LAP) + LAP) % LAP;
+    var u = t / LAP * (N - 1), k = Math.min(N - 2, Math.floor(u)), f = Math.max(0, Math.min(1, u - k));
     function mix(a) { return a[k] + (a[k + 1] - a[k]) * f; }
-    return { t: t, x: mix(L.x), y: mix(L.y), v: mix(L.v), rpm: mix(L.rpm), thr: mix(L.thr),
+    return { elapsed: elapsed, t: t, x: mix(L.x), y: mix(L.y), v: mix(L.v), rpm: mix(L.rpm), thr: mix(L.thr),
       gear: L.gear[f < 0.5 ? k : k + 1], gl: mix(L.gl), gt: mix(L.gt), gap: mix(L.gap), d: mix(D) / D[N - 1] };
   }
   function clock(t, n) { var m = Math.floor(t / 60), s = t - m * 60; return m + ":" + (s < 10 ? "0" : "") + s.toFixed(n); }
@@ -25,6 +26,7 @@
   function $(id) { return document.getElementById(id); }
   function all(sel) { return Array.prototype.slice.call(document.querySelectorAll(sel)); }
 
+  var lBig = $("l-big"), lLabel = $("l-label"), lFlash = $("l-flash"), lRec = $("l-rec");
   var lClock = $("clock"), lGap = $("l-gap"), lTile = $("l-gaptile"), lBar = $("l-gapbar"), lSpeed = $("l-speed"), lRevs = $("l-revs"), lThr = $("l-thr");
   var oDot = $("o-dot"), gCur = $("g-cur");
   var fields = all("[data-f]"), needles = all("[data-needle]"), bars = all("[data-segs]"), shifts = all("[data-shift]");
@@ -34,10 +36,23 @@
     var text = { speed: Math.round(s.v), gear: s.gear, rpm: Math.round(s.rpm / 10) * 10, "rpm-label": revs(s.rpm) + " rpm",
       lap: clock(s.t, 2), lap3: clock(s.t, 3), gap: gapText(s.gap) };
     if (lClock) {
-      lClock.textContent = clock(s.t, 2);
-      lGap.textContent = gapText(s.gap);
-      lTile.classList.toggle("behind", s.gap > 0.004);
-      lBar.style.setProperty("--f", Math.min(1, Math.abs(s.gap)).toFixed(3));
+      // Lap 7 onwards, one lap after another; for 3 s after the line the finished lap shows.
+      var lapNo = 7 + Math.floor(s.elapsed / LAP), justDone = s.elapsed >= LAP && s.t < 3;
+      lBig.classList.toggle("done", justDone);
+      if (justDone) {
+        lLabel.textContent = "Lap " + (lapNo - 1);
+        lClock.textContent = clock(LAP, 2);
+        lFlash.textContent = gapText(L.gap[N - 1]) + " to best";
+      } else {
+        lLabel.textContent = "Lap " + lapNo;
+        lClock.textContent = clock(s.t, 2);
+        lFlash.textContent = "";
+      }
+      var rec = 724 + s.elapsed; lRec.textContent = Math.floor(rec / 60) + ":" + ("0" + Math.floor(rec % 60)).slice(-2);
+      var g = justDone ? L.gap[N - 1] : s.gap;
+      lGap.textContent = gapText(g);
+      lTile.classList.toggle("behind", g > 0.004);
+      lBar.style.setProperty("--f", Math.min(1, Math.abs(g)).toFixed(3));
       lSpeed.textContent = Math.round(s.v); lRevs.textContent = revs(s.rpm); lThr.textContent = Math.round(s.thr);
     }
     if (oDot) { oDot.setAttribute("cx", s.x.toFixed(1)); oDot.setAttribute("cy", s.y.toFixed(1)); }
@@ -62,9 +77,8 @@
     gapBoxes.forEach(function (r) { r.setAttribute("fill", s.gap > 0.004 ? "#d8463c" : "#2f9e5b"); });
   }
 
-  if (reduced) { render(at(28)); }
-  else {
-    var visible = 0, running = false, t0 = performance.now() - 6000;
+  {
+    var visible = 0, running = false, t0 = performance.now() - (LAP - 8) * 1000;
     var frame = function (now) {
       if (!visible) { running = false; return; }
       render(at((now - t0) / 1000));

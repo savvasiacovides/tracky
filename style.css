@@ -363,3 +363,10 @@ details p { margin: 10px 0 0; }
 .mini-video { background: #070e1b; padding: 4px; }
 .pb small { display: block; }
 .you .ini { font-size: 11px; }
+.live .rec { display: inline-flex; align-items: center; gap: 5px; color: #ff6b5f; font-weight: 600; }
+.live .rec i { width: 7px; height: 7px; border-radius: 50%; background: #ff3b30; }
+@media (prefers-reduced-motion: no-preference) { .live .rec i { animation: blink 1.6s steps(1) infinite; } }
+.live .big { position: relative; transition: background-color .3s; }
+.live .big.done { background: #24331a; }
+.live .big.done b { color: var(--line); }
+.live .flash { position: absolute; right: 12px; top: 10px; font-size: 11px; font-weight: 700; color: var(--line); }
