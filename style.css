@@ -500,9 +500,11 @@ footer span { font-size: 13px; color: #5d6a80; }
 
 /* Free and Pro */
 .plans { background: var(--night); }
-.band .plans-title { max-width: none; font-size: clamp(30px, 8.2vw, 84px); line-height: .98; letter-spacing: -0.02em; margin-bottom: 26px; }
-.band .plans-title span { display: block; }
-.band .plans-title span + span { color: var(--line); }
+.band .split { max-width: none; font-size: clamp(30px, 7vw, 72px); line-height: .98; letter-spacing: -0.02em; }
+.band #plans-h { font-size: clamp(30px, 8.2vw, 84px); margin-bottom: 26px; }
+.tester .split { font-size: clamp(30px, 3.6vw, 50px); }
+.band .split span { display: block; }
+.band .split span + span { color: var(--line); }
 .plans .intro { font-size: 19px; color: var(--fog); margin: 0 0 34px; max-width: 52ch; }
 .compare-wrap { overflow-x: auto; }
 .compare { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 16px; min-width: 560px; }
@@ -558,3 +560,6 @@ footer span { font-size: 13px; color: #5d6a80; }
   .gear-card { flex: none; }
   .gear .arrows { display: none; }
 }
+.closing .split { font-size: clamp(30px, 6vw, 64px); line-height: .98; letter-spacing: -0.02em; }
+.closing .split span { display: block; }
+.closing .split span + span { color: var(--line); }
