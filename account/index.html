@@ -5,18 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Tracky – Your account</title>
 <meta name="robots" content="noindex">
-<meta name="theme-color" content="#0b0d10">
-<link rel="stylesheet" href="../style.css">
+<meta name="theme-color" content="#060d1a">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="preload" href="/assets/fonts/archivo.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/style.css">
 <link rel="stylesheet" href="account.css">
 </head>
 <body>
-<header class="top"><div class="wrap">
-  <a class="brand" href="../"><span class="mark" aria-hidden="true"></span>Tracky</a>
-  <nav><a href="../#features">Features</a><a href="../support/">Support</a><a href="./" aria-current="page">Account</a></nav>
+<header class="top"><div class="frame">
+  <a class="brand" href="/"><img src="/assets/icon-96.png" alt="" width="38" height="38">Tracky</a>
+  <nav aria-label="Main"><a href="/#after" class="hide-small">Features</a><a href="/support/">Support</a><a href="/privacy/" class="hide-small">Privacy</a><a href="/account/" class="account" aria-current="page">Account</a></nav>
 </div></header>
 
-<main class="doc">
-  <h1 id="title">Your Tracky account</h1>
+<main class="page">
+  <h1 class="wide" id="title">Your Tracky account</h1>
   <p class="meta" id="lead">The same account as in the app. Sign in to see your profile, cars and privacy choices.</p>
   <div id="notice" class="notice" role="status" hidden></div>
 
@@ -29,15 +32,15 @@
     <form id="signin" class="form">
       <label>Email<input name="email" type="email" autocomplete="email" required></label>
       <label>Password<input name="password" type="password" autocomplete="current-password" required></label>
-      <button class="btn primary" type="submit">Sign in</button>
+      <button class="button" type="submit">Sign in</button>
       <button class="link" type="button" id="forgot">Forgotten your password?</button>
     </form>
     <form id="signup" class="form" hidden>
       <label>Driver name<input name="driver" maxlength="60" autocomplete="nickname" required></label>
       <label>Email<input name="email" type="email" autocomplete="email" required></label>
       <label>Password <span class="hint">(at least 12 characters)</span><input name="password" type="password" minlength="12" autocomplete="new-password" required></label>
-      <p class="hint">By creating an account you agree to the <a href="../privacy/">Privacy Policy</a>. We send an email to confirm the address.</p>
-      <button class="btn primary" type="submit">Create account</button>
+      <p class="hint">By creating an account you agree to the <a href="/privacy/">Privacy Policy</a>. We send an email to confirm the address.</p>
+      <button class="button" type="submit">Create account</button>
     </form>
   </section>
 
@@ -46,7 +49,7 @@
     <h2>Choose a new password</h2>
     <form id="set-password" class="form">
       <label>New password <span class="hint">(at least 12 characters)</span><input name="password" type="password" minlength="12" autocomplete="new-password" required></label>
-      <button class="btn primary" type="submit">Save password</button>
+      <button class="button" type="submit">Save password</button>
     </form>
   </section>
 
@@ -57,7 +60,7 @@
         <div><strong id="who-name"></strong><br><span class="hint" id="who-email"></span></div></div>
       <form id="profile" class="form inline">
         <label>Driver name<input name="driver" maxlength="60" required></label>
-        <button class="btn ghost" type="submit">Save</button>
+        <button class="button quiet" type="submit">Save</button>
       </form>
     </div>
 
@@ -65,8 +68,8 @@
     <div class="panel">
       <ul id="cars" class="list"></ul>
       <form id="add-car" class="form inline">
-        <label>Add a car<input name="name" maxlength="80" placeholder="e.g. Porsche 718 Cayman GT4 RS" required></label>
-        <button class="btn ghost" type="submit">Add</button>
+        <label>Add a car<input name="name" maxlength="80" placeholder="Make and model" required></label>
+        <button class="button quiet" type="submit">Add</button>
       </form>
     </div>
 
@@ -75,15 +78,16 @@
 
     <h2>Account</h2>
     <div class="panel actions">
-      <button class="btn ghost" type="button" id="sign-out">Sign out</button>
-      <button class="btn danger" type="button" id="delete">Delete account…</button>
+      <button class="button quiet" type="button" id="sign-out">Sign out</button>
+      <button class="button danger" type="button" id="delete">Delete account…</button>
     </div>
   </section>
 </main>
 
-<footer><div class="wrap">
+<footer><div class="frame">
+  <a class="brand" href="/"><img src="/assets/icon-96.png" alt="" width="26" height="26">Tracky</a>
+  <nav aria-label="Footer"><a href="/support/">Support</a><a href="/privacy/">Privacy Policy</a><a href="/account/">Account</a><a href="mailto:info@trackyapp.eu">info@trackyapp.eu</a></nav>
   <span>© 2026 Tracky</span>
-  <span><a href="../support/">Support</a> · <a href="../privacy/">Privacy Policy</a></span>
 </div></footer>
 <script src="config.js"></script>
 <script src="account.js"></script>
