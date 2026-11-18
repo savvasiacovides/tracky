@@ -211,6 +211,29 @@
     if (q.get("token_hash") && q.get("type")) {
       const type = q.get("type");
       history.replaceState(null, "", HERE);
+      // On an iPhone or iPad the link goes to the app, which uses the code itself and signs the
+      // driver in there. The code is used here only when the driver says Tracky is not on this
+      // device: a code can be used once, so the website never takes it while the app may.
+      const apple = /iPhone|iPad|iPod/.test(navigator.userAgent) ||
+        (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+      if (apple) {
+        const app = "tracky://auth?token_hash=" + encodeURIComponent(q.get("token_hash")) + "&type=" + encodeURIComponent(type);
+        const handed = await new Promise((done) => {
+          say("Open Tracky to finish. You'll be signed in there.");
+          const n = $("notice");
+          const open = document.createElement("a");
+          open.className = "button"; open.href = app; open.textContent = "Open Tracky";
+          const here = document.createElement("button");
+          here.className = "link"; here.type = "button"; here.textContent = "No Tracky on this device? Finish on the website";
+          const row = document.createElement("p"); row.append(open, document.createElement("br"), here);
+          n.append(row);
+          here.addEventListener("click", () => done(false));
+          document.addEventListener("visibilitychange", () => { if (document.hidden) done(true); });
+          location.href = app;
+        });
+        if (handed) { say("Tracky has your link. You can close this page."); return show(); }
+        say("");
+      }
       try {
         const t = await call("auth/v1/verify", { method: "POST", body: { type, token_hash: q.get("token_hash") } });
         keep(t);
