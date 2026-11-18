@@ -1,0 +1,15 @@
+{
+  "webcredentials": {
+    "apps": ["27YPW3J58Q.com.savvasiacovides.tracktelemetry"]
+  },
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["27YPW3J58Q.com.savvasiacovides.tracktelemetry"],
+        "components": [
+          { "/": "/account/*", "?": { "token_hash": "?*" }, "comment": "Account email links open Tracky" }
+        ]
+      }
+    ]
+  }
+}
