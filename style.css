@@ -514,7 +514,7 @@ footer span { font-size: 13px; color: #5d6a80; }
 .compare thead th span { display: block; font-size: 34px; font-weight: 800; font-stretch: 125%; margin-top: 4px; }
 .compare thead th span small { font-size: 15px; font-weight: 600; color: var(--fog); font-stretch: 100%; }
 .compare td { color: var(--fog); width: 27%; }
-.compare td small { display: block; font-size: 14px; color: var(--fog); opacity: .8; margin-top: 2px; }
+.compare td small, .compare tbody th small { display: block; font-size: 14px; font-weight: 400; color: var(--fog); opacity: .8; margin-top: 2px; }
 .compare .pro, .compare td:last-child { background: rgba(211,250,106,.06); color: #fff; }
 .compare thead .pro { border-radius: 18px 18px 0 0; box-shadow: inset 2px 0 0 var(--line), inset -2px 0 0 var(--line), inset 0 2px 0 var(--line); }
 .compare td:last-child { box-shadow: inset 2px 0 0 var(--line), inset -2px 0 0 var(--line); }
@@ -552,7 +552,7 @@ footer span { font-size: 13px; color: #5d6a80; }
   .compare thead th { font-size: 15px; }
   .compare thead th span { font-size: 22px; }
   .compare thead th span small { display: block; font-size: 12px; }
-  .compare td small { font-size: 12px; }
+  .compare td small, .compare tbody th small { font-size: 12px; }
 }
 /* On wide screens the devices sit in the page's column, three to a row, instead of running off the edge. */
 @media (min-width: 900px) {
