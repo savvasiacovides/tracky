@@ -147,10 +147,16 @@
   $("signup").addEventListener("submit", async (ev) => {
     ev.preventDefault(); const f = ev.target; say("");
     if (f.password.value.length < SHORTEST_PASSWORD) return say("Please use at least " + SHORTEST_PASSWORD + " characters for your password.", true);
+    // Tracky is for 16 and over (Privacy Policy, Children).
+    const born = f.born.value;
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(born)) return say("Enter your date of birth.", true);
+    const [y, m, d] = born.split("-").map(Number), now = new Date();
+    const age = now.getFullYear() - y - ((now.getMonth() + 1 < m || (now.getMonth() + 1 === m && now.getDate() < d)) ? 1 : 0);
+    if (age < 16) return say("You must be 16 or older to create a Tracky account.", true);
     busy(f, true);
     try {
       const made = await call("auth/v1/signup", { method: "POST", query: { redirect_to: HERE },
-        body: { email: clean(f.email.value), password: f.password.value, data: { driver_name: f.driver.value.trim().slice(0, 60) } } });
+        body: { email: clean(f.email.value), password: f.password.value, data: { driver_name: f.driver.value.trim().slice(0, 60), birth_date: born } } });
       if (made && made.access_token) { keep(made); show(); }
       else say("Almost there: we've sent an email to " + clean(f.email.value) + ". Open the link in it to confirm your account.");
       f.reset();
