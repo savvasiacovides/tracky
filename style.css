@@ -686,3 +686,22 @@ footer span { font-size: 13px; color: #5d6a80; }
 .drive3 .tiles4 .sw { bottom: 4px; width: 16px; height: 10px; }
 .drive3 .tiles4 .sw::after { width: 7px; height: 7px; }
 .ov2 .bestcard .drv span { color: var(--line); margin-left: 3px; }
+
+/* Drive and the bottom bar as on the owner's phone, 20 November 2026 */
+.drive3 .start { width: 60%; box-shadow: 0 0 0 5px #000, 0 0 0 15px rgba(211,250,106,.17), 0 0 0 16px rgba(0,0,0,.6), 0 0 0 27px rgba(211,250,106,.075); margin-bottom: 18px; }
+.drive3 .start span { font-size: 31px; font-weight: 900; letter-spacing: .01em; color: #000; }
+.drive3 .mid .quiet { margin-top: 26px; font-size: 11px; }
+.drive3 .gridbtn { width: 30px; height: 30px; }
+.drive3 .gridbtn svg { width: 15px; height: 15px; fill: none; stroke: var(--line); stroke-width: 2; }
+.drive3 .devhead span { color: #fff; }
+.screen .tbar2 { align-items: flex-end; padding: 6px 0 0; }
+.screen .tbar2 span { width: auto; height: auto; border-radius: 0; background: none; display: flex; flex-direction: column; align-items: center; gap: 3px; color: #cfd4da; }
+.screen .tbar2 span.on { background: none; color: var(--line); }
+.screen .tbar2 i { width: 27px; height: 27px; border-radius: 50%; background: #23262c; display: grid; place-items: center; color: #e8ebee; }
+.screen .tbar2 span.drv i { width: 34px; height: 34px; }
+.screen .tbar2 span.on i { background: var(--line); color: #000; }
+.screen .tbar2 svg { width: 58%; height: 58%; }
+.screen .tbar2 small { font-size: 7.5px; color: inherit; }
+.screen .tbar2 span.drv { width: auto; height: auto; }
+.screen .tbar2 i { flex: none; aspect-ratio: 1; }
+.drive3 .start span { font-family: ui-rounded, "SF Pro Rounded", system-ui, -apple-system, "Inter", sans-serif; font-weight: 900; font-stretch: normal; font-size: 33px; }
