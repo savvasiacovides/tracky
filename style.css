@@ -657,3 +657,32 @@ footer span { font-size: 13px; color: #5d6a80; }
 .cp2 .cp-times small { display: block; font-size: clamp(8px, .8vw, 12px); font-weight: 600; letter-spacing: .03em; }
 .cp2 .cp-times b { font-size: clamp(18px, 2.7vw, 38px); font-weight: 700; font-variant-numeric: tabular-nums; }
 .cp2 .cp-times .best { color: #94e64d; }
+
+/* Drive as the app draws it (RecordScreen): track Auto, START in the middle, devices as tiles four to a line */
+.drive3 { display: flex; flex-direction: column; gap: 8px; padding-top: 44px; }
+.drive3 .dtop { display: flex; justify-content: flex-end; }
+.drive3 .gridbtn { width: 26px; height: 26px; border-radius: 50%; background: #1b1e23; display: grid; place-items: center; }
+.drive3 .gridbtn svg { width: 13px; height: 13px; fill: var(--line); }
+.drive3 .choice { position: relative; background: #1b1e23; border-radius: 14px; padding: 9px 10px; min-height: 62px; }
+.drive3 .choice small { font-size: 9px; font-weight: 600; letter-spacing: .03em; }
+.drive3 .choice b { display: block; font-size: 13px; margin: 2px 0 1px; }
+.drive3 .choice em { display: block; font-style: normal; font-size: 9.5px; font-weight: 600; color: #9aa1ab; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.drive3 .choice .x { position: absolute; top: 7px; right: 7px; width: 15px; height: 15px; border-radius: 50%; background: #2a2e35; color: #9aa1ab; font-style: normal; font-size: 10px; line-height: 15px; text-align: center; }
+.drive3 .mid { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.drive3 .start { margin: 0 auto 4px; width: 128px; box-shadow: 0 0 0 9px rgba(211,250,106,.14), 0 0 0 20px rgba(211,250,106,.06); }
+.drive3 .mid .quiet { margin: 14px 0 0; font-size: 10.5px; color: #9aa1ab; }
+.drive3 .devhead { display: flex; align-items: center; gap: 10px; }
+.drive3 .devhead small { flex: 1; font-size: 9px; font-weight: 600; letter-spacing: .03em; }
+.drive3 .devhead span { font-size: 10.5px; font-weight: 600; color: var(--line); }
+.drive3 .tiles4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 5px; }
+.drive3 .tiles4 > div { position: relative; background: #1b1e23; border-radius: 10px; padding: 7px 6px; min-height: 46px; }
+.drive3 .tiles4 p { margin: 0 0 3px; font-size: 9px; font-weight: 600; white-space: nowrap; }
+.drive3 .tiles4 i { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #3fd17a; margin-right: 4px; vertical-align: 0; }
+.drive3 .tiles4 b { font-size: 11px; }
+.drive3 .tiles4 .sw { position: absolute; right: 5px; bottom: 5px; width: 18px; height: 11px; border-radius: 999px; background: var(--line); }
+.drive3 .tiles4 .sw::after { content: ""; position: absolute; right: 1.5px; top: 1.5px; width: 8px; height: 8px; border-radius: 50%; background: #fff; }
+.drive3 .choice em { margin-left: 0; }
+.drive3 .tiles4 .vid b { font-size: 10px; }
+.drive3 .tiles4 .sw { bottom: 4px; width: 16px; height: 10px; }
+.drive3 .tiles4 .sw::after { width: 7px; height: 7px; }
+.ov2 .bestcard .drv span { color: var(--line); margin-left: 3px; }
