@@ -28,6 +28,7 @@
 
   var lBig = $("l-big"), lLabel = $("l-label"), lFlash = $("l-flash"), lRec = $("l-rec");
   var lClock = $("clock"), lGap = $("l-gap"), lTile = $("l-gaptile"), lBar = $("l-gapbar"), lSpeed = $("l-speed"), lRevs = $("l-revs"), lThr = $("l-thr");
+  var lBest = $("l-best"), lLast = $("l-last");
   var oDot = $("o-dot"), gCur = $("g-cur");
   var fields = all("[data-f]"), needles = all("[data-needle]"), bars = all("[data-segs]"), shifts = all("[data-shift]");
   var dots = all("[data-dot]"), thrBars = all("[data-thr]"), gDots = all("[data-g]"), gapBoxes = all("[data-gapbox]");
@@ -39,21 +40,27 @@
       // Lap 7 onwards, one lap after another; for 3 s after the line the finished lap shows.
       var lapNo = 7 + Math.floor(s.elapsed / LAP), justDone = s.elapsed >= LAP && s.t < 3;
       lBig.classList.toggle("done", justDone);
+      // The Big gap screen (owner, 20 November 2026): LAP, the lap clock in tenths; for 3 s after the line the lap just finished.
       if (justDone) {
-        lLabel.textContent = "Lap " + (lapNo - 1);
-        lClock.textContent = clock(LAP, 2);
+        lLabel.textContent = "LAP " + (lapNo - 1);
+        lClock.textContent = clock(LAP, 1);
         lFlash.textContent = gapText(L.gap[N - 1]) + " to best";
       } else {
-        lLabel.textContent = "Lap " + lapNo;
-        lClock.textContent = clock(s.t, 2);
+        lLabel.textContent = "LAP";
+        lClock.textContent = clock(s.t, 1);
         lFlash.textContent = "";
       }
-      var rec = 724 + s.elapsed; lRec.textContent = Math.floor(rec / 60) + ":" + ("0" + Math.floor(rec % 60)).slice(-2);
+      var rec = 724 + s.elapsed; lRec.textContent = Math.floor(rec / 60) + ":" + ("0" + Math.floor(rec % 60)).slice(-2) + "." + Math.floor((rec * 10) % 10);
+      // Before the replayed lap ends: the earlier best (what the gap is measured against) and an earlier,
+      // slower lap. Once it is finished it is both the last lap and the new best, as on the phone.
+      var finished = s.elapsed >= LAP, before = LAP - L.gap[N - 1];
+      if (lBest) lBest.textContent = clock(finished ? Math.min(LAP, before) : before, 1);
+      if (lLast) lLast.textContent = clock(finished ? LAP : before + 0.4, 1);
       var g = justDone ? L.gap[N - 1] : s.gap;
       lGap.textContent = gapText(g);
       lTile.classList.toggle("behind", g > 0.004);
       lBar.style.setProperty("--f", Math.min(1, Math.abs(g)).toFixed(3));
-      lSpeed.textContent = Math.round(s.v); lRevs.textContent = revs(s.rpm); lThr.textContent = Math.round(s.thr);
+      if (lSpeed) lSpeed.textContent = Math.round(s.v); if (lRevs) lRevs.textContent = revs(s.rpm); if (lThr) lThr.textContent = Math.round(s.thr);
     }
     if (oDot) { oDot.setAttribute("cx", s.x.toFixed(1)); oDot.setAttribute("cy", s.y.toFixed(1)); }
     if (gCur) { var gx = (s.d * 300).toFixed(1); gCur.setAttribute("x1", gx); gCur.setAttribute("x2", gx); }
