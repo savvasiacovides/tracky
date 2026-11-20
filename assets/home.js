@@ -217,3 +217,18 @@
       .then(function () { button.disabled = false; });
   });
 })();
+
+// CarPlay example (Pro section): the gap band turns from green (ahead) to red (behind) and back,
+// as it does on the car. Still for reduced motion.
+(function () {
+  var band = document.querySelector(".cp2 .cp-band");
+  if (!band || (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches)) return;
+  var gap = band.querySelector(".cp-gap"), last = document.querySelector(".cp2 .cp-last");
+  var states = [{ tone: "ahead", gap: "−0.26", last: "1:10.9" }, { tone: "behind", gap: "+0.31", last: "1:11.2" }], k = 0;
+  setInterval(function () {
+    k = (k + 1) % states.length;
+    band.setAttribute("data-tone", states[k].tone);
+    gap.textContent = states[k].gap;
+    if (last) last.textContent = states[k].last;
+  }, 2600);
+})();
