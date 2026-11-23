@@ -812,3 +812,66 @@ footer span { font-size: 13px; color: #5d6a80; }
   .timing tr.lab td { padding: 12px 6px 0; border-top: 1px solid #cdd5df; color: var(--sheet-fog); font-size: 11px; font-weight: 650; background: none; }
   .timing tr.lab + tr td { border-top: 0; padding-top: 4px; }
 }
+
+/* Gear: one head-to-head per kind (owner, 23 Nov 2026: side by side, but not three items to scroll past) */
+[hidden] { display: none !important; }
+.verdict summary { list-style: none; cursor: pointer; color: #d2d9e3; display: block; }
+.verdict summary::-webkit-details-marker { display: none; }
+.verdict summary::after { content: " Why"; color: var(--line); font-weight: 650; }
+.verdict[open] summary::after { content: ""; }
+.verdict summary b { display: inline; }
+.verdict details p, details.verdict p { margin: 10px 0 0; }
+details.verdict { border: 0; padding: 22px 26px; }
+.duel { background: var(--deck); border-radius: 24px; padding: 18px; }
+.vs { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 12px; margin: 0 0 16px; }
+.vs .me { background: #b07cff; color: #0e0620; font-weight: 750; font-size: 14px; padding: 7px 14px; border-radius: 999px; }
+.vs .vs-word { color: var(--fog); font-style: italic; font-weight: 650; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chips button { font: inherit; font-size: 14px; font-weight: 650; color: var(--ink); background: none; border: 0; cursor: pointer;
+  padding: 7px 14px; border-radius: 999px; box-shadow: inset 0 0 0 1.5px var(--rule); }
+.chips button[aria-selected="true"] { background: var(--line); color: var(--night); box-shadow: none; }
+.duel .grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 14px; }
+.duel .a { grid-column: 1; background: rgba(176, 124, 255, .08); padding-left: 14px; padding-right: 14px; }
+.duel .b { grid-column: 2; padding-left: 4px; padding-right: 4px; }
+.duel .c-top.a { border-radius: 16px 16px 0 0; padding-top: 14px; }
+.duel .c-buy.a { border-radius: 0 0 16px 16px; padding-bottom: 14px; }
+.c-top { display: flex; flex-direction: column; gap: 6px; padding-bottom: 12px; }
+.c-top .shot { aspect-ratio: 4 / 3; border-radius: 14px; margin-bottom: 6px; }
+.c-top .badge { top: 10px; left: 10px; font-size: 12px; }
+.c-top.a .badge { background: #b07cff; color: #0e0620; }
+.c-top .plate strong { font-size: 24px; }
+.c-top h3 { margin: 0; font-size: 20px; font-stretch: 115%; font-weight: 800; line-height: 1.15; }
+.c-top .for { margin: 0; color: var(--fog); font-size: 14px; line-height: 1.35; }
+.c-top .status { font-size: 13px; }
+.c-row { border-top: 1px solid var(--rule); padding-top: 10px; padding-bottom: 10px; }
+.c-row .k { display: block; color: var(--fog); font-size: 12.5px; font-weight: 600; }
+.c-row b { display: block; font-size: 17px; font-weight: 750; overflow-wrap: anywhere; }
+.c-row.best b { color: #c9a6ff; }
+.c-row.no b { color: var(--fog); font-weight: 600; }
+.c-row b a { color: var(--line); }
+.duel .pc { margin: 0; font-size: 14px; gap: 5px; }
+.c-buy { padding-top: 12px; }
+.c-buy .button { display: block; text-align: center; padding: 12px 10px; font-size: 15px; }
+.c-buy .free { display: block; color: var(--fog); font-size: 14px; padding-top: 10px; }
+.duel .src { color: var(--fog); font-size: 13px; margin: 14px 0 0; }
+@media (min-width: 961px) { .duel { max-width: 820px; } }
+@media (max-width: 640px) {
+  .duel { padding: 12px; border-radius: 20px; margin: 0 -8px; }
+  .duel .grid { column-gap: 8px; }
+  .duel .a { padding-left: 10px; padding-right: 10px; }
+  .c-top h3 { font-size: 17px; }
+  .c-top .for { font-size: 12.5px; }
+  .c-top .plate strong { font-size: 18px; }
+  .c-top .plate svg { width: 34px; height: 34px; margin-bottom: 6px; }
+  .c-row b { font-size: 15px; }
+  .c-row .k { font-size: 11.5px; }
+  .duel .pc { font-size: 12.5px; }
+  .duel .pc li { padding-left: 16px; }
+  .c-buy .button { font-size: 13.5px; padding: 11px 6px; }
+  .chips button { font-size: 13px; padding: 6px 12px; }
+  details.verdict { padding: 18px 18px; }
+}
+.c-top .tag { align-self: flex-start; font-size: 12px; font-weight: 750; padding: 4px 10px; border-radius: 999px; background: #1d2a40; color: var(--ink); }
+.c-top.a .tag { background: #b07cff; color: #0e0620; }
+@media (max-width: 640px) { .c-top .shot { aspect-ratio: 16 / 10; } .c-top .tag { font-size: 11px; } }
+@media (min-width: 641px) { .c-top .shot { aspect-ratio: 2 / 1; } .duel { max-width: none; } }
