@@ -783,6 +783,7 @@ footer span { font-size: 13px; color: #5d6a80; }
 .timing thead .pk { color: #6b2fd6; }
 .timing td.best { color: #6b2fd6; font-weight: 750; }
 .timing .no { color: var(--sheet-fog); }
+.timing tr.lab { display: none; }
 .timing a { color: var(--sheet-ink); font-weight: 650; }
 .own { margin: 16px 0 0; color: var(--fog); font-size: 15px; max-width: 75ch; }
 .own b { color: var(--ink); }
@@ -801,6 +802,13 @@ footer span { font-size: 13px; color: #5d6a80; }
   .prod { display: flex; flex-direction: column; }
   .shot { aspect-ratio: 16 / 9; min-height: 0; }
   .kind { margin-top: 80px; }
-  .timing table { min-width: 560px; font-size: 14px; }
-  .timing tbody th, .timing thead td { position: sticky; left: 0; background: var(--sheet); width: 116px; }
+  .timing { padding: 4px 6px 10px; overflow: visible; }
+  .timing table { min-width: 0; table-layout: fixed; font-size: 13px; line-height: 1.35; }
+  .timing caption { padding: 10px 8px 4px; font-size: 12px; }
+  .timing thead td, .timing tbody th { display: none; }
+  .timing th, .timing td { padding: 8px 6px; overflow-wrap: anywhere; }
+  .timing thead th { font-size: 13px; }
+  .timing tr.lab { display: table-row; }
+  .timing tr.lab td { padding: 12px 6px 0; border-top: 1px solid #cdd5df; color: var(--sheet-fog); font-size: 11px; font-weight: 650; background: none; }
+  .timing tr.lab + tr td { border-top: 0; padding-top: 4px; }
 }
