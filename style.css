@@ -917,3 +917,4 @@ details.verdict { border: 0; padding: 22px 26px; }
   .chips button { white-space: nowrap; }
   .c-buy .button { white-space: nowrap; font-size: 12px; padding: 9px 4px; }
 }
+@media (max-width: 640px) { .vs .me { display: none; } .vs .vs-word { font-size: 14px; } }
