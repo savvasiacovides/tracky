@@ -722,3 +722,66 @@ footer span { font-size: 13px; color: #5d6a80; }
 .big2 .two .t.sm { min-height: 82px; }
 .big2 .two .t.sm b { font-size: 26px; text-align: center; font-variant-numeric: tabular-nums; }
 .big2 .flash { top: 12px; }
+
+/* Gear: a pick, a timing-sheet comparison, kits by what they add. Purple marks the pick, as fastest on a timing screen. */
+.gear { max-width: 1080px; margin: 0 auto; padding: 40px 28px 80px; }
+.gear h1 { font-size: clamp(44px, 6.4vw, 84px); margin: 0 0 18px; }
+.gear .lede { font-size: 21px; color: var(--fog); max-width: 46ch; margin: 0 0 56px; }
+.gear h2 { font-size: clamp(28px, 3.4vw, 40px); font-stretch: 118%; font-weight: 800; letter-spacing: -0.01em; line-height: 1.1; margin: 96px 0 12px; }
+.gear h2 + p { color: var(--fog); max-width: 60ch; margin: 0 0 32px; }
+
+.pick { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 40px; align-items: center;
+  background: var(--deck); border-radius: 28px; padding: 44px; box-shadow: inset 0 0 0 2px #b07cff; }
+.pick .flag { display: inline-block; color: #0e0620; background: #b07cff; font-weight: 750; font-size: 14px; padding: 5px 12px; border-radius: 999px; margin-bottom: 18px; }
+.pick h2 { margin: 0 0 14px; }
+.pick p { color: #d2d9e3; margin: 0 0 26px; max-width: 48ch; }
+.pick dl { display: grid; grid-template-columns: 1fr 1fr; gap: 22px 24px; margin: 0; }
+.pick dt { color: var(--fog); font-size: 14px; }
+.pick dd { margin: 0; font-stretch: 118%; font-weight: 800; font-size: 30px; line-height: 1.1; }
+.pick dd small { font-size: 16px; font-weight: 650; font-stretch: 100%; color: var(--fog); margin-left: 2px; }
+
+.timing { background: var(--sheet); color: var(--sheet-ink); border-radius: 22px; padding: 10px 10px 18px; overflow-x: auto; }
+.timing table { width: 100%; min-width: 640px; border-collapse: collapse; font-size: 16px; }
+.timing caption { text-align: left; color: var(--sheet-fog); font-size: 14px; padding: 12px 16px 8px; }
+.timing th, .timing td { padding: 14px 16px; text-align: left; vertical-align: top; border-top: 1px solid #cdd5df; }
+.timing thead th { border-top: 0; font-stretch: 112%; font-weight: 800; font-size: 18px; line-height: 1.2; vertical-align: bottom; }
+.timing thead th span { display: block; font-stretch: 100%; font-weight: 600; font-size: 13px; color: var(--sheet-fog); }
+.timing tbody th { color: var(--sheet-fog); font-weight: 600; width: 24%; }
+.timing .pk { background: #efe6ff; }
+.timing thead .pk { color: #6b2fd6; border-radius: 14px 14px 0 0; }
+.timing tbody tr:last-child .pk { border-radius: 0 0 14px 14px; }
+.timing td.best { color: #6b2fd6; font-weight: 750; }
+.timing .no { color: var(--sheet-fog); }
+.timing a { color: var(--sheet-ink); font-weight: 650; }
+
+.kits { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.kits li { background: var(--deck); border-radius: 22px; padding: 30px 26px; display: grid; gap: 10px; align-content: start; }
+.kits .add { display: flex; gap: 8px; margin-bottom: 8px; }
+.kits .add svg { width: 40px; height: 40px; fill: none; stroke: var(--line); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.kits .add svg.off { stroke: var(--rule); }
+.kits b { font-stretch: 115%; font-weight: 800; font-size: 22px; line-height: 1.15; }
+.kits p { margin: 0; color: var(--fog); font-size: 16px; }
+.kits .with { color: var(--ink); font-size: 15px; }
+
+.item { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px 32px; align-items: center;
+  border-top: 1px solid var(--rule); padding: 28px 0; }
+.item h3 { font-size: 24px; font-stretch: 115%; font-weight: 800; margin: 0 0 6px; }
+.item p { margin: 0; color: #d2d9e3; max-width: 60ch; }
+.item .soon { color: var(--fog); font-size: 15px; }
+.take { margin-top: 10px !important; color: var(--fog) !important; }
+.take b { color: var(--line); font-weight: 650; }
+
+.rules { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: 8px; }
+.rules b { display: block; font-weight: 750; margin-bottom: 4px; }
+.rules p { margin: 0; color: var(--fog); font-size: 16px; }
+
+@media (max-width: 860px) {
+  .pick { grid-template-columns: 1fr; padding: 30px 24px; }
+  .kits, .rules { grid-template-columns: 1fr; }
+  .item { grid-template-columns: 1fr; }
+  .gear h2 { margin-top: 72px; }
+}
+@media (max-width: 700px) {
+  .timing table { min-width: 560px; font-size: 15px; }
+  .timing tbody th, .timing thead td { position: sticky; left: 0; background: var(--sheet); width: 120px; }
+}
