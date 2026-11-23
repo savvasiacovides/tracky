@@ -918,3 +918,12 @@ details.verdict { border: 0; padding: 22px 26px; }
   .c-buy .button { white-space: nowrap; font-size: 12px; padding: 9px 4px; }
 }
 @media (max-width: 640px) { .vs .me { display: none; } .vs .vs-word { font-size: 14px; } }
+/* Names level across both columns (owner, 23 Nov 2026) */
+.duel .c-top.b { padding-top: 14px; }
+.c-top h3 { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.c-top .tag { white-space: nowrap; }
+@media (max-width: 640px) {
+  .duel .c-top.b { padding-top: 10px; }
+  .c-top h3 { font-size: 15.5px; }
+  .c-top .tag { font-size: 10.5px; padding: 3px 8px; }
+}
