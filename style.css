@@ -875,3 +875,45 @@ details.verdict { border: 0; padding: 22px 26px; }
 .c-top.a .tag { background: #b07cff; color: #0e0620; }
 @media (max-width: 640px) { .c-top .shot { aspect-ratio: 16 / 10; } .c-top .tag { font-size: 11px; } }
 @media (min-width: 641px) { .c-top .shot { aspect-ratio: 2 / 1; } .duel { max-width: none; } }
+/* Gear on phones: tighter (owner, 23 Nov 2026: too much scrolling) */
+@media (max-width: 640px) {
+  .gear { padding-top: 20px; padding-bottom: 48px; }
+  .gear h1 { margin-bottom: 8px; }
+  .gear .lede { font-size: 16px; margin-bottom: 14px; }
+  .jump { margin-bottom: 12px; gap: 6px; }
+  .jump a { padding: 6px 12px; font-size: 13px; }
+  .honest { font-size: 13px; }
+  .kind { margin-top: 40px; }
+  .kind > h2 { font-size: 26px; margin-bottom: 6px; }
+  .kind > .why { font-size: 15px; line-height: 1.45; margin-bottom: 12px; }
+  details.verdict { padding: 12px 14px; margin-bottom: 12px; }
+  .verdict summary { font-size: 14.5px; line-height: 1.45; }
+  .verdict b { font-size: 15px; }
+  .duel { padding: 10px; }
+  .vs { margin-bottom: 10px; gap: 6px; }
+  .vs .me { font-size: 12.5px; padding: 5px 10px; }
+  .c-top .shot:not(:has(img)) { display: none; }
+  .c-top .shot { aspect-ratio: 16 / 9; }
+  .c-top { gap: 3px; padding-bottom: 8px; }
+  .duel .c-top.a { padding-top: 10px; }
+  .c-top .for { display: none; }
+  .c-top .status { font-size: 11.5px; gap: 5px; }
+  .c-top .status::before { width: 7px; height: 7px; }
+  .c-row { padding-top: 6px; padding-bottom: 6px; }
+  .c-row b { font-size: 14.5px; line-height: 1.3; }
+  .duel .pc { gap: 3px; line-height: 1.3; }
+  .c-buy { padding-top: 8px; }
+  .duel .c-buy.a { padding-bottom: 10px; }
+  .c-buy .button { padding: 9px 6px; }
+  .duel .src { font-size: 11.5px; margin-top: 8px; }
+  .own { font-size: 13.5px; margin-top: 10px; }
+  .rules { gap: 14px; }
+  .rules p { font-size: 14px; }
+}
+@media (max-width: 640px) {
+  .vs { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+  .vs::-webkit-scrollbar { display: none; }
+  .chips { flex-wrap: nowrap; }
+  .chips button { white-space: nowrap; }
+  .c-buy .button { white-space: nowrap; font-size: 12px; padding: 9px 4px; }
+}
