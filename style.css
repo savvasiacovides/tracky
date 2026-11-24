@@ -958,3 +958,8 @@ details.verdict { border: 0; padding: 22px 26px; }
 }
 .size-search label, .size-search input { min-width: 0; width: 100%; }
 .size-search .axle .stock { grid-column: 1 / -1; color: var(--fog); font-size: 12.5px; }
+/* Tyre photos (ReifenDirekt.de via Awin), white tiles so the product pictures sit cleanly */
+.c-top .shot.photo { background: #fff; display: grid; place-items: center; }
+.c-top .shot.photo img.tyre-photo { width: auto; height: 100%; max-height: 220px; max-width: 100%; object-fit: contain; }
+.size-search .result img { height: 150px; aspect-ratio: auto; padding: 8px; }
+@media (max-width: 640px) { .c-top .shot.photo { aspect-ratio: 4 / 3; } .c-top .shot.photo img.tyre-photo { max-height: 150px; } }

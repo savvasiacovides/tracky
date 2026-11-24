@@ -1,8 +1,9 @@
 // Tracky tyre size search (trackyapp.eu/tyres/). Reads public.tyre_offers, filled each night from
 // ReifenDirekt.de's Awin feed by the tyre-feed function. Shows the track tyres on this page that come in
-// the driver's front and rear sizes. Photos stay off until ReifenDirekt.de's terms allow them.
+// the driver's front and rear sizes. Photos are ReifenDirekt.de's, through Awin's image service (owner confirmed
+// 24 November 2026 that we may use them); each tyre card on the page shows its model's photo too.
 (function () {
-  var SHOW_PHOTOS = false;
+  var SHOW_PHOTOS = true;
   var USE = { road: "Road car, a few track days", trackdays: "Regular track days", budget: "Smaller cars, 200 treadwear", trackcar: "Track car, dry days" };
   var ORDER = ["trackdays", "road", "trackcar", "budget"];
   var box = document.getElementById("size-search");
@@ -26,10 +27,24 @@
       .then(function (rows) { offers = rows; return rows; });
   }
 
+  function photos(rows) {
+    if (!SHOW_PHOTOS) return;
+    var pic = {};
+    rows.forEach(function (o) { var n = o.brand + " " + o.name; if (o.image && !pic[n]) pic[n] = o.image; });
+    document.querySelectorAll(".duel .c-top").forEach(function (top) {
+      var h = top.querySelector("h3"), shot = top.querySelector(".shot");
+      var src = h && pic[h.textContent.trim()];
+      if (!src || !shot) return;
+      var img = el("img", "tyre-photo"); img.src = src; img.alt = h.textContent.trim(); img.loading = "lazy";
+      shot.textContent = ""; shot.classList.add("photo"); shot.appendChild(img);
+    });
+  }
+
   function fill() {
     load().then(function (rows) {
       if (!rows.length) { box.hidden = true; return; }
       box.hidden = false;
+      photos(rows);
       var seen = {};
       rows.map(function (o) { return o.size; }).sort().forEach(function (s) {
         if (seen[s]) return; seen[s] = 1; var opt = document.createElement("option"); opt.value = s; list.appendChild(opt);
