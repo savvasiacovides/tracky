@@ -927,3 +927,5 @@ details.verdict { border: 0; padding: 22px 26px; }
   .c-top h3 { font-size: 15.5px; }
   .c-top .tag { font-size: 10.5px; padding: 3px 8px; }
 }
+.c-top h3.wrap { white-space: normal; }
+@media (max-width: 640px) { .c-buy .button .where { display: none; } }
