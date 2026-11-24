@@ -29,8 +29,21 @@
 
   function photos(rows) {
     if (!SHOW_PHOTOS) return;
-    var pic = {};
-    rows.forEach(function (o) { var n = o.brand + " " + o.name; if (o.image && !pic[n]) pic[n] = o.image; });
+    var pic = {}, cheap = {};
+    rows.forEach(function (o) {
+      var n = o.brand + " " + o.name;
+      if (o.image && !pic[n]) pic[n] = o.image;
+      if (o.in_stock && o.link && (!cheap[n] || (o.price || 1e9) < (cheap[n].price || 1e9))) cheap[n] = o;
+    });
+    // A tyre ReifenDirekt.de has no model page for links to its brand page; send it to the tyre itself.
+    document.querySelectorAll(".duel").forEach(function (duel) {
+      duel.querySelectorAll(".c-top").forEach(function (top) {
+        var h = top.querySelector("h3"), o = h && cheap[h.textContent.trim()];
+        if (!o) return;
+        var side = top.classList.contains("a") ? ".a" : ".b";
+        duel.querySelectorAll('[data-c="' + top.dataset.c + '"]' + side + ' a[href*="_Reifen.html"]').forEach(function (a) { a.href = o.link; });
+      });
+    });
     document.querySelectorAll(".duel .c-top").forEach(function (top) {
       var h = top.querySelector("h3"), shot = top.querySelector(".shot");
       var src = h && pic[h.textContent.trim()];
