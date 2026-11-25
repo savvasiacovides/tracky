@@ -52,7 +52,7 @@
       <label>Driver name<input name="driver" autocomplete="name" maxlength="60" required></label>
       <label>Email<input name="email" type="email" autocomplete="email" required></label>
       <label>Password <span class="hint">At least 12 characters</span><input name="password" type="password" autocomplete="new-password" minlength="12" required></label>
-      <label>Date of birth <span class="hint">Tracky is for drivers aged 16 and over</span><input name="born" type="date" required></label>
+      <label>Date of birth <span class="hint">Tracky is for drivers aged 16 and over</span><input name="born" type="text" inputmode="numeric" autocomplete="bday" placeholder="dd/mm/yyyy" maxlength="10" required></label>
       <button class="btn primary" type="submit">Create account</button>
       <p class="hint">By creating an account you agree to the Terms of Use in the app and the <a href="/privacy/">Privacy Policy</a>.</p>
     </form>

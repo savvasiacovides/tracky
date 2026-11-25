@@ -715,6 +715,21 @@
     });
   });
   function clean(t) { return String(t || "").trim().toLowerCase(); }
+  // Date of birth is typed dd/mm/yyyy; the account stores yyyy-mm-dd. Null if it is not a real date.
+  function isoBirthDate(t) {
+    var m = /^(\d{1,2})[\/.\-](\d{1,2})[\/.\-](\d{4})$/.exec(String(t || "").trim());
+    if (!m) return null;
+    var d = +m[1], mo = +m[2], y = +m[3], when = new Date(Date.UTC(y, mo - 1, d));
+    if (y < 1900 || when.getUTCFullYear() !== y || when.getUTCMonth() !== mo - 1 || when.getUTCDate() !== d) return null;
+    return y + "-" + String(mo).padStart(2, "0") + "-" + String(d).padStart(2, "0");
+  }
+  // Slashes go in as the digits are typed: 02091990 -> 02/09/1990.
+  $("signup").born.addEventListener("input", function (ev) {
+    if (ev.inputType && ev.inputType.indexOf("delete") === 0) return;
+    var digits = this.value.replace(/\D/g, "").slice(0, 8);
+    this.value = digits.length > 4 ? digits.slice(0, 2) + "/" + digits.slice(2, 4) + "/" + digits.slice(4)
+      : digits.length > 2 ? digits.slice(0, 2) + "/" + digits.slice(2) : digits;
+  });
 
   $("signin").addEventListener("submit", async function (ev) {
     ev.preventDefault(); var f = ev.target; busy(f, true); say("");
@@ -726,8 +741,8 @@
     ev.preventDefault(); var f = ev.target; say("");
     if (f.password.value.length < SHORTEST_PASSWORD) return say("Please use at least " + SHORTEST_PASSWORD + " characters for your password.", true);
     // Tracky is for 16 and over (Privacy Policy, Children).
-    var born = f.born.value;
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(born)) return say("Enter your date of birth.", true);
+    var born = isoBirthDate(f.born.value);
+    if (!born) return say("Enter your date of birth as dd/mm/yyyy.", true);
     var p = born.split("-").map(Number), now = new Date();
     var age = now.getFullYear() - p[0] - ((now.getMonth() + 1 < p[1] || (now.getMonth() + 1 === p[1] && now.getDate() < p[2])) ? 1 : 0);
     if (age < 16) return say("You must be 16 or older to create a Tracky account.", true);
