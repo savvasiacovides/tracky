@@ -222,7 +222,7 @@ def tyres():
                      '<div><b>Tests, not hype</b><p>Our picks follow independent tests and what each maker says the tyre is for. We name the test beside every result.</p></div>'
                      '<div><b>Partner links</b><p>ReifenDirekt.de links earn Tracky a small commission, at no cost to you, whichever tyre you choose.</p></div>',
                head_title="Tracky – Tyres for track days, compared by use",
-               desc="Track-day tyres compared by how you use the car: road car with track days, regular track days, smaller cars and 200-treadwear classes, and dry-day track cars.",
+               desc="The best track-day tyres compared by how you use the car: fast road car, road-legal track tyres, 200-treadwear semi-slicks and dry-day track cars.",
                path="/tyres/", kind_fn=kind_tyres, js=("/account/config.js", "/tyres/search.js"))
 
 

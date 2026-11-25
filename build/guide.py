@@ -167,7 +167,10 @@ def col(k, name, idx, side, hidden):
     if p:
         pc = "".join(f'<li class="p">{e(x)}</li>' for x in p["pros"]) + "".join(f'<li class="c">{e(x)}</li>' for x in p["cons"])
         out.append(f'<ul class="pc c-row {side}" data-c="{idx}"{h}>{pc}</ul>')
-        out.append(f'<div class="c-buy {side}" data-c="{idx}"{h}>{(link(p["url"], "See price", "button" + (" quiet" if side=="b" else ""), "on ReifenDirekt.de") if p.get("url") else link(p["asin"], "See price on Amazon", "button" + (" quiet" if side=="b" else "")))}</div>')
+        if p.get("url"): buy = link(p["url"], "See price", "button" + (" quiet" if side=="b" else ""), "on ReifenDirekt.de")
+        elif p.get("asin"): buy = link(p["asin"], "See price on Amazon", "button" + (" quiet" if side=="b" else ""))
+        else: buy = f'<span class="free">{e(p.get("nobuy", "Not sold by our partners"))}</span>'
+        out.append(f'<div class="c-buy {side}" data-c="{idx}"{h}>{buy}</div>')
     else:
         out.append(f'<div class="c-buy {side}" data-c="{idx}"{h}><span class="free">Nothing to buy</span></div>')
     return out

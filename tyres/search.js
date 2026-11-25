@@ -4,7 +4,7 @@
 // 24 November 2026 that we may use them); each tyre card on the page shows its model's photo too.
 (function () {
   var SHOW_PHOTOS = true;
-  var USE = { road: "Road car, a few track days", trackdays: "Regular track days", budget: "Smaller cars, 200 treadwear", trackcar: "Track car, dry days" };
+  var USE = { road: "Fast road car", trackdays: "Road-legal track tyre", budget: "200-treadwear semi-slick", trackcar: "Track car, dry days" };
   var ORDER = ["trackdays", "road", "trackcar", "budget"];
   var box = document.getElementById("size-search");
   if (!box || !window.TRACKY_ACCOUNTS) return;
