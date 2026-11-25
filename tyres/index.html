@@ -31,11 +31,11 @@
   <section id="size-search" class="size-search" aria-labelledby="size-h" hidden>
     <h2 id="size-h">Find track tyres in your size</h2>
     <form autocomplete="off">
-      <label>Front<input name="front" list="tyre-sizes" inputmode="text" placeholder="245/35 R19" required></label>
-      <label>Rear, if different<input name="rear" list="tyre-sizes" inputmode="text" placeholder="275/35 R19"></label>
-      <button class="button" type="submit">Find tyres</button>
+      <fieldset class="axle-pick" data-axle="front"><legend>Front, or all four</legend><label>Width<select name="front-w" required><option value="">Width</option></select></label><label>Height<select name="front-a" required disabled><option value="">Height</option></select></label><label>Diameter<select name="front-r" required disabled><option value="">Diameter</option></select></label></fieldset>
+      <fieldset class="axle-pick" data-axle="rear" hidden><legend>Rear</legend><label>Width<select name="rear-w" required><option value="">Width</option></select></label><label>Height<select name="rear-a" required disabled><option value="">Height</option></select></label><label>Diameter<select name="rear-r" required disabled><option value="">Diameter</option></select></label></fieldset>
+      <div class="go"><label class="split"><input type="checkbox" name="split"> Different size at the rear</label>
+      <button class="button" type="submit">Find tyres</button></div>
     </form>
-    <datalist id="tyre-sizes"></datalist>
     <div class="results" aria-live="polite"></div>
   </section>
   <ul class="jump"><li><a href="#road">Road car</a></li><li><a href="#trackdays">Track days</a></li><li><a href="#budget">Smaller cars</a></li><li><a href="#trackcar">Track car</a></li></ul>

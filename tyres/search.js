@@ -9,14 +9,46 @@
   var box = document.getElementById("size-search");
   if (!box || !window.TRACKY_ACCOUNTS) return;
   var cfg = window.TRACKY_ACCOUNTS;
-  var form = box.querySelector("form"), out = box.querySelector(".results"), list = document.getElementById("tyre-sizes");
-  var front = form.elements.front, rear = form.elements.rear;
+  var form = box.querySelector("form"), out = box.querySelector(".results");
+  var split = form.elements.split, rearSet = form.querySelector('[data-axle="rear"]');
+  var frontLegend = form.querySelector('[data-axle="front"] legend');
   var offers = null;
 
-  function parse(s) {
-    var m = /(\d{3})\D*(\d{2})\D*?(\d{2})\b/.exec((s || "").replace(/\s+/g, " "));
-    return m ? { w: +m[1], a: +m[2], r: +m[3], label: m[1] + "/" + m[2] + " R" + m[3] } : null;
+  // Width, then height, then diameter: each list holds only the sizes ReifenDirekt.de has for these tyres.
+  function sel(axle, k) { return form.elements[axle + "-" + k]; }
+  function options(s, values, label) {
+    var keep = s.value;
+    s.textContent = "";
+    var first = document.createElement("option"); first.value = ""; first.textContent = label; s.appendChild(first);
+    values.forEach(function (v) { var o = document.createElement("option"); o.value = v; o.textContent = v; s.appendChild(o); });
+    s.disabled = !values.length;
+    s.value = values.length === 1 ? String(values[0]) : (values.indexOf(+keep) >= 0 ? keep : "");
   }
+  function uniq(rows, key) {
+    var seen = {}, list = [];
+    rows.forEach(function (o) { if (!seen[o[key]]) { seen[o[key]] = 1; list.push(o[key]); } });
+    return list.sort(function (a, b) { return a - b; });
+  }
+  function cascade(axle) {
+    if (!offers) return;
+    var w = +sel(axle, "w").value, a;
+    options(sel(axle, "a"), w ? uniq(offers.filter(function (o) { return o.width === w; }), "aspect") : [], "Height");
+    a = +sel(axle, "a").value;
+    options(sel(axle, "r"), w && a ? uniq(offers.filter(function (o) { return o.width === w && o.aspect === a; }), "rim") : [], "Diameter");
+  }
+  function size(axle) {
+    var w = sel(axle, "w").value, a = sel(axle, "a").value, r = sel(axle, "r").value;
+    return w && a && r ? { w: +w, a: +a, r: +r, label: w + "/" + a + " R" + r } : null;
+  }
+  ["front", "rear"].forEach(function (axle) {
+    ["w", "a"].forEach(function (k) { sel(axle, k).addEventListener("change", function () { cascade(axle); }); });
+  });
+  function setSplit() {
+    rearSet.hidden = !split.checked;
+    ["w", "a", "r"].forEach(function (k) { sel("rear", k).required = split.checked; });
+    frontLegend.textContent = split.checked ? "Front" : "Front, or all four";
+  }
+  split.addEventListener("change", setSplit); setSplit();
   function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
   function money(o) { return o.price == null ? "" : new Intl.NumberFormat("en-IE", { style: "currency", currency: o.currency || "EUR" }).format(o.price); }
 
@@ -60,10 +92,9 @@
       if (!rows.length) { box.hidden = true; return; }
       box.hidden = false;
       photos(rows);
-      var seen = {};
-      rows.map(function (o) { return o.size; }).sort().forEach(function (s) {
-        if (seen[s]) return; seen[s] = 1; var opt = document.createElement("option"); opt.value = s; list.appendChild(opt);
-      });
+      options(sel("front", "w"), uniq(rows, "width"), "Width");
+      options(sel("rear", "w"), uniq(rows, "width"), "Width");
+      cascade("front"); cascade("rear");
     }).catch(function () { box.hidden = true; });
   }
 
@@ -95,7 +126,7 @@
     c.appendChild(el("h3", null, o.brand + " " + o.name));
     var more = document.getElementById(o.use);
     if (f && r) { c.appendChild(axle("Front", f)); c.appendChild(axle("Rear", r)); }
-    else if (f && !rear.value.trim()) c.appendChild(axle("All four", f));
+    else if (f && !split.checked) c.appendChild(axle("All four", f));
     else if (f) c.appendChild(axle("Front", f));
     else c.appendChild(axle("Rear", r));
     if (more) { var m = el("a", "why", "Why this tyre"); m.href = "#" + o.use; c.appendChild(m); }
@@ -104,10 +135,10 @@
 
   form.addEventListener("submit", function (ev) {
     ev.preventDefault();
-    var fs = parse(front.value), rs = rear.value.trim() ? parse(rear.value) : null;
+    var fs = size("front"), rs = split.checked ? size("rear") : null;
     out.textContent = "";
-    if (!fs) { out.appendChild(el("p", "note", "Type the size from your tyre’s side, for example 245/35 R19.")); return; }
-    if (rear.value.trim() && !rs) { out.appendChild(el("p", "note", "The rear size isn’t a tyre size. Try, for example, 275/35 R19.")); return; }
+    if (!fs) { out.appendChild(el("p", "note", "Choose the width, height and diameter from your tyre’s side.")); return; }
+    if (split.checked && !rs) { out.appendChild(el("p", "note", "Choose the rear width, height and diameter too.")); return; }
     out.appendChild(el("p", "note", "Looking…"));
     load().then(function (rows) {
       out.textContent = "";

@@ -200,14 +200,18 @@ def tyres():
         h = h.replace("Figures from each maker unless marked as ours.", "Figures from each maker or the test named.")
         return h.replace("Prices change, so they are on Amazon.", "Prices change, so they are on ReifenDirekt.de.")
     guide.ICON["tyre"] = guide.ICON.get("tyre") or '<svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="17"/><circle cx="24" cy="24" r="7"/></svg>'
-    search = """<section id="size-search" class="size-search" aria-labelledby="size-h" hidden>
+    pick = lambda a, t: (f'<fieldset class="axle-pick" data-axle="{a}"{" hidden" if a=="rear" else ""}><legend>{t}</legend>'
+        f'<label>Width<select name="{a}-w" required><option value="">Width</option></select></label>'
+        f'<label>Height<select name="{a}-a" required disabled><option value="">Height</option></select></label>'
+        f'<label>Diameter<select name="{a}-r" required disabled><option value="">Diameter</option></select></label></fieldset>')
+    search = f"""<section id="size-search" class="size-search" aria-labelledby="size-h" hidden>
     <h2 id="size-h">Find track tyres in your size</h2>
     <form autocomplete="off">
-      <label>Front<input name="front" list="tyre-sizes" inputmode="text" placeholder="245/35 R19" required></label>
-      <label>Rear, if different<input name="rear" list="tyre-sizes" inputmode="text" placeholder="275/35 R19"></label>
-      <button class="button" type="submit">Find tyres</button>
+      {pick("front", "Front, or all four")}
+      {pick("rear", "Rear")}
+      <div class="go"><label class="split"><input type="checkbox" name="split"> Different size at the rear</label>
+      <button class="button" type="submit">Find tyres</button></div>
     </form>
-    <datalist id="tyre-sizes"></datalist>
     <div class="results" aria-live="polite"></div>
   </section>"""
     guide_page("tyres", "Tyres", "Grip, chosen.",
