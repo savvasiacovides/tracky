@@ -116,9 +116,9 @@
     row.appendChild(el("b", null, o.size + (o.load_speed ? " " + o.load_speed : "")));
     if (want && o.width !== want.w) row.appendChild(el("span", "near", (o.width > want.w ? "10 mm wider" : "10 mm narrower") + " than " + want.label));
     row.appendChild(el("span", "p", money(o)));
-    if (!o.in_stock) row.appendChild(el("span", "stock", "Not in stock right now"));
-    var a = el("a", "button quiet", "Buy now"); a.href = o.link; a.rel = "sponsored noopener"; a.target = "_blank";
+    var a = el("a", "button", "Buy now"); a.href = o.link; a.rel = "sponsored noopener"; a.target = "_blank";
     row.appendChild(a);
+    if (!o.in_stock) row.appendChild(el("span", "stock", "Not in stock right now"));
     return row;
   }
 
