@@ -4,12 +4,12 @@
 // 24 November 2026 that we may use them); each tyre card on the page shows its model's photo too.
 (function () {
   var SHOW_PHOTOS = true;
-  var USE = { road: "Road & track", trackdays: "Track days", budget: "200TW class", trackcar: "Track car" };
+  var USE = { road: "Road & track days", trackdays: "Track tyre", budget: "200 treadwear", trackcar: "Track car" };
   var ORDER = ["trackdays", "road", "trackcar", "budget"];
   var box = document.getElementById("size-search");
   if (!box || !window.TRACKY_ACCOUNTS) return;
   var cfg = window.TRACKY_ACCOUNTS;
-  var form = box.querySelector("form"), out = box.querySelector(".results");
+  var form = box.querySelector("form"), out = document.getElementById("size-results");
   var split = form.elements.split, rearSet = form.querySelector('[data-axle="rear"]');
   var frontLegend = form.querySelector('[data-axle="front"] legend');
   var offers = null;
@@ -46,7 +46,7 @@
   function setSplit() {
     rearSet.hidden = !split.checked;
     ["w", "a", "r"].forEach(function (k) { sel("rear", k).required = split.checked; });
-    frontLegend.textContent = split.checked ? "Front" : "Front, or all four";
+    frontLegend.textContent = split.checked ? "Front" : "All four";
   }
   split.addEventListener("change", setSplit); setSplit();
   function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }

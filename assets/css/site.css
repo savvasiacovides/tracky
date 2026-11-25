@@ -564,3 +564,81 @@ mark, .hl { background: linear-gradient(transparent 12%, var(--lime) 12%, var(--
   .size-search .go { width: 100%; justify-content: space-between; }
 }
 .form input:not([type=checkbox]):not([type=radio]), .form select { min-height: 34px; height: 34px; line-height: 32px; border-radius: 8px; }
+
+/* ---------- No wasted space (owner 25 Nov 2026, design principle in claude/00-start-here.md) ---------- */
+/* Guide pages: title and intro beside the size search (Tyres) or the "how we choose" notes (Gear). */
+.guide-head { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 28px clamp(28px, 5vw, 72px); align-items: start;
+  padding-top: clamp(28px, 4vw, 56px); padding-bottom: 8px; }
+.guide-head .lede { margin-top: 14px; max-width: none; }
+.guide-head .jump { margin-top: 20px; }
+.guide-head .jump a { min-height: 34px; padding: 0 12px; font-size: 14px; }
+.guide-head .honest { margin-top: 14px; max-width: none; font-size: 13px; }
+.gh-side .rules { grid-template-columns: 1fr; gap: 0; margin: 0; }
+.gh-side .rules > div { padding: 12px 0; border-top: 1px solid var(--hair); }
+.gh-side .rules > div:first-child { border-top: 2px solid var(--lime); }
+.gh-side .rules b { font-size: 19px; }
+.gh-side .rules p { margin-top: 4px; font-size: 14px; }
+.gh-side .size-search { margin: 0; border-top: 2px solid var(--lime); padding-top: 14px; }
+.gh-side .size-search h2 { font-size: clamp(22px, 2.2vw, 28px); margin: 0 0 12px; }
+@media (max-width: 900px) { .guide-head { grid-template-columns: 1fr; } }
+
+/* Size search: one line per axle, labels inside the lists */
+.size-search form { display: grid; grid-template-columns: 1fr; gap: 8px; }
+.size-search .axle-pick { display: grid; grid-template-columns: 64px repeat(3, minmax(0, 1fr)); gap: 8px; align-items: center; width: auto; }
+.size-search .axle-pick[hidden] { display: none; }
+.size-search legend { float: left; margin: 0; font-size: 14px; }
+.size-search .axle-pick label { display: block; font-size: 0; }
+.size-search .axle-pick label select { font-size: 15px; }
+.size-search select { width: 100%; min-width: 0; }
+.size-search .go { display: flex; justify-content: space-between; align-items: center; gap: 12px; width: auto; margin-top: 2px; }
+#size-results:empty { display: none; }
+#size-results { margin-top: 12px; }
+#size-results .count { margin: 18px 0 10px; font-weight: 700; }
+#size-results .note { margin: 12px 0 0; color: var(--text-2); }
+#size-results .src { margin: 8px 0 0; color: var(--text-2); font-size: 13px; }
+#size-results .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 18px 20px; }
+#size-results .result { display: grid; gap: 6px; align-content: start; padding-top: 12px; border-top: 1px solid var(--hair); }
+#size-results .result img { width: 100%; height: 150px; object-fit: contain; background: #fff; border-radius: 6px; padding: 8px; }
+#size-results .result .tag { justify-self: start; font-size: 12px; font-weight: 700; padding: 2px 7px; border-radius: 4px; background: var(--lime); color: var(--ink-on); }
+#size-results .result h3 { font-size: 20px; line-height: 1.1; }
+#size-results .axle { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; padding: 6px 0 0; border-top: 1px solid var(--hair); font-size: 14px; }
+#size-results .axle .k { color: var(--text-2); min-width: 44px; }
+#size-results .axle b { font-weight: 600; }
+#size-results .axle .p { margin-left: auto; font-stretch: var(--cond); font-weight: 750; font-size: 19px; }
+#size-results .axle .near, #size-results .axle .stock { flex-basis: 100%; font-size: 12px; color: var(--amber); }
+#size-results .axle .button { flex-basis: 100%; color: var(--lime); font-weight: 650; text-underline-offset: 3px; }
+#size-results .result .why { color: var(--text-2); font-size: 13px; }
+
+/* Each kind: title and use beside the verdict */
+.kind { padding-top: clamp(36px, 4.5vw, 64px); }
+.kind > .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); column-gap: clamp(28px, 5vw, 72px); }
+.kind > .wrap > * { grid-column: 1 / -1; }
+.kind > .wrap > h2 { grid-column: 1; max-width: none; }
+.kind > .wrap > .why { grid-column: 1; margin-top: 10px; font-size: 16px; max-width: none; }
+.kind > .wrap > .verdict { grid-column: 2; grid-row: 1 / span 2; align-self: start; margin: 4px 0 0; max-width: none; }
+.kind .verdict summary, .kind .verdict p { font-size: 15px; }
+.kind .own { margin-top: 14px; font-size: 14px; max-width: none; }
+@media (max-width: 900px) { .kind > .wrap > h2, .kind > .wrap > .why, .kind > .wrap > .verdict { grid-column: 1 / -1; grid-row: auto; } .kind > .wrap > .verdict { margin-top: 14px; } }
+
+/* Head-to-head: smaller pictures, label and value on one line */
+.duel { margin-top: 18px; padding-top: 16px; }
+.duel .vs { margin-bottom: 12px; }
+.duel .shot, .duel .shot:has(img) { aspect-ratio: auto; height: clamp(120px, 14vw, 190px); margin-bottom: 4px; }
+.duel .shot img { padding: 4%; }
+.duel .c-top { gap: 4px; padding-bottom: 10px; }
+.duel .c-top h3 { font-size: clamp(20px, 2vw, 26px); }
+.duel .c-row { grid-template-columns: minmax(0, 11em) minmax(0, 1fr); align-items: baseline; gap: 2px 12px; padding: 7px 0; font-size: 14px; }
+.duel .c-row .k { font-size: 13px; }
+.duel .pc { padding: 8px 0; gap: 4px; }
+.duel .pc li { font-size: 14px; }
+.duel .c-buy { padding: 10px 0 2px; }
+.duel .c-buy .button { min-height: 36px; font-size: 15px; }
+.guide-end .rules > div { padding-top: 12px; }
+@media (max-width: 560px) { .duel .c-row { grid-template-columns: 1fr; gap: 0; } .duel .shot, .duel .shot:has(img) { height: 110px; } }
+@media (max-width: 480px) { .size-search .axle-pick { grid-template-columns: 46px repeat(3, minmax(0, 1fr)); gap: 6px; } .size-search select { padding: 0 22px 0 8px; background-position: right 7px center; } }
+.duel .pc { grid-template-columns: 1fr; }
+.size-search legend { white-space: nowrap; }
+.duel .shot { display: flex; align-items: center; justify-content: center; }
+.duel .shot img { width: auto; height: 100%; max-width: 100%; object-fit: contain; padding: 6px; }
+.duel .c-top h3, .duel .c-top .for { text-align: left; }
+.duel .c-top h3.wrap { width: auto; max-width: none; margin: 0; padding: 0; text-align: left; }

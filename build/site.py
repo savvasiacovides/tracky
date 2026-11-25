@@ -168,22 +168,26 @@ def home():
 
 def guide_page(key, title, h1, lede, kinds, extra_top="", honest="", rules="", head_title="", desc="", path="", kind_fn=guide.kind, js=()):
     jump = "".join(f'<li><a href="#{k["id"]}">{e(k["nav"])}</a></li>' for k in kinds)
+    side = extra_top or f'<div class="rules">{rules}</div>'
     body = f"""<div class="wrap guide-head">
-  <h1>{e(h1)}</h1>
-  <p class="lede">{lede}</p>
-  {extra_top}
-  <ul class="jump">{jump}</ul>
-  <p class="honest">{honest}</p>
+  <div class="gh-main">
+    <h1>{e(h1)}</h1>
+    <p class="lede">{lede}</p>
+    <ul class="jump">{jump}</ul>
+    <p class="honest">{honest}</p>
+  </div>
+  <div class="gh-side">{side}</div>
 </div>
+{'<div class="wrap"><div id="size-results" class="results" aria-live="polite"></div></div>' if extra_top else ''}
 {"".join(kind_fn(k) for k in kinds)}
-<section class="kind guide-end" aria-labelledby="how-h"><div class="wrap"><h2 id="how-h">How we choose</h2><div class="rules">{rules}</div></div></section>
+{f'<section class="kind guide-end" aria-labelledby="how-h"><div class="wrap"><h2 id="how-h">How we choose</h2><div class="rules">{rules}</div></div></section>' if extra_top else ''}
 {guide.DUEL_SCRIPT}"""
     write(path.strip("/") + "/index.html", shell(key, head_title, desc, path, body, js=js))
 
 
 def gear():
-    guide_page("gear", "Gear", "Gear that finds time",
-               "Tracky times laps with the iPhone alone. This is the gear that makes the laps more exact, adds engine data and video and shows how hard you are working. Tyres have <a href=\"/tyres/\">their own page</a>. For each, the one we would buy, set against the alternatives.",
+    guide_page("gear", "Gear", "Gear that works with Tracky",
+               "Tracky times laps with the iPhone alone. Add a GPS receiver for more exact laps, an OBD reader for engine data, a camera for video and a heart-rate strap. For each, the one we would buy, compared with the alternatives. Tyres are on <a href=\"/tyres/\">their own page</a>.",
                guide.KINDS,
                honest="“Tested with Tracky” means we have used it with Tracky in our own cars. Everything else here works with Tracky’s published support but has not been through our own testing yet, and we say so.",
                rules='<div><b>Facts, not hype</b><p>Every figure is the maker’s own unless it says ours. We say plainly what we have tested and what we have not.</p></div>'
@@ -207,22 +211,21 @@ def tyres():
     search = f"""<section id="size-search" class="size-search" aria-labelledby="size-h" hidden>
     <h2 id="size-h">Find track tyres in your size</h2>
     <form autocomplete="off">
-      {pick("front", "Front, or all four")}
+      {pick("front", "All four")}
       {pick("rear", "Rear")}
       <div class="go"><label class="split"><input type="checkbox" name="split"> Different size at the rear</label>
       <button class="button" type="submit">Find tyres</button></div>
     </form>
-    <div class="results" aria-live="polite"></div>
   </section>"""
-    guide_page("tyres", "Tyres", "Grip, chosen.",
-               "Nothing you fit to a car changes a lap time as much as its tyres. We group them by how the car is used, name the one we would buy, and set it against its closest rivals. Add the tyres to your car in Tracky and you can compare a session on the old set with one on the new.",
+    guide_page("tyres", "Tyres", "Track-day tyres",
+               "The tyre we would buy for each kind of driving, compared with its closest rivals on independent test results. Search your size for prices and stock. In Tracky, add the tyres to your car to compare sessions on the old and new set.",
                tyres_data.USES, extra_top=search,
                honest="We have not tested these tyres ourselves. Every figure is the maker’s own or comes from the independent test named beside it. Treadwear (UTQG) is the American wear grade: higher lasts longer, and it is only comparable within one maker’s range.",
                rules='<div><b>Chosen by use</b><p>The right tyre depends on how often you are on track, whether you drive there, and how often it rains.</p></div>'
                      '<div><b>Backed by tests</b><p>Every pick follows independent testing and what the maker built the tyre for. Each result names its source.</p></div>'
                      '<div><b>Partner links</b><p>Buy now takes you to our tyre partner. Tracky earns a small commission at no cost to you, whichever tyre you choose.</p></div>',
                head_title="Tracky – Tyres for track days, compared by use",
-               desc="The best track-day tyres, compared by how the car is used: road and track, regular track days, the 200-treadwear class and dedicated track cars.",
+               desc="Track-day tyres compared on independent tests: road tyres for track days, road-legal track tyres, 200-treadwear tyres and semi-slicks for track cars.",
                path="/tyres/", kind_fn=kind_tyres, js=("/account/config.js", "/tyres/search.js"))
 
 
