@@ -31,7 +31,7 @@
   var lBest = $("l-best"), lLast = $("l-last");
   var oDot = $("o-dot"), gCur = $("g-cur");
   var fields = all("[data-f]"), needles = all("[data-needle]"), bars = all("[data-segs]"), shifts = all("[data-shift]");
-  var dots = all("[data-dot]"), thrBars = all("[data-thr]"), gDots = all("[data-g]"), gapBoxes = all("[data-gapbox]");
+  var dots = all("[data-dot]"), thrBars = all("[data-thr]"), gDots = all("[data-g]"), gapBoxes = all("[data-gapbox]"), gapCls = all("[data-gapcls]");
 
   function render(s) {
     var text = { speed: Math.round(s.v), gear: s.gear, rpm: Math.round(s.rpm / 10) * 10, "rpm-label": revs(s.rpm) + " rpm",
@@ -82,6 +82,7 @@
     thrBars.forEach(function (r) { r.setAttribute("width", (2.1 * Math.max(0, Math.min(100, s.thr))).toFixed(0)); });
     gDots.forEach(function (c) { c.setAttribute("cx", (760 + s.gt * 60).toFixed(1)); c.setAttribute("cy", (120 - s.gl * 60).toFixed(1)); });
     gapBoxes.forEach(function (r) { r.setAttribute("fill", s.gap > 0.004 ? "#d8463c" : "#2f9e5b"); });
+    gapCls.forEach(function (el) { el.classList.toggle("behind", s.gap > 0.004); });
   }
 
   {
@@ -190,11 +191,11 @@
 
 // Gear: the arrows move the row by one card.
 (function () {
-  var row = document.querySelector(".gear-row");
-  if (!row) return;
+  var row = document.querySelector(".gear-row"), prev = document.querySelector(".gear .prev"), next = document.querySelector(".gear .next");
+  if (!row || !prev || !next) return;
   function by(dir) { var card = row.querySelector(".gear-card"); row.scrollBy({ left: dir * (card.offsetWidth + 20), behavior: "smooth" }); }
-  document.querySelector(".gear .prev").addEventListener("click", function () { by(-1); });
-  document.querySelector(".gear .next").addEventListener("click", function () { by(1); });
+  prev.addEventListener("click", function () { by(-1); });
+  next.addEventListener("click", function () { by(1); });
 })();
 
 // Testers: the form adds one request to the tester list (insert only; nobody can read the list

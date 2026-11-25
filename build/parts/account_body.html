@@ -1,0 +1,167 @@
+<div class="acc">
+<div class="wrap">
+  <div id="notice" class="notice" role="status" hidden></div>
+</div>
+
+<!-- Signed out -->
+<section id="signed-out" class="acc-out wrap" hidden aria-labelledby="out-h">
+  <div class="out-copy">
+    <h1 id="out-h">Your Tracky, on the web.</h1>
+    <p class="lede">Sign in with the account you use in the app. Your profile, sessions, best laps, what you share and your cars, all in one place.</p>
+    <ul class="perks"><li>Every synced session, lap by lap, in timing colours</li><li>Your best lap at every track, and how it came down</li><li>Your posts, followers and what you share</li></ul>
+  </div>
+  <div class="out-card">
+    <div class="seg" role="tablist" aria-label="Sign in or create an account">
+      <button type="button" role="tab" aria-selected="true" data-tab="signin">Sign in</button>
+      <button type="button" role="tab" aria-selected="false" data-tab="signup">Create account</button>
+    </div>
+    <form id="signin" class="dform" novalidate>
+      <label>Email<input name="email" type="email" autocomplete="email" required></label>
+      <label>Password<input name="password" type="password" autocomplete="current-password" required></label>
+      <button class="btn primary" type="submit">Sign in</button>
+      <button class="linkbtn" type="button" id="forgot">Forgotten your password?</button>
+    </form>
+    <form id="signup" class="dform" novalidate hidden>
+      <label>Driver name<input name="driver" autocomplete="name" maxlength="60" required></label>
+      <label>Email<input name="email" type="email" autocomplete="email" required></label>
+      <label>Password <span class="hint">At least 12 characters</span><input name="password" type="password" autocomplete="new-password" minlength="12" required></label>
+      <label>Date of birth <span class="hint">Tracky is for drivers aged 16 and over</span><input name="born" type="date" required></label>
+      <button class="btn primary" type="submit">Create account</button>
+      <p class="hint">By creating an account you agree to the Terms of Use in the app and the <a href="/privacy/">Privacy Policy</a>.</p>
+    </form>
+  </div>
+</section>
+
+<!-- New password after an email link -->
+<section id="new-password" class="acc-out wrap" hidden aria-labelledby="np-h">
+  <div class="out-copy"><h1 id="np-h">Choose a new password.</h1></div>
+  <div class="out-card">
+    <form id="set-password" class="dform" novalidate>
+      <label>New password <span class="hint">At least 12 characters</span><input name="password" type="password" autocomplete="new-password" minlength="12" required></label>
+      <button class="btn primary" type="submit">Save password</button>
+    </form>
+  </div>
+</section>
+
+<!-- Signed in: the app, on the web -->
+<div id="signed-in" class="acc-in wrap" hidden>
+  <aside class="acc-side">
+    <a class="me" href="#profile"><span class="av" id="side-av"></span><span><b id="side-name"></b><small id="side-user"></small></span></a>
+    <nav aria-label="Your account"><ul>
+      <li><a href="#profile" data-nav="profile">Profile</a></li>
+      <li><a href="#sessions" data-nav="sessions">Sessions <span class="n" id="n-sessions"></span></a></li>
+      <li><a href="#bests" data-nav="bests">Best laps <span class="n" id="n-tracks"></span></a></li>
+      <li><a href="#sharing" data-nav="sharing">Sharing</a></li>
+      <li><a href="#cars" data-nav="cars">Cars <span class="n" id="n-cars"></span></a></li>
+      <li><a href="#settings" data-nav="settings">Settings</a></li>
+    </ul></nav>
+    <p class="sync-line" id="sync-line"></p>
+  </aside>
+
+  <div class="acc-main">
+    <!-- Profile, as in the app's You -->
+    <section data-view="profile" aria-labelledby="p-name">
+      <div class="prof">
+        <div class="prof-av" id="p-av"></div>
+        <div class="prof-id">
+          <h1 id="p-name"></h1>
+          <p class="handle"><span id="p-user"></span><span class="badge pro" id="p-pro" hidden>PRO</span><span class="badge ver" id="p-ver" hidden title="Verified">Verified</span><span class="badge priv" id="p-priv" hidden>Private profile</span></p>
+          <ul class="counts">
+            <li><b id="c-posts">–</b><span>posts</span></li>
+            <li><button type="button" class="linkish" data-list="followers"><b id="c-followers">–</b><span>followers</span></button></li>
+            <li><button type="button" class="linkish" data-list="following"><b id="c-following">–</b><span>following</span></button></li>
+          </ul>
+          <p class="bio" id="p-bio"></p>
+          <p class="car-line" id="p-car"></p>
+          <p class="links" id="p-links"></p>
+        </div>
+      </div>
+
+      <div class="block">
+        <h2 class="bh">On track</h2>
+        <ul class="stats" id="stats"></ul>
+        <p class="hint" id="stats-note"></p>
+      </div>
+
+      <div class="block">
+        <h2 class="bh">Achievements</h2>
+        <ul class="achieve" id="achieve"></ul>
+      </div>
+
+      <div class="block">
+        <div class="bh-row"><h2 class="bh">Recent sessions</h2><a href="#sessions" class="more">All sessions</a></div>
+        <div id="recent"></div>
+      </div>
+
+      <div class="block">
+        <h2 class="bh">Posts</h2>
+        <div class="posts" id="posts"></div>
+      </div>
+    </section>
+
+    <!-- Sessions -->
+    <section data-view="sessions" aria-labelledby="s-h" hidden>
+      <div class="vh"><h1 id="s-h">Sessions</h1><p class="hint" id="s-note"></p></div>
+      <div id="sessions"></div>
+    </section>
+
+    <!-- One session -->
+    <section data-view="session" aria-labelledby="one-h" hidden>
+      <a href="#sessions" class="back">Sessions</a>
+      <div id="one"></div>
+    </section>
+
+    <!-- Best laps by track -->
+    <section data-view="bests" aria-labelledby="b-h" hidden>
+      <div class="vh"><h1 id="b-h">Best laps</h1><p class="hint">Your quickest valid lap at each track, from your synced sessions, and how it came down.</p></div>
+      <div id="bests"></div>
+    </section>
+
+    <!-- Sharing -->
+    <section data-view="sharing" aria-labelledby="sh-h" hidden>
+      <div class="vh"><h1 id="sh-h">Sharing</h1><p class="hint">What other drivers can see of you, and what you allow.</p></div>
+      <div class="block"><h2 class="bh">Your profile</h2><div id="sh-profile"></div></div>
+      <div class="block"><h2 class="bh">Laps and sessions you share</h2><div id="sh-shared"></div></div>
+      <div class="block"><h2 class="bh">What you allow</h2><div class="toggles" id="consents"></div></div>
+    </section>
+
+    <!-- Cars -->
+    <section data-view="cars" aria-labelledby="cars-h" hidden>
+      <div class="vh"><h1 id="cars-h">Cars</h1><p class="hint">The same list as in the app. Details marked “on your card” show on your profile.</p></div>
+      <ul class="cars" id="cars"></ul>
+      <form id="add-car" class="inline-form">
+        <label class="grow">Add a car<input name="name" maxlength="80" placeholder="For example Porsche 718 Cayman GT4 RS" required></label>
+        <button class="btn" type="submit">Add</button>
+      </form>
+    </section>
+
+    <!-- Settings -->
+    <section data-view="settings" aria-labelledby="set-h" hidden>
+      <div class="vh"><h1 id="set-h">Settings</h1></div>
+      <div class="block">
+        <h2 class="bh">Account</h2>
+        <dl class="kv"><dt>Email</dt><dd id="set-email"></dd><dt>Username</dt><dd id="set-user"></dd><dt>Tracky Pro</dt><dd id="set-pro"></dd></dl>
+        <p class="hint">Change your username, picture and bio in the app: You › Edit profile.</p>
+      </div>
+      <form id="profile" class="block inline-form">
+        <label class="grow">Driver name<input name="driver" maxlength="60" autocomplete="name"></label>
+        <button class="btn" type="submit">Save</button>
+      </form>
+      <form id="change-password" class="block inline-form">
+        <label class="grow">New password <span class="hint">At least 12 characters</span><input name="password" type="password" autocomplete="new-password" minlength="12"></label>
+        <button class="btn" type="submit">Change password</button>
+      </form>
+      <div class="block danger">
+        <h2 class="bh">Leave</h2>
+        <div class="row"><button class="btn" type="button" id="sign-out">Sign out</button><button class="btn warn" type="button" id="delete">Delete my account</button></div>
+        <p class="hint">Deleting removes your Tracky account, profile, cars and choices, on every device. It cannot be undone.</p>
+      </div>
+    </section>
+  </div>
+</div>
+
+<dialog id="people" class="people">
+  <div class="ph"><h2 id="people-h"></h2><button type="button" class="x" data-close aria-label="Close">×</button></div>
+  <ul id="people-list"></ul>
+</dialog>
+</div>

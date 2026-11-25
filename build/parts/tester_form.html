@@ -1,0 +1,17 @@
+<form class="form tester-form" novalidate>
+        <label>Email<input name="email" type="email" autocomplete="email" required maxlength="254" placeholder="you@example.com"></label>
+        <label>Your iPhone<select name="iphone"><option value="">Choose</option><option>iPhone 17 Pro or Pro Max</option><option>iPhone 17 or Air</option><option>iPhone 16 Pro or Pro Max</option><option>iPhone 16 or 16 Plus</option><option>iPhone 15</option><option>iPhone 14 or older</option></select></label>
+        <fieldset><legend>What you would use with it</legend>
+          <div class="chips">
+            <label><input type="checkbox" name="gear" value="gps"><span>GPS receiver</span></label>
+            <label><input type="checkbox" name="gear" value="obd"><span>OBD reader</span></label>
+            <label><input type="checkbox" name="gear" value="camera"><span>GoPro</span></label>
+            <label><input type="checkbox" name="gear" value="heart"><span>Heart-rate strap</span></label>
+            <label><input type="checkbox" name="gear" value="iphone"><span>Just my iPhone</span></label>
+          </div>
+        </fieldset>
+        <label><span>Where you drive <span class="opt">(optional)</span></span><input name="note" maxlength="500" placeholder="Circuits, car, how often"></label>
+        <label class="consent"><input type="checkbox" name="consent" required><span>Email me about testing Tracky. Details in the <a href="/privacy/#testers">Privacy Policy</a>.</span></label>
+        <button class="btn primary" type="submit">Ask to test</button>
+        <p class="form-status" role="status" aria-live="polite"></p>
+      </form>
