@@ -251,3 +251,6 @@ dialog.people::backdrop { background: rgba(0,0,0,.6); }
   background: conic-gradient(var(--on-dark) 25%, transparent 0 50%, var(--on-dark) 0 75%, transparent 0) 0 0 / 14px 14px; }
 .bh::before { content: ""; display: inline-block; width: 40px; height: 6px; margin-right: 12px; vertical-align: .3em; transform: skewX(-24deg);
   background: repeating-linear-gradient(90deg, var(--lime) 0 10px, transparent 10px 20px); }
+/* Shorter fields, as on the rest of the site (owner 25 Nov) */
+.acc input:not([type=checkbox]):not([type=radio]), .acc select { min-height: 36px; height: 36px; padding: 0 12px; border-radius: 10px; font-size: 16px; }
+.inline-form .btn { min-height: 36px; }

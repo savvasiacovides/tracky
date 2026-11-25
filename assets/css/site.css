@@ -513,3 +513,11 @@ mark, .hl { background: linear-gradient(transparent 12%, var(--lime) 12%, var(--
 }
 .form .chips span { border-radius: 10px; padding: 8px 12px; font-size: 15px; border-width: 1px; }
 .form input:focus, .form select:focus { box-shadow: none; border-color: var(--lime); }
+/* Shorter fields everywhere in the form (owner 25 Nov) */
+.form input:not([type=checkbox]):not([type=radio]), .form select { min-height: 36px; height: 36px; padding: 0 12px; line-height: 34px; }
+.form .seg { padding: 2px; }
+.form .seg span { padding: 5px 10px; }
+.form .chips span { padding: 6px 12px; }
+.form .del { width: 28px; height: 28px; }
+.size-search input { min-height: 38px; height: 38px; font-size: 16px; padding: 0 12px; border-radius: 10px; }
+.size-search .button { min-height: 38px; border-radius: 10px; }
