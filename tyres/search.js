@@ -48,7 +48,9 @@
       var h = top.querySelector("h3"), shot = top.querySelector(".shot");
       var src = h && pic[h.textContent.trim()];
       if (!src || !shot) return;
-      var img = el("img", "tyre-photo"); img.src = src; img.alt = h.textContent.trim(); img.loading = "lazy";
+      // Loaded straight away (not lazily), so the alternatives behind the tabs are ready when tapped; and
+      // asked at 500 px from Awin's image service, as 200 px looked soft in the larger cards.
+      var img = el("img", "tyre-photo"); img.src = src.replace("w=200&h=200", "w=500&h=500"); img.alt = h.textContent.trim(); img.decoding = "async";
       shot.textContent = ""; shot.classList.add("photo"); shot.appendChild(img);
     });
   }
