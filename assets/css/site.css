@@ -642,3 +642,8 @@ mark, .hl { background: linear-gradient(transparent 12%, var(--lime) 12%, var(--
 .duel .shot img { width: auto; height: 100%; max-width: 100%; object-fit: contain; padding: 6px; }
 .duel .c-top h3, .duel .c-top .for { text-align: left; }
 .duel .c-top h3.wrap { width: auto; max-width: none; margin: 0; padding: 0; text-align: left; }
+@media (max-width: 560px) {
+  #size-results .result { grid-template-columns: 104px minmax(0, 1fr); column-gap: 12px; }
+  #size-results .result > * { grid-column: 2; }
+  #size-results .result img { grid-column: 1; grid-row: 1 / span 8; height: 104px; align-self: start; padding: 4px; }
+}
