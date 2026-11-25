@@ -205,6 +205,20 @@
   if (!form) return;
   var status = form.querySelector(".form-status"), button = form.querySelector("button[type=submit]");
   function say(text, kind) { status.textContent = text; status.className = "form-status" + (kind ? " " + kind : ""); }
+  // Cars: up to five rows, each a make and model and how it is used.
+  var carList = form.querySelector("[data-cars]"), addCar = form.querySelector("[data-add-car]"), carTpl = document.getElementById("car-row");
+  function carCount() { return carList ? carList.children.length : 0; }
+  function syncCars() { if (addCar) { addCar.hidden = carCount() >= 5; addCar.textContent = carCount() ? "+ Add another car" : "+ Add a car"; } }
+  function newCar(focus) {
+    if (!carList || !carTpl || carCount() >= 5) return;
+    var li = carTpl.content.firstElementChild.cloneNode(true);
+    li.querySelector(".remove-car").addEventListener("click", function () { li.remove(); syncCars(); if (addCar) addCar.focus(); });
+    carList.appendChild(li); syncCars();
+    if (focus) li.querySelector("input").focus();
+  }
+  function resetCars() { if (carList) { carList.textContent = ""; newCar(false); } }
+  if (addCar) addCar.addEventListener("click", function () { newCar(true); });
+  resetCars();
   form.addEventListener("submit", function (e) {
     e.preventDefault();
     var email = form.email.value.trim();
@@ -213,13 +227,17 @@
     var cfg = window.TRACKY_ACCOUNTS;
     if (!cfg) { say("This form isn't available right now. Write to info@trackyapp.eu instead.", "bad"); return; }
     var gear = Array.prototype.map.call(form.querySelectorAll("input[name=gear]:checked"), function (c) { return c.value; });
+    var cars = Array.prototype.map.call(form.querySelectorAll(".car-row"), function (row) {
+      return { name: row.querySelector("input[name=car]").value.trim(), use: row.querySelector("select[name=car-use]").value };
+    }).filter(function (c) { return c.name; }).slice(0, 5);
     button.disabled = true; say("Sending…");
     fetch(cfg.url + "/rest/v1/tester_requests", {
       method: "POST",
       headers: { "Content-Type": "application/json", apikey: cfg.key, Authorization: "Bearer " + cfg.key, Prefer: "return=minimal" },
-      body: JSON.stringify({ email: email, iphone: form.iphone.value || null, gear: gear, note: form.note.value.trim() || null, consent: true })
+      body: JSON.stringify({ email: email, iphone: form.iphone.value || null, gear: gear, cars: cars,
+        tracks: form.tracks.value.trim() || null, frequency: form.frequency.value || null, note: form.note.value.trim() || null, consent: true })
     }).then(function (r) {
-      if (r.ok || r.status === 409) { form.reset(); say(r.status === 409 ? "You're already on the list. We'll be in touch." : "Thanks. You're on the tester list, and we'll email you when there's a place.", "ok"); }
+      if (r.ok || r.status === 409) { form.reset(); resetCars(); say(r.status === 409 ? "You're already on the list. We'll be in touch." : "Thanks. You're on the tester list: check your inbox for our email.", "ok"); }
       else { say("That didn't go through. Try again, or write to info@trackyapp.eu.", "bad"); }
     }).catch(function () { say("No connection. Try again, or write to info@trackyapp.eu.", "bad"); })
       .then(function () { button.disabled = false; });

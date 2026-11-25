@@ -484,3 +484,20 @@ mark, .hl { background: linear-gradient(transparent 12%, var(--lime) 12%, var(--
   content: ""; display: block; width: 96px; height: 8px; margin: 0 0 18px 4px; transform: skewX(-24deg);
   background: repeating-linear-gradient(90deg, var(--lime) 0 16px, transparent 16px 32px); }
 .on-dark .sec-head h2::before { background: repeating-linear-gradient(90deg, var(--lime) 0 16px, transparent 16px 32px); }
+
+/* Tester form: cars (up to five), circuits and how often */
+.form .car-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.form .car-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 13em) 44px; gap: 8px; align-items: center; }
+.form .sr-wrap { display: block; margin: 0; }
+.form .car-row .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.form .remove-car { width: 44px; height: 44px; border-radius: var(--radius); border: 1.5px solid var(--hair); background: none; color: var(--text-2); font-size: 22px; cursor: pointer; }
+.form .remove-car:hover { color: var(--red); border-color: var(--red); }
+.form .add-car { justify-self: start; margin-top: 8px; background: none; border: 1.5px dashed var(--hair); color: var(--lime); font: 650 15px "Archivo", sans-serif; padding: 10px 14px; border-radius: var(--radius); cursor: pointer; }
+.form .add-car:hover { border-color: var(--lime); }
+.form .pair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; }
+@media (max-width: 560px) {
+  .form .pair { grid-template-columns: minmax(0, 1fr); }
+  .form .car-row { grid-template-columns: minmax(0, 1fr) 44px; }
+  .form .car-row .sr-wrap:nth-child(2) { grid-column: 1; grid-row: 2; }
+  .form .car-row .remove-car { grid-column: 2; grid-row: 1; }
+}

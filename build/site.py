@@ -67,7 +67,7 @@ def shell(key, title, description, path, body, css=(), js=(), dark=False, head_e
 <footer class="foot"><div class="kerb" aria-hidden="true"></div><div class="wrap">
   <div class="grid">
     <div><a class="mark" href="/"><img src="/assets/icon-96.png" alt="" width="32" height="32"><span>Tracky</span></a>
-      <p>The lap timer for track days, on iPhone. In testing now.</p></div>
+      <p>Telemetry, redefined. On iPhone, in testing now.</p></div>
     {foot}
   </div>
   <div class="legal"><span>© 2026 Altivox Operations OÜ, Ahtri tn 12, 15551 Tallinn, Estonia</span><span>Registry code 17520583</span></div>
@@ -107,20 +107,20 @@ def home():
   <h1 class="mega" id="hero-h"><img src="/assets/icon-512.png" alt="" width="512" height="512"><span>Tracky</span></h1>
   <div class="stage">{part("hero_phone")}</div>
   <div class="pitch">
-    <p class="tagline">The lap timer for track days.</p>
-    <p class="lede">On iPhone. Press START and every lap times itself.</p>
+    <p class="tagline">Telemetry, redefined.</p>
+    <p class="lede">Lap times, sectors, engine data and video for every lap. On iPhone.</p>
     <div class="cta"><a class="btn primary" href="#join">Become a tester</a><a class="btn" href="#app">See the app</a></div>
   </div>
 </div></section>"""
 
     app = f"""<section class="sec app-sec on-dark" id="app" aria-labelledby="app-h"><div class="wrap">
-  <div class="sec-head"><h2 id="app-h">Everything from the paddock to the drive home.</h2>
+  <div class="sec-head"><h2 id="app-h">One app. Every lap.</h2>
     <p class="lede">Drive, look back at every lap, then share it. These are Tracky's own screens, drawn here with example figures.</p></div>
   <div class="tour">{tour}</div>
 </div></section>"""
 
     looks = f"""<section class="sec looks-sec" aria-labelledby="looks-h"><div class="wrap">
-  <div class="sec-head"><h2 id="looks-h">Your lap on video, in the look you choose.</h2>
+  <div class="sec-head"><h2 id="looks-h">Your lap. Your overlay.</h2>
     <p class="lede">Tracky draws your speed, revs, gap and the map over every lap you film, lined up to the frame. The same real lap as above.</p></div>
   {part("looks_stage")}
 </div></section>"""
@@ -136,14 +136,14 @@ def home():
 </div></section>"""
 
     gear = f"""<section class="sec gear-sec on-dark" id="kit" aria-labelledby="gear-h"><div class="wrap">
-  <div class="sec-head"><h2 id="gear-h">Works with the gear you already own.</h2>
+  <div class="sec-head"><h2 id="gear-h">Plug in. Find time.</h2>
     <p class="lede">Start with just your iPhone. Add a GPS receiver for sharper times, an OBD reader for the engine, a GoPro and a heart-rate strap. <a href="/gear/">What we would buy</a>.</p></div>
   {part("gear_row")}
   <p class="small" style="margin-top:18px">Product names are trademarks of their owners. Drawings are illustrations.</p>
 </div></section>"""
 
     circuits = f"""<section class="sec circ-sec" aria-labelledby="circ-h"><div class="wrap">
-  <div class="sec-head"><h2 id="circ-h">From your local track to Spa.</h2>
+  <div class="sec-head"><h2 id="circ-h">Any circuit. Every corner.</h2>
     <p class="lede">Tracky finds the start line by itself, at any circuit you drive. At the Nürburgring it uses the published lines: Bridge to Gantry on tourist days, full laps on track days, the GP circuit and the 24h layout.</p></div>
   </div>
   {part("circ_strip")}
@@ -152,15 +152,15 @@ def home():
 
     form = part("tester_form").replace('class="tester-form"', 'class="tester-form form"')
     join = f"""<section class="sec on-dark" id="join" aria-labelledby="join-h"><span id="test"></span><div class="wrap join-grid">
-  <div><h2 id="join-h">Test Tracky before it launches.</h2>
+  <div><h2 id="join-h">Get on the grid early.</h2>
     <p class="lede">Testers get each new build through Apple's TestFlight app and tell us how it does at the track.</p>
     <ul class="perks"><li>New builds as soon as they are ready</li><li>Your devices and your circuits shape what comes next</li><li>Free while it is in testing</li></ul></div>
   {form}
 </div></section>"""
 
     body = hero + app + looks + plans + gear + circuits + join + part("lap_data")
-    write("index.html", shell("home", "Tracky: the lap timer for track days, on iPhone",
-                              "Tracky is a lap timer for track days on iPhone. Press START and every lap is timed, then see where the time went.",
+    write("index.html", shell("home", "Tracky: telemetry, redefined. Lap timing, data and video for track days",
+                              "Telemetry, redefined. Tracky times every lap and sector on iPhone, records engine data and video, and shows where the time went.",
                               "/", body, js=("/account/config.js", "/assets/home.js")))
 
 
@@ -182,7 +182,7 @@ def guide_page(key, title, h1, lede, kinds, extra_top="", honest="", rules="", h
 
 
 def gear():
-    guide_page("gear", "Gear", "Gear",
+    guide_page("gear", "Gear", "Gear that finds time",
                "Tracky times laps with the iPhone alone. This is the gear that makes the laps more exact, adds engine data and video and shows how hard you are working. Tyres have <a href=\"/tyres/\">their own page</a>. For each, the one we would buy, set against the alternatives.",
                guide.KINDS,
                honest="“Tested with Tracky” means we have used it with Tracky in our own cars. Everything else here works with Tracky’s published support but has not been through our own testing yet, and we say so.",
@@ -210,7 +210,7 @@ def tyres():
     <datalist id="tyre-sizes"></datalist>
     <div class="results" aria-live="polite"></div>
   </section>"""
-    guide_page("tyres", "Tyres", "Tyres",
+    guide_page("tyres", "Tyres", "Grip, chosen.",
                "Nothing you bolt on changes a lap time as much as the tyres. Choose by how you use the car: for each, the one we would buy, set against the alternatives. Tracky shows the difference: put the tyres in your car’s details, then compare a session on the old set with one on the new.",
                tyres_data.USES, extra_top=search,
                honest="We have not tested these tyres ourselves. Every figure is the maker’s own or comes from the independent test named beside it. Treadwear (UTQG) is the American wear grade: higher lasts longer, and it is only comparable within one maker’s range.",
