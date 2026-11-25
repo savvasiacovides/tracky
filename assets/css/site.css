@@ -485,19 +485,31 @@ mark, .hl { background: linear-gradient(transparent 12%, var(--lime) 12%, var(--
   background: repeating-linear-gradient(90deg, var(--lime) 0 16px, transparent 16px 32px); }
 .on-dark .sec-head h2::before { background: repeating-linear-gradient(90deg, var(--lime) 0 16px, transparent 16px 32px); }
 
-/* Tester form: cars (up to five), circuits and how often */
-.form .car-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
-.form .car-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 13em) 44px; gap: 8px; align-items: center; }
-.form .sr-wrap { display: block; margin: 0; }
-.form .car-row .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
-.form .remove-car { width: 44px; height: 44px; border-radius: var(--radius); border: 1.5px solid var(--hair); background: none; color: var(--text-2); font-size: 22px; cursor: pointer; }
-.form .remove-car:hover { color: var(--red); border-color: var(--red); }
-.form .add-car { justify-self: start; margin-top: 8px; background: none; border: 1.5px dashed var(--hair); color: var(--lime); font: 650 15px "Archivo", sans-serif; padding: 10px 14px; border-radius: var(--radius); cursor: pointer; }
-.form .add-car:hover { border-color: var(--lime); }
-.form .pair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; }
-@media (max-width: 560px) {
-  .form .pair { grid-template-columns: minmax(0, 1fr); }
-  .form .car-row { grid-template-columns: minmax(0, 1fr) 44px; }
-  .form .car-row .sr-wrap:nth-child(2) { grid-column: 1; grid-row: 2; }
-  .form .car-row .remove-car { grid-column: 2; grid-row: 1; }
+/* Tester form: compact fields; cars and circuits, up to five each */
+.form { gap: 18px; }
+.form input:not([type=checkbox]):not([type=radio]), .form select {
+  min-height: 42px; padding: 0 14px; font-size: 16px; border-radius: 10px; border: 1px solid var(--hair); background: var(--bg); }
+.form input::placeholder { color: #5d6a80; }
+.form .short select { max-width: 280px; }
+.form .multi .rows { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.form .multi .row { display: flex; align-items: center; gap: 8px; max-width: 460px; }
+.form .multi .grow { flex: 1 1 auto; margin: 0; display: block; }
+.form .multi .grow input { width: 100%; }
+.form .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.form .seg { display: inline-flex; flex: none; padding: 3px; gap: 2px; border-radius: 10px; background: var(--bg); border: 1px solid var(--hair); }
+.form .seg label { display: block; margin: 0; cursor: pointer; }
+.form .seg input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.form .seg span { display: block; padding: 7px 10px; border-radius: 7px; font-size: 14px; font-weight: 600; color: var(--text-2); white-space: nowrap; }
+.form .seg input:checked + span { background: var(--lime); color: var(--ink-on); }
+.form .seg input:focus-visible + span { outline: 2px solid var(--lime); outline-offset: 1px; }
+.form .del { flex: none; width: 32px; height: 32px; border-radius: 50%; border: 0; background: none; color: var(--text-2); font-size: 20px; line-height: 1; cursor: pointer; }
+.form .del:hover { color: var(--red); background: var(--tarmac-2); }
+.form .add-row { justify-self: start; margin-top: 8px; background: none; border: 0; padding: 4px 0; color: var(--lime); font: 650 15px "Archivo", sans-serif; cursor: pointer; }
+.form .add-row:hover { text-decoration: underline; text-underline-offset: 3px; }
+@media (max-width: 480px) {
+  .form .multi .row { flex-wrap: wrap; }
+  .form .multi .row .grow { flex: 1 1 calc(100% - 40px); }
+  .form .multi .row .seg { order: 3; }
 }
+.form .chips span { border-radius: 10px; padding: 8px 12px; font-size: 15px; border-width: 1px; }
+.form input:focus, .form select:focus { box-shadow: none; border-color: var(--lime); }

@@ -10,19 +10,25 @@
             <label><input type="checkbox" name="gear" value="iphone"><span>Just my iPhone</span></label>
           </div>
         </fieldset>
-        <fieldset class="cars"><legend>Your cars <span class="opt">(up to 5)</span></legend>
-          <ol class="car-list" data-cars></ol>
-          <button type="button" class="add-car" data-add-car>+ Add a car</button>
+        <fieldset class="multi" data-multi="cars" data-max="5" data-one="car"><legend>Your cars <span class="opt">(up to 5)</span></legend>
+          <ol class="rows"></ol>
+          <button type="button" class="add-row">+ Add a car</button>
         </fieldset>
-        <template id="car-row"><li class="car-row">
-          <label class="sr-wrap"><span class="sr">Make and model</span><input name="car" maxlength="80" placeholder="Make and model, e.g. Lotus Exige S240"></label>
-          <label class="sr-wrap"><span class="sr">How you use it</span><select name="car-use"><option value="track">Track car</option><option value="road">Road car for track days</option><option value="race">Race car</option></select></label>
-          <button type="button" class="remove-car" aria-label="Remove this car">×</button>
+        <template id="row-cars"><li class="row">
+          <label class="grow"><span class="sr">Make and model</span><input name="car" maxlength="80" placeholder="Make and model"></label>
+          <span class="seg" role="radiogroup" aria-label="Kind of car"><label><input type="radio" value="race" checked><span>Race car</span></label><label><input type="radio" value="street"><span>Street car</span></label></span>
+          <button type="button" class="del" aria-label="Remove">×</button>
         </li></template>
-        <div class="pair">
-          <label><span>Circuits you drive <span class="opt">(optional)</span></span><input name="tracks" maxlength="200" placeholder="e.g. Achna Speedway, Nürburgring"></label>
-          <label>How often you go on track<select name="frequency"><option value="">Choose</option><option value="soon">Not yet, soon</option><option value="yearly">Once or twice a year</option><option value="few">A few times a year</option><option value="monthly">About once a month</option><option value="often">More than once a month</option></select></label>
-        </div>
+        <fieldset class="multi" data-multi="tracks" data-max="5" data-one="circuit"><legend>Circuits you drive <span class="opt">(up to 5)</span></legend>
+          <ol class="rows"></ol>
+          <button type="button" class="add-row">+ Add a circuit</button>
+        </fieldset>
+        <template id="row-tracks"><li class="row">
+          <label class="grow"><span class="sr">Circuit</span><input name="track" maxlength="80" placeholder="Circuit" list="circuit-names"></label>
+          <button type="button" class="del" aria-label="Remove">×</button>
+        </li></template>
+        <datalist id="circuit-names"><option value="Achna Speedway"><option value="Spa-Francorchamps"><option value="Silverstone"><option value="Monza"><option value="Suzuka"><option value="Nürburgring"><option value="Red Bull Ring"><option value="Zandvoort"><option value="Barcelona-Catalunya"><option value="Hungaroring"><option value="Brands Hatch"><option value="Hockenheim"><option value="Circuit of the Americas"><option value="Montréal"><option value="Yas Marina"><option value="Albert Park"><option value="Bahrain"></datalist>
+        <label class="short">How often you go on track<select name="frequency"><option value="">Choose</option><option value="soon">Not yet, soon</option><option value="yearly">Once or twice a year</option><option value="few">A few times a year</option><option value="monthly">About once a month</option><option value="often">More than once a month</option></select></label>
         <label><span>Anything else <span class="opt">(optional)</span></span><input name="note" maxlength="500" placeholder="What you'd like Tracky to do for you"></label>
         <label class="consent"><input type="checkbox" name="consent" required><span>Email me about testing Tracky. Details in the <a href="/privacy/#testers">Privacy Policy</a>.</span></label>
         <button class="btn primary" type="submit">Ask to test</button>
