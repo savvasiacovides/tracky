@@ -139,7 +139,7 @@ def home():
   {part("looks_stage")}
 </div></section>"""
 
-    plans = f"""<section class="sec plans paper" id="pro" aria-labelledby="plans-h"><div class="wrap">
+    plans = f"""<section class="sec plans" id="pro" aria-labelledby="plans-h"><div class="wrap">
   <div class="sec-head"><h2 id="plans-h">Free to time. Pro to get faster.</h2>
     <p class="lede">Everything you need on track is free: timing, devices, graphs and the Paddock. Tracky Pro adds the coach, CarPlay, your crew live and Tracky Cloud. One payment, kept for good.</p></div>
   <div class="plans-grid">
