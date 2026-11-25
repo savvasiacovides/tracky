@@ -239,3 +239,4 @@ dialog.people::backdrop { background: rgba(0,0,0,.6); }
 .legend .k + * { white-space: nowrap; }
 .legend { display: block; }
 .legend .k + * { white-space: normal; }
+[data-nav] .n:not(:empty) { margin-left: 6px; }
