@@ -198,7 +198,7 @@ def tyres():
     def kind_tyres(u):
         h = guide.kind(u)
         h = h.replace("Figures from each maker unless marked as ours.", "Figures from each maker or the test named.")
-        return h.replace("Prices change, so they are on Amazon.", "Prices change, so they are on ReifenDirekt.de.")
+        return h.replace("Prices change, so they are on Amazon.", "Prices change, so you see them when you tap Buy now.")
     guide.ICON["tyre"] = guide.ICON.get("tyre") or '<svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="17"/><circle cx="24" cy="24" r="7"/></svg>'
     pick = lambda a, t: (f'<fieldset class="axle-pick" data-axle="{a}"{" hidden" if a=="rear" else ""}><legend>{t}</legend>'
         f'<label>Width<select name="{a}-w" required><option value="">Width</option></select></label>'
@@ -215,14 +215,14 @@ def tyres():
     <div class="results" aria-live="polite"></div>
   </section>"""
     guide_page("tyres", "Tyres", "Grip, chosen.",
-               "Nothing you bolt on changes a lap time as much as the tyres. Choose by how you use the car: for each, the one we would buy, set against the alternatives. Tracky shows the difference: put the tyres in your car’s details, then compare a session on the old set with one on the new.",
+               "Nothing you fit to a car changes a lap time as much as its tyres. We group them by how the car is used, name the one we would buy, and set it against its closest rivals. Add the tyres to your car in Tracky and you can compare a session on the old set with one on the new.",
                tyres_data.USES, extra_top=search,
                honest="We have not tested these tyres ourselves. Every figure is the maker’s own or comes from the independent test named beside it. Treadwear (UTQG) is the American wear grade: higher lasts longer, and it is only comparable within one maker’s range.",
-               rules='<div><b>By use, not by brand</b><p>The right tyre depends on how often you are on track, whether you drive there, and how often it rains.</p></div>'
-                     '<div><b>Tests, not hype</b><p>Our picks follow independent tests and what each maker says the tyre is for. We name the test beside every result.</p></div>'
-                     '<div><b>Partner links</b><p>ReifenDirekt.de links earn Tracky a small commission, at no cost to you, whichever tyre you choose.</p></div>',
+               rules='<div><b>Chosen by use</b><p>The right tyre depends on how often you are on track, whether you drive there, and how often it rains.</p></div>'
+                     '<div><b>Backed by tests</b><p>Every pick follows independent testing and what the maker built the tyre for. Each result names its source.</p></div>'
+                     '<div><b>Partner links</b><p>Buy now takes you to our tyre partner. Tracky earns a small commission at no cost to you, whichever tyre you choose.</p></div>',
                head_title="Tracky – Tyres for track days, compared by use",
-               desc="The best track-day tyres compared by how you use the car: fast road car, road-legal track tyres, 200-treadwear semi-slicks and dry-day track cars.",
+               desc="The best track-day tyres, compared by how the car is used: road and track, regular track days, the 200-treadwear class and dedicated track cars.",
                path="/tyres/", kind_fn=kind_tyres, js=("/account/config.js", "/tyres/search.js"))
 
 

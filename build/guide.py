@@ -167,7 +167,7 @@ def col(k, name, idx, side, hidden):
     if p:
         pc = "".join(f'<li class="p">{e(x)}</li>' for x in p["pros"]) + "".join(f'<li class="c">{e(x)}</li>' for x in p["cons"])
         out.append(f'<ul class="pc c-row {side}" data-c="{idx}"{h}>{pc}</ul>')
-        if p.get("url"): buy = link(p["url"], "See price", "button" + (" quiet" if side=="b" else ""), "on ReifenDirekt.de")
+        if p.get("url"): buy = link(p["url"], "Buy now", "button" + (" quiet" if side=="b" else ""))
         elif p.get("asin"): buy = link(p["asin"], "See price on Amazon", "button" + (" quiet" if side=="b" else ""))
         else: buy = f'<span class="free">{e(p.get("nobuy", "Not sold by our partners"))}</span>'
         out.append(f'<div class="c-buy {side}" data-c="{idx}"{h}>{buy}</div>')
@@ -188,7 +188,7 @@ def duel(k):
     return (f'<div class="duel" data-pick="{pk}"><div class="vs"><span class="me">Our pick</span><span class="vs-word">vs</span>'
             f'<div class="chips" role="tablist" aria-label="Compare our pick with">{chips}</div></div>'
             f'<div class="grid">{"".join(cells)}</div>'
-            f'<p class="src">Figures from each maker unless marked as ours. Purple: best in the row. Prices change, so they are on {"ReifenDirekt.de" if k["id"]=="tyres" else "Amazon"}.</p></div>')
+            f'<p class="src">Figures from each maker unless marked as ours. Purple: best in the row. {"Prices change, so you see them when you tap Buy now." if k["id"]=="tyres" else "Prices change, so they are on Amazon."}</p></div>')
 
 def kind(k):
     head, rest = k["verdict"][0]

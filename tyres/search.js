@@ -4,7 +4,7 @@
 // 24 November 2026 that we may use them); each tyre card on the page shows its model's photo too.
 (function () {
   var SHOW_PHOTOS = true;
-  var USE = { road: "Fast road car", trackdays: "Road-legal track tyre", budget: "200-treadwear semi-slick", trackcar: "Track car, dry days" };
+  var USE = { road: "Road & track", trackdays: "Track days", budget: "200TW class", trackcar: "Track car" };
   var ORDER = ["trackdays", "road", "trackcar", "budget"];
   var box = document.getElementById("size-search");
   if (!box || !window.TRACKY_ACCOUNTS) return;
@@ -98,37 +98,41 @@
     }).catch(function () { box.hidden = true; });
   }
 
-  function pick(rows, size) {
+  // near: the same height and diameter, 10 mm wider or narrower (owner, 25 Nov: drivers may take a slightly different size).
+  function pick(rows, size, near) {
     var by = {};
     rows.forEach(function (o) {
-      if (o.width !== size.w || o.aspect !== size.a || o.rim !== size.r) return;
+      if (o.aspect !== size.a || o.rim !== size.r) return;
+      if (near ? Math.abs(o.width - size.w) !== 10 : o.width !== size.w) return;
       var cur = by[o.model];
       if (!cur || (o.in_stock && !cur.in_stock) || (o.in_stock === cur.in_stock && (o.price || 1e9) < (cur.price || 1e9))) by[o.model] = o;
     });
     return by;
   }
 
-  function axle(label, o) {
+  function axle(label, o, want) {
     var row = el("div", "axle");
     row.appendChild(el("span", "k", label));
     row.appendChild(el("b", null, o.size + (o.load_speed ? " " + o.load_speed : "")));
+    if (want && o.width !== want.w) row.appendChild(el("span", "near", (o.width > want.w ? "10 mm wider" : "10 mm narrower") + " than " + want.label));
     row.appendChild(el("span", "p", money(o)));
     if (!o.in_stock) row.appendChild(el("span", "stock", "Not in stock right now"));
-    var a = el("a", "button quiet", "See on ReifenDirekt.de"); a.href = o.link; a.rel = "sponsored noopener"; a.target = "_blank";
+    var a = el("a", "button quiet", "Buy now"); a.href = o.link; a.rel = "sponsored noopener"; a.target = "_blank";
     row.appendChild(a);
     return row;
   }
 
+  var want = {};
   function card(f, r) {
     var o = f || r, c = el("article", "result");
     if (SHOW_PHOTOS && o.image) { var img = el("img"); img.src = o.image; img.alt = o.brand + " " + o.name; img.loading = "lazy"; c.appendChild(img); }
     c.appendChild(el("span", "tag", USE[o.use] || ""));
     c.appendChild(el("h3", null, o.brand + " " + o.name));
     var more = document.getElementById(o.use);
-    if (f && r) { c.appendChild(axle("Front", f)); c.appendChild(axle("Rear", r)); }
-    else if (f && !split.checked) c.appendChild(axle("All four", f));
-    else if (f) c.appendChild(axle("Front", f));
-    else c.appendChild(axle("Rear", r));
+    if (f && r) { c.appendChild(axle("Front", f, want.f)); c.appendChild(axle("Rear", r, want.r)); }
+    else if (f && !split.checked) c.appendChild(axle("All four", f, want.f));
+    else if (f) c.appendChild(axle("Front", f, want.f));
+    else c.appendChild(axle("Rear", r, want.r));
     if (more) { var m = el("a", "why", "Why this tyre"); m.href = "#" + o.use; c.appendChild(m); }
     return c;
   }
@@ -142,27 +146,32 @@
     out.appendChild(el("p", "note", "Looking…"));
     load().then(function (rows) {
       out.textContent = "";
+      want = { f: fs, r: rs };
       var F = pick(rows, fs), R = rs ? pick(rows, rs) : null;
-      var both = [], one = [];
-      Object.keys(F).concat(R ? Object.keys(R) : []).forEach(function (k, i, all) {
-        if (all.indexOf(k) !== i) return;
-        if (!R) both.push([F[k], null]);
-        else if (F[k] && R[k]) both.push([F[k], R[k]]);
-        else one.push([F[k] || null, R[k] || null]);
-      });
+      var NF = pick(rows, fs, true), NR = rs ? pick(rows, rs, true) : null;
+      var both = [], close = [], one = [], seen = {};
+      [F, R || {}, NF, NR || {}].forEach(function (m) { Object.keys(m).forEach(function (k) {
+        if (seen[k]) return; seen[k] = 1;
+        var f = F[k], r = R ? R[k] : null;
+        if (f && (!R || r)) { both.push([f, r]); return; }
+        var nf = f || NF[k], nr = R ? (r || NR[k]) : null;
+        if (nf && (!R || nr)) close.push([nf, nr]);
+        else if (f || r) one.push([f || null, r || null]);
+      }); });
       var rank = function (p) { return ORDER.indexOf((p[0] || p[1]).use); };
       both.sort(function (a, b) { return rank(a) - rank(b); });
+      close.sort(function (a, b) { return rank(a) - rank(b); });
       var title = rs ? fs.label + " front, " + rs.label + " rear" : fs.label;
-      if (!both.length) out.appendChild(el("p", "note", "None of the track tyres on this page comes in " + title + " at ReifenDirekt.de right now."));
-      else {
-        out.appendChild(el("p", "count", both.length + (both.length === 1 ? " track tyre" : " track tyres") + " in " + title));
-        var g = el("div", "grid"); both.forEach(function (p) { g.appendChild(card(p[0], p[1])); }); out.appendChild(g);
+      var grid = function (list) { var g = el("div", "grid"); list.forEach(function (p) { g.appendChild(card(p[0], p[1])); }); out.appendChild(g); };
+      if (!both.length) out.appendChild(el("p", "note", "None of the track tyres on this page comes in " + title + " right now."));
+      else { out.appendChild(el("p", "count", both.length + (both.length === 1 ? " track tyre" : " track tyres") + " in " + title)); grid(both); }
+      if (close.length) {
+        out.appendChild(el("p", "count", "10 mm from your size"));
+        out.appendChild(el("p", "src", "Same height and diameter, 10 mm wider or narrower. A different width changes the tyre slightly: check the sizes approved for your car before you buy."));
+        grid(close);
       }
-      if (one.length) {
-        out.appendChild(el("p", "count", "Only in one of your sizes"));
-        var g2 = el("div", "grid"); one.forEach(function (p) { g2.appendChild(card(p[0], p[1])); }); out.appendChild(g2);
-      }
-      out.appendChild(el("p", "src", "Sizes, stock and prices from ReifenDirekt.de, updated every night. Check the load index and speed rating your car needs."));
+      if (one.length) { out.appendChild(el("p", "count", "Only in one of your sizes")); grid(one); }
+      out.appendChild(el("p", "src", "Sizes, stock and prices from our tyre partner, updated every night. Check the load index and speed rating your car needs. Buy now links earn Tracky a small commission, at no cost to you."));
     }).catch(function () { out.textContent = ""; out.appendChild(el("p", "note", "The size search isn’t available right now. The tyres below link to every size.")); });
   });
 

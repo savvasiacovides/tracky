@@ -1,7 +1,7 @@
 """Track-day tyres by use: our pick against the alternatives. Every figure is the maker's own or from the test named beside it.
 Line-up approved by the owner 25 Nov 2026 ("we need the elite tyres", "we need top tyres")."""
 
-NOT_RD = "Not sold by ReifenDirekt.de"
+NOT_RD = "Not available from our partner"
 
 def P(name, brand, path, badge, forwho, status, pros, cons, top=False):
     d = dict(name=name, brand=brand, url=("RD:" + path) if path else None, badge=badge, forwho=forwho, status=("", status), facts=[], pros=pros, cons=cons, top=top)
@@ -30,8 +30,8 @@ RD = {
 }
 
 USES = [
- dict(id="road", nav="Road car", icon="tyre", wrap=True, title="A fast road car with track days",
-  why="You drive to work on them, in the rain, all year round, and take the car to a circuit a few times a season. You need the best road tyre there is, one that copes with a hot lap.",
+ dict(id="road", nav="Road & track", icon="tyre", wrap=True, title="Road first, circuit ready",
+  why="Your everyday car, wet roads included, with a few circuit days a season. The finest road tyres made, chosen for how well they hold up over a hot lap.",
   verdict=[("Our pick: Bridgestone Potenza Sport Evo.", "It won sport auto’s 2026 summer tyre test, came second in Tyre Reviews’ 2026 performance tyre test and had the shortest dry braking in ACE’s 2026 test. It is also made in 17 inch sizes for smaller cars. The Pirelli P Zero R beat it in Tyre Reviews’ test, best in the dry and quickest in the wet, but Pirelli makes it for sports cars and supercars on 19 inch wheels and up. The Michelin Pilot Sport 4S won ACE’s 2026 test and is the long-standing favourite, with a 300 treadwear grade.")],
   prods=[
    P("Bridgestone Potenza Sport Evo", "Bridgestone", RD["pse"], "Our pick", "For a fast road car of any size that does track days", "Road, with track grip",
@@ -50,8 +50,8 @@ USES = [
   ]),
   own="<b>Why not a track tyre?</b> A semi-slick wears fast on the road and has far less grip in the rain. If the car is your daily driver, a tyre from this group is the safer choice."),
 
- dict(id="trackdays", nav="Track days", icon="tyre", wrap=True, title="Road-legal track tyres, driven to the circuit",
-  why="You do a track day most months in a hot hatch, a GT car or a supercar, and drive there and back. These are the fastest tyres that are still legal on the road: far more grip on a dry track, less tread and much less grip in the rain.",
+ dict(id="trackdays", nav="Track days", icon="tyre", wrap=True, title="Built for the circuit, legal on the road",
+  why="Regular track days, driven to the circuit and home again. The most dry grip a road-legal tyre can offer, paid for in tread life and wet-weather grip.",
   verdict=[("Our pick: Pirelli P Zero Trofeo RS.", "It won Auto Bild’s 2026 track-day tyre test on a BMW M2 and Tyre Reviews’ test of the fastest track tyres, where it set the fastest dry lap. The Michelin Pilot Sport Cup 2 R came second in that Tyre Reviews test and is fitted at the factory by Porsche, Ferrari and AMG. The Goodyear Eagle F1 SuperCar 3R is Goodyear’s most track-focused road-legal tyre, with a 100 treadwear grade, sold in Europe in 20 inch sizes. The Bridgestone Potenza Race stopped shortest in the wet in Tyre Reviews’ test, so it is the one for damp days.")],
   prods=[
    P("Pirelli P Zero Trofeo RS", "Pirelli", RD["trs"], "Our pick", "For the fastest road-legal track days", "Road legal, made for the track",
@@ -73,9 +73,9 @@ USES = [
   ]),
   own="<b>On a semi-slick,</b> drive the first laps gently while the tyres warm up, set the pressures when they are hot, and take it easy on wet roads on the way home. Check the tread after every track day."),
 
- dict(id="budget", nav="200 treadwear", icon="tyre", wrap=True, title="200-treadwear semi-slicks",
-  why="An MX-5, a GR86, a Civic, or any car in a class that only allows tyres with a treadwear of 200 or more. These are the fastest tyres of that kind: road legal, and close to a track tyre in the dry.",
-  verdict=[("Our pick: Yokohama Advan A052.", "It is the all-rounder of the group, with the second-fastest wet lap in Tire Rack’s 2025 track test, and the only one of the four that ReifenDirekt.de sells. In the dry the others were quicker in the 2025 and 2026 tests. The Vitour Tempesta P1 came second in Auto Bild’s 2026 track-day test and braked shortest in Tire Rack’s 2025 test. The Nankang Sportnex CR-S came third in Auto Bild’s test and was the fastest when worn in Grassroots Motorsports’ 2026 long-term test. The Bridgestone Potenza RE-71RS was best in four of five measures in Tire Rack’s 2025 test, wet included, but we could not find it on sale in Europe.")],
+ dict(id="budget", nav="200TW class", icon="tyre", wrap=True, title="The 200-treadwear class",
+  why="Many club series and time-attack classes require a treadwear rating of 200 or more. These are the quickest tyres that qualify: road legal, and close to a full track tyre in the dry.",
+  verdict=[("Our pick: Yokohama Advan A052.", "It is the all-rounder of the group, with the second-fastest wet lap in Tire Rack’s 2025 track test, and the only one of the four you can buy through Tracky. In the dry the others were quicker in the 2025 and 2026 tests. The Vitour Tempesta P1 came second in Auto Bild’s 2026 track-day test and braked shortest in Tire Rack’s 2025 test. The Nankang Sportnex CR-S came third in Auto Bild’s test and was the fastest when worn in Grassroots Motorsports’ 2026 long-term test. The Bridgestone Potenza RE-71RS was best in four of five measures in Tire Rack’s 2025 test, wet included, but we could not find it on sale in Europe.")],
   prods=[
    P("Yokohama Advan A052", "Yokohama", RD["a052"], "Our pick", "For 200-treadwear classes, wet or dry", "Road legal, made for the track",
      ["Second-fastest wet lap, Tire Rack 2025", "Treadwear 200 (UTQG)"], ["Slower in the dry than the others in 2025 and 2026 tests"], top=True),
@@ -96,12 +96,12 @@ USES = [
   ]),
   own="<b>Racing in a class?</b> Check its rules before you buy: many club series set a minimum treadwear, and some list the tyres they allow."),
 
- dict(id="trackcar", nav="Track car", icon="tyre", wrap=True, title="A track car on dry days",
-  why="The car mostly lives at the circuit and you pick your days. These are 100-treadwear semi-slicks: the fastest tyres you can still drive on the road, and the least forgiving in the wet or when cold.",
+ dict(id="trackcar", nav="Track car", icon="tyre", wrap=True, title="Dedicated track cars",
+  why="A car that lives at the circuit and runs on dry days. These 100-treadwear semi-slicks are the quickest tyres you can still use on the road, and the least forgiving when it is cold or wet.",
   verdict=[("Our pick: Nankang AR-1.", "It is a 100-treadwear semi-slick that is still E-marked for the road and on the MSUK List 1B for UK club racing, made in sizes from 13 to 20 inch. The Toyo Proxes R888R is the other 100-treadwear classic, also from 13 inch. The Michelin Pilot Sport Cup 2 R is the road-legal choice for bigger, faster cars, made by Michelin for intense track use.")],
   prods=[
    P("Nankang AR-1", "Nankang", RD["ar1"], "Our pick", "For light track cars on dry days", "Road legal semi-slick",
-     ["Treadwear 100, semi-slick compound", "E-marked and MSUK List 1B"], ["Made for dry tracks", "Few sizes at ReifenDirekt.de"], top=True),
+     ["Treadwear 100, semi-slick compound", "E-marked and MSUK List 1B"], ["Made for dry tracks", "Few sizes available through Tracky"], top=True),
    P("Toyo Proxes R888R", "Toyo", RD["r888r"], "The classic", "For track cars on small wheels", "Road legal semi-slick",
      ["Road legal, Toyo says", "Sizes from 13 inch"], ["Treadwear 100: wears fastest", "Much less grip in the rain"]),
    P("Michelin Pilot Sport Cup 2 R", "Michelin", RD["cup2r"], "Bigger cars", "For fast cars on big wheels", "Road legal, made for the track",
