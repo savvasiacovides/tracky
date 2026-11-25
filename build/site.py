@@ -102,29 +102,15 @@ def lap_path():
 
 
 def home():
-    d, sf, (sx, sy) = lap_path()
     tour = part("tour_grid")
-    hero = f"""<section class="hero" aria-labelledby="hero-h"><div class="wrap hero-grid">
-  <div class="hero-copy">
-    <h1 class="display" id="hero-h"><span>Press START.</span> <span>The laps time</span> <span>themselves.</span></h1>
-    <p class="lede">Tracky is the lap timer for track days, on iPhone. It times every lap and sector, records the car's engine, your heart rate and video, and shows you where the time went.</p>
-    <div class="cta"><a class="btn primary" href="#join">Join the test</a><a class="btn" href="#app">See the app</a></div>
-    <ul class="facts"><li>Finds the track by itself</li><li>GPS, OBD, GoPro, heart rate</li><li>Free to time</li></ul>
+    hero = f"""<section class="hero" aria-labelledby="hero-h"><div class="wrap hero-stack">
+  <h1 class="mega" id="hero-h"><img src="/assets/icon-512.png" alt="" width="512" height="512"><span>Tracky</span></h1>
+  <div class="stage">{part("hero_phone")}</div>
+  <div class="pitch">
+    <p class="tagline">The lap timer for track days.</p>
+    <p class="lede">On iPhone. Press START and every lap times itself.</p>
+    <div class="cta"><a class="btn primary" href="#join">Become a tester</a><a class="btn" href="#app">See the app</a></div>
   </div>
-  <figure class="lap scene" aria-labelledby="lap-cap">
-    <svg class="circuit" viewBox="20 0 360 404" role="img" aria-label="Outline of Achna Speedway with a car lapping it">
-      <path class="casing" d="{d}"/><path class="surface" d="{d}"/><path class="racing" d="{d}"/>{sf}
-      <circle class="car" r="9" cx="{sx:.1f}" cy="{sy:.1f}" data-dot/>
-    </svg>
-    <div class="tower" aria-hidden="true">
-      <div class="lapclock"><span>Lap</span><b data-f="lap">0:00.00</b></div>
-      <div class="gap" data-gapcls><span>Gap to best</span><b data-f="gap">0.00</b></div>
-      <div><span>Speed</span><b><i data-f="speed">0</i><small>km/h</small></b></div>
-      <div><span>Gear</span><b data-f="gear">3</b></div>
-      <div><span>Revs</span><b data-f="rpm">0</b></div>
-    </div>
-    <figcaption id="lap-cap">A real lap, replayed: Achna Speedway in Cyprus, 1:11.572, with the car's own speed, gear and revs.</figcaption>
-  </figure>
 </div></section>"""
 
     app = f"""<section class="sec app-sec on-dark" id="app" aria-labelledby="app-h"><div class="wrap">

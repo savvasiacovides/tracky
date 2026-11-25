@@ -86,19 +86,19 @@ USES = [
 
  dict(id="trackcar", nav="Track car", icon="tyre", wrap=True, title="A track car on dry days",
   why="The car mostly lives at the circuit and you pick your days. These are the most extreme road-legal tyres: the fastest on a dry track, and the least forgiving in the wet or when cold.",
-  verdict=[("Our pick: Michelin Pilot Sport Cup 2 R.", "Michelin makes it for intense track use and it beat the Goodyear Eagle F1 SuperSport RS and the Pirelli P Zero Trofeo R in Tyre Reviews’ 2020 head-to-head. The SuperSport RS had the sharpest steering in that test. The Dunlop Sport Maxx Race 2 was developed with Porsche for the 911 GT3 and is approved for the 718 Cayman GT4 and GT4 RS in 245/35 R20 and 295/30 R20.")],
+  verdict=[("Our pick: Michelin Pilot Sport Cup 2 R.", "Michelin makes it for intense track use and it beat the Goodyear Eagle F1 SuperSport RS and the Pirelli P Zero Trofeo R in Tyre Reviews’ 2020 head-to-head. The SuperSport RS had the sharpest steering in that test. The Dunlop Sport Maxx Race 2 was developed with Porsche for the 911 GT3.")],
   prods=[
    P("Michelin Pilot Sport Cup 2 R", "Michelin", RD["cup2r"], "Our pick", "For the fastest dry laps on road-legal tyres", "Mostly track, road legal",
      ["Michelin: made for intense track use", "Won Tyre Reviews’ 2020 head-to-head"], ["Needs a warm-up before it grips", "Made for a dry track only"], top=True),
    P("Goodyear Eagle F1 SuperSport RS", "Goodyear", RD["f1ssrs"], "Sharpest steering", "For drivers who want feel through the wheel", "Mostly track, road legal",
      ["Goodyear’s most race-focused tyre", "Best steering precision in the 2020 test"], ["Made for dry surfaces"]),
    P("Dunlop Sport Maxx Race 2", "Dunlop", RD["smr2"], "Porsche GT", "For Porsche GT cars and others on its sizes", "Mostly track, road legal",
-     ["Fitted by Porsche to the 911 GT3, GT3 RS and GT2 RS", "Approved for the 718 Cayman GT4 RS"], ["Made for dry surfaces"]),
+     ["Fitted by Porsche to the 911 GT3, GT3 RS and GT2 RS"], ["Made for dry surfaces"]),
   ],
   table=dict(cols=["Pilot Sport Cup 2 R", "Eagle F1 SuperSport RS", "Sport Maxx Race 2"], pick=0,
    names=["Michelin Pilot Sport Cup 2 R", "Goodyear Eagle F1 SuperSport RS", "Dunlop Sport Maxx Race 2"], rows=[
    ("Made for", ["Intense track use", "Track, road legal", "Dry track, road legal"], []),
-   ("Fitted at the factory to", ["Porsche, Ferrari, AMG, Koenigsegg", "Porsche 911 GT2 RS", "Porsche 911 GT3, GT3 RS, GT2 RS, 718 GT4 RS"], []),
+   ("Fitted at the factory to", ["Porsche, Ferrari, AMG, Koenigsegg", "Porsche 911 GT2 RS", "Porsche 911 GT3, GT3 RS, GT2 RS"], []),
    ("Rain", ["Dry track only", "Dry surfaces", "Dry surfaces"], []),
    ("Tyre Reviews 2020", ["1st of 3", "2nd of 3", "Not in that test"], [0]),
    ("Price", ["RD:" + RD["cup2r"], "RD:" + RD["f1ssrs"], "RD:" + RD["smr2"]], []),

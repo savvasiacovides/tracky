@@ -314,24 +314,118 @@
     });
     return n;
   }
+  // Achievements: ladders that move with the driver. Each card shows the level reached and the next
+  // target, worked out from the synced sessions (the app's own laps and sectors); nothing estimated.
+  function ladder(value, tiers, lowerIsBetter) {
+    var reached = tiers.filter(function (x) { return lowerIsBetter ? value != null && value <= x : value >= x; });
+    var next = tiers.find(function (x) { return lowerIsBetter ? value == null || value > x : value < x; });
+    var prev = reached.length ? reached[reached.length - 1] : null;
+    var p = 0;
+    if (next == null) p = 1;
+    else if (lowerIsBetter) { var from = prev == null ? Math.max(next * 2, value || 0) : prev; p = value == null ? 0 : (from - value) / (from - next); }
+    else { var base = prev || 0; p = (value - base) / (next - base); }
+    return { level: reached.length, of: tiers.length, next: next, p: Math.max(0, Math.min(1, p)) };
+  }
+  function sec(ms) { return (ms / 1000).toFixed(ms < 1000 ? 3 : 2) + " s"; }
+  function byDate() { return data.sessions.slice().sort(function (a, b) { return (a.startedAt || 0) - (b.startedAt || 0); }); }
+  function validLaps(s) { return s.laps.filter(function (l) { return !l.invalid && l.ms > 0; }).sort(function (a, b) { return a.number - b.number; }); }
+  function pbCount() {
+    // Times a session set a new best lap at its track (in date order).
+    var best = {}, n = 0;
+    byDate().forEach(function (s) {
+      if (!s.track || !s.bestMs) return;
+      if (best[s.track] == null || s.bestMs < best[s.track]) { if (best[s.track] != null) n++; best[s.track] = s.bestMs; }
+    });
+    return n;
+  }
+  // The next whole second below the best lap at each track; the closest one is the target.
+  function barriers() {
+    var best = {}, broken = 0;
+    byDate().forEach(function (s) {
+      if (!s.track || !s.bestMs) return;
+      var old = best[s.track];
+      if (old == null || s.bestMs < old) {
+        if (old != null && Math.floor(s.bestMs / 1000) < Math.floor(old / 1000)) broken++;
+        best[s.track] = s.bestMs;
+      }
+    });
+    var target = null;
+    Object.keys(best).forEach(function (track) {
+      var b = best[track], line = Math.ceil(b / 1000) * 1000 - 1000;
+      if (line === b) line -= 1000;
+      var gapMs = b - line;
+      if (!target || gapMs < target.gap) target = { track: track, best: b, line: line, gap: gapMs };
+    });
+    return { broken: broken, target: target };
+  }
+  // Tightest run of three laps in a row (max minus min), across all sessions.
+  function consistency() {
+    var bestRun = null;
+    data.sessions.forEach(function (s) {
+      var v = validLaps(s);
+      for (var i = 0; i + 2 < v.length; i++) {
+        if (v[i + 1].number !== v[i].number + 1 || v[i + 2].number !== v[i].number + 2) continue;
+        var t = [v[i].ms, v[i + 1].ms, v[i + 2].ms], spread = Math.max.apply(null, t) - Math.min.apply(null, t);
+        if (!bestRun || spread < bestRun.spread) bestRun = { spread: spread, s: s };
+      }
+    });
+    return bestRun;
+  }
+  // How close a session's best lap came to its best sectors put together.
+  function idealGap() {
+    var out = null;
+    data.sessions.forEach(function (s) {
+      var v = validLaps(s).filter(function (l) { return l.sectors && l.sectors.length; });
+      if (v.length < 2 || !s.bestMs) return;
+      var n = v[0].sectors.length, ideal = 0;
+      for (var k = 0; k < n; k++) {
+        var m = Math.min.apply(null, v.map(function (l) { return l.sectors[k] == null ? Infinity : l.sectors[k]; }));
+        if (!isFinite(m)) return; ideal += m;
+      }
+      var g = s.bestMs - ideal;
+      if (g >= 0 && (!out || g < out.gap)) out = { gap: g, s: s };
+    });
+    return out;
+  }
   function drawAchievements(t) {
-    var list = [
-      ["First session", "Record or sync a session", t.sessions, 1],
-      ["Ten sessions", "Ten sessions in your account", t.sessions, 10],
-      ["100 laps", "One hundred timed laps", t.laps, 100],
-      ["1,000 laps", "One thousand timed laps", t.laps, 1000],
-      ["1,000 km", "A thousand kilometres on track", Math.floor(t.distance / 1000), 1000],
-      ["Explorer", "Laps at five different tracks", t.trackCount, 5],
-      ["Getting faster", "Beat your best lap at a track", pbCount(), 1],
-      ["Ten track days", "Sessions on ten different days", t.dayCount, 10]
-    ];
+    var km1 = Math.floor(t.distance / 1000), bar = barriers(), run = consistency(), ideal = idealGap(), pbs = pbCount();
+    function where(s) { return [s.track, day(s.startedAt)].filter(Boolean).join(", "); }
+    var cards = [];
+    var L = ladder(t.laps, [10, 50, 100, 250, 500, 1000, 2500, 5000]);
+    cards.push(["Lap counter", t.laps.toLocaleString("en-GB") + " timed laps", L, L.next ? "Next: " + L.next.toLocaleString("en-GB") + " laps" : "Top level"]);
+    var D = ladder(km1, [100, 250, 500, 1000, 2500, 5000, 10000]);
+    cards.push(["Distance", km1.toLocaleString("en-GB") + " km on track", D, D.next ? "Next: " + D.next.toLocaleString("en-GB") + " km" : "Top level"]);
+    var T = ladder(t.dayCount, [1, 3, 5, 10, 25, 50, 100]);
+    cards.push(["Track days", t.dayCount + (t.dayCount === 1 ? " day" : " days") + " on track", T, T.next ? "Next: " + T.next + " days" : "Top level"]);
+    var E = ladder(t.trackCount, [1, 3, 5, 10, 20]);
+    cards.push(["Explorer", t.trackCount + (t.trackCount === 1 ? " track" : " tracks") + " driven", E, E.next ? "Next: " + E.next + " tracks" : "Top level"]);
+    var P = ladder(pbs, [1, 3, 5, 10, 25, 50]);
+    cards.push(["Personal bests", pbs + " new best " + (pbs === 1 ? "lap" : "laps") + " at a track", P, P.next ? "Next: " + P.next + " personal bests" : "Top level"]);
+    if (bar.target) {
+      var B = { level: bar.broken, of: null, next: true, p: Math.max(0, Math.min(1, 1 - bar.target.gap / 1000)) };
+      cards.push(["Barrier breaker", bar.target.track + ": " + lap(bar.target.best), B,
+        "Next: break " + lap(bar.target.line).replace(/\.000$/, "") + ", " + sec(bar.target.gap) + " to find", bar.broken + " broken so far"]);
+    } else cards.push(["Barrier breaker", "Set a best lap at a track", { level: 0, of: null, next: true, p: 0 }, "Next: your first best lap"]);
+    var C = ladder(run ? run.spread : null, [1500, 1000, 500, 300, 200, 100], true);
+    cards.push(["Consistency", run ? "3 laps in a row within " + sec(run.spread) + " (" + where(run.s) + ")" : "Drive three laps in a row", C,
+      C.next ? "Next: within " + sec(C.next) : "Top level"]);
+    var I = ladder(ideal ? ideal.gap : null, [1000, 500, 250, 100, 50], true);
+    cards.push(["Ideal lap", ideal ? (ideal.gap < 1 ? "Best lap matched your best sectors" : "Best lap " + sec(ideal.gap) + " off your best sectors") + " (" + where(ideal.s) + ")" : "Drive a session with sectors", I,
+      I.next ? "Next: within " + sec(I.next) : "Top level"]);
+
     var ul = $("achieve"); ul.textContent = "";
-    list.forEach(function (a) {
-      var done = a[2] >= a[3], li = el("li", done ? "done" : "");
-      li.appendChild(el("b", null, a[0]));
-      li.appendChild(el("span", null, a[1]));
-      var bar = el("i"); bar.style.setProperty("--p", Math.min(1, a[2] / a[3]).toFixed(3)); li.appendChild(bar);
-      li.appendChild(el("small", null, done ? "Done" : Math.min(a[2], a[3]).toLocaleString("en-GB") + " of " + a[3].toLocaleString("en-GB")));
+    cards.forEach(function (c) {
+      var lv = c[2], li = el("li", lv.next ? "" : "done");
+      var head = el("div", "ah"); head.appendChild(el("b", null, c[0]));
+      if (lv.of) {
+        var pips = el("span", "pips"); pips.setAttribute("aria-label", "Level " + lv.level + " of " + lv.of);
+        for (var k = 0; k < lv.of; k++) pips.appendChild(el("i", k < lv.level ? "on" : ""));
+        head.appendChild(pips);
+      } else if (c[4]) head.appendChild(el("span", "count", c[4]));
+      li.appendChild(head);
+      li.appendChild(el("span", "now", c[1]));
+      var meter = el("i", "meter"); meter.style.setProperty("--p", lv.p.toFixed(3)); li.appendChild(meter);
+      li.appendChild(el("small", null, c[3]));
       ul.appendChild(li);
     });
   }

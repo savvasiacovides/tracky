@@ -1,21 +1,21 @@
 /* trackyapp.eu, rebuilt 25 November 2026.
-   Night asphalt and the pit wall, the app's lime used the way a race engineer uses a highlighter on a
+   The app icon's night blue and its lime track line, the lime used the way a race engineer uses a highlighter on a
    timing printout, and the timing colours (purple fastest, green improving) only where they mean
    something. Dark throughout, like the app (the owner does not want light backgrounds). One family, Archivo, at two widths: condensed for headlines and figures (trackside
    boards and timing towers are condensed), normal for reading. */
 
 :root {
-  --bg: #0e1013;        /* asphalt at night */
-  --panel: #171a1e;     /* the pit wall */
-  --text: #eef0ec;
-  --text-2: #a1a9b0;
-  --hair: #2c3137;
-  --ink-on: #0e1013;    /* text on lime */
-  --tarmac: #171a1e;
-  --tarmac-2: #20242a;
-  --tarmac-3: #2c3137;
-  --on-dark: #eef0ec;
-  --on-dark-2: #9aa2a9;
+  --bg: #060d1a;        /* the app icon's night */
+  --panel: #0d1729;     /* raised surfaces, as in the app */
+  --text: #f2f5f8;
+  --text-2: #93a0b4;
+  --hair: #1d2a40;
+  --ink-on: #060d1a;    /* text on lime */
+  --tarmac: #0d1729;
+  --tarmac-2: #13213a;
+  --tarmac-3: #1d2a40;
+  --on-dark: #f2f5f8;
+  --on-dark-2: #93a0b4;
   --lime: #d3fa6a;      /* the icon's track line */
   --purple: #a77bff;
   --green: #3fd17a;
@@ -452,3 +452,35 @@ mark, .hl { background: linear-gradient(transparent 12%, var(--lime) 12%, var(--
 .tower { box-shadow: 0 0 0 1px var(--tarmac-3), 0 24px 60px rgba(0,0,0,.5); }
 .circ-sec .circ-strip li { background: var(--panel); }
 .duel .plate.art svg { stroke: none; fill: initial; }
+
+/* ---------- Home: the welcome (kept from the 2026-11 site, owner 25 Nov: "perfect") ---------- */
+.page-home .site .mark { visibility: hidden; }
+.hero { padding: 8px 0 96px; overflow: hidden; }
+.hero-stack { display: flex; flex-direction: column; align-items: center; text-align: center; }
+.hero .mega { display: flex; align-items: center; justify-content: center; gap: .16em; margin: 8px 0 -0.22em; position: relative; z-index: 0;
+  font-stretch: 125%; font-weight: 900; letter-spacing: -0.04em; line-height: .9; font-size: clamp(56px, 15vw, 196px);
+  color: var(--lime); white-space: nowrap; text-shadow: 0 30px 80px rgba(211,250,106,.18); }
+.hero .mega img { width: .82em; height: .82em; border-radius: .19em; flex: none;
+  box-shadow: 0 0 0 2px rgba(211,250,106,.25), 0 24px 60px -12px rgba(211,250,106,.3); }
+.hero .stage { position: relative; z-index: 1; width: 100%; display: grid; place-items: center; }
+.hero .phone.front { width: 320px; text-align: left; }
+.hero .pitch { margin-top: 40px; }
+.hero .tagline { font-size: clamp(30px, 3.8vw, 52px); line-height: 1.05; font-weight: 800; font-stretch: 112%; letter-spacing: -0.02em; margin: 0 0 12px; }
+.hero .lede { margin: 0 auto 28px; }
+.hero .cta { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; margin-top: 0; }
+@media (prefers-reduced-motion: no-preference) {
+  .hero .mega { animation: rise 1s cubic-bezier(.2,.7,.2,1) both; }
+  .hero .phone.front { animation: rise .9s cubic-bezier(.2,.7,.2,1) .1s both; }
+}
+@keyframes rise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+@media (max-width: 640px) { .hero .mega { margin-bottom: 18px; } .hero .phone.front { width: 290px; } }
+
+/* ---------- Titles: trackside marks (owner 25 Nov: titles need a theme, not just bold text) ----------
+   Page titles start under a chequered flag; section titles sit on a kerb. */
+.page-head h1::before, .guide-head h1::before, .prose-head h1::before {
+  content: ""; display: block; width: 112px; height: 16px; margin-bottom: 22px;
+  background: conic-gradient(var(--text) 25%, transparent 0 50%, var(--text) 0 75%, transparent 0) 0 0 / 16px 16px; }
+.sec-head h2::before, .kind > .wrap > h2::before, .prose h2::before, .guide-end h2::before {
+  content: ""; display: block; width: 96px; height: 8px; margin: 0 0 18px 4px; transform: skewX(-24deg);
+  background: repeating-linear-gradient(90deg, var(--lime) 0 16px, transparent 16px 32px); }
+.on-dark .sec-head h2::before { background: repeating-linear-gradient(90deg, var(--lime) 0 16px, transparent 16px 32px); }

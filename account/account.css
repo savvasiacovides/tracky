@@ -94,13 +94,18 @@
 @media (max-width: 980px) { .stats { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 
 .achieve { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr)); gap: 10px; list-style: none; margin: 0; padding: 0; }
-.achieve li { background: var(--tarmac-2); border-radius: 8px; padding: 14px 16px; display: grid; gap: 4px; opacity: .72; }
-.achieve li.done { opacity: 1; box-shadow: inset 0 0 0 1.5px var(--lime); }
+.achieve li { background: var(--tarmac-2); border-radius: 8px; padding: 14px 16px; display: grid; gap: 6px; align-content: start; }
+.achieve li.done { box-shadow: inset 0 0 0 1.5px var(--lime); }
+.achieve .ah { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
 .achieve b { font-stretch: var(--cond); font-size: 22px; font-weight: 800; }
-.achieve span { font-size: 14px; color: var(--on-dark-2); }
-.achieve i { display: block; height: 5px; border-radius: 3px; background: var(--tarmac-3); position: relative; overflow: hidden; margin-top: 6px; }
-.achieve i::after { content: ""; position: absolute; inset: 0; width: calc(var(--p) * 100%); background: var(--lime); }
-.achieve small { font-size: 12px; color: var(--on-dark-2); }
+.achieve .pips { display: flex; gap: 3px; flex: none; }
+.achieve .pips i { width: 7px; height: 7px; border-radius: 50%; background: var(--tarmac-3); }
+.achieve .pips i.on { background: var(--lime); }
+.achieve .count { font-size: 12px; color: var(--lime); font-weight: 700; white-space: nowrap; }
+.achieve .now { font-size: 14px; color: var(--on-dark); line-height: 1.35; }
+.achieve .meter { display: block; height: 5px; border-radius: 3px; background: var(--tarmac-3); position: relative; overflow: hidden; margin-top: 2px; }
+.achieve .meter::after { content: ""; position: absolute; inset: 0; width: calc(var(--p) * 100%); background: var(--lime); }
+.achieve small { font-size: 12.5px; color: var(--on-dark-2); }
 .achieve .done small { color: var(--lime); font-weight: 700; }
 
 .posts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 3px; }
@@ -240,3 +245,9 @@ dialog.people::backdrop { background: rgba(0,0,0,.6); }
 .legend { display: block; }
 .legend .k + * { white-space: normal; }
 [data-nav] .n:not(:empty) { margin-left: 6px; }
+
+/* Titles: chequered flag over page titles, a kerb on section titles (as on the rest of the site) */
+.vh h1::before, .acc-out h1::before { content: ""; display: block; width: 96px; height: 14px; margin-bottom: 18px;
+  background: conic-gradient(var(--on-dark) 25%, transparent 0 50%, var(--on-dark) 0 75%, transparent 0) 0 0 / 14px 14px; }
+.bh::before { content: ""; display: inline-block; width: 40px; height: 6px; margin-right: 12px; vertical-align: .3em; transform: skewX(-24deg);
+  background: repeating-linear-gradient(90deg, var(--lime) 0 10px, transparent 10px 20px); }

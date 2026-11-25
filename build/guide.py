@@ -43,10 +43,10 @@ KINDS = [
 
  dict(id="obd", nav="Engine data", icon="obd", title="OBD reader: see what the engine did",
   why="Your lap tells you where you were slow. The OBD reader tells you why: revs, throttle, speed and temperatures from the car itself, on the same graph as every lap.",
-  verdict=[("Our pick: OBDLink MX+.", "It is the reader we use in our own cars. In our Porsche GT4 RS it delivered about 30 rev readings a second. It also reads more of a car’s networks than the others here. If you want to spend less, the Carista OBD works with Tracky and is a fraction of the price. The OBDLink CX suits BMW and MINI owners who also code their car with BimmerCode.")],
+  verdict=[("Our pick: OBDLink MX+.", "It is the reader we use in our own cars. In our own car it delivered about 30 rev readings a second. It also reads more of a car’s networks than the others here. If you want to spend less, the Carista OBD works with Tracky and is a fraction of the price. The OBDLink CX suits BMW and MINI owners who also code their car with BimmerCode.")],
   prods=[
    dict(name="OBDLink MX+", brand="OBDLink", asin="B07JFRFJG6", badge="Our pick", top=True, forwho="For the fastest engine data",
-        status=("yes","Tested with Tracky in our cars"), facts=[("~30 / s","rev readings in our GT4 RS"),("STN2255","chip, faster than ELM327"),("MS-CAN, SW-CAN","extra networks"),("Classic","Bluetooth, made for iPhone")],
+        status=("yes","Tested with Tracky in our cars"), facts=[("~30 / s","rev readings in our car"),("STN2255","chip, faster than ELM327"),("MS-CAN, SW-CAN","extra networks"),("Classic","Bluetooth, made for iPhone")],
         pros=["The quickest data we have measured","Also reads MS-CAN and SW-CAN networks"], cons=["The most expensive here"]),
    dict(name="Carista OBD", brand="Carista", asin="B0BBS73F6J", badge="Best value", forwho="For engine data on a budget",
         status=("yes","Tested with Tracky"), facts=[("Bluetooth LE","connects to iPhone"),("ELM327","v1.4 command set"),("Diagnostics","in Carista’s own app")],
@@ -58,7 +58,7 @@ KINDS = [
   table=dict(cols=["OBDLink MX+","Carista OBD","OBDLink CX"], pick=0, rows=[
    ("Connection",["Classic Bluetooth","Bluetooth LE","Bluetooth LE 5.1"],[]),
    ("Car coverage",["All OBD-II, plus MS-CAN and SW-CAN","OBD-II","HS-CAN only"],[0]),
-   ("Data rate with Tracky",["~30 rev readings / s (our GT4 RS)","Not measured yet","Not measured yet"],[0]),
+   ("Data rate with Tracky",["~30 rev readings / s (our car)","Not measured yet","Not measured yet"],[0]),
    ("Tested with Tracky",["Yes","Yes","Not yet"],[0,1]),
    ("Price",["AMZ:B07JFRFJG6","AMZ:B0BBS73F6J","AMZ:B08NFLL3NT"],[]),
   ]),
