@@ -657,3 +657,8 @@ mark, .hl { background: linear-gradient(transparent 12%, var(--lime) 12%, var(--
 #size-results .axle .button:hover { filter: brightness(1.08); }
 #size-results .axle .button:focus-visible { outline: 2px solid var(--text); outline-offset: 2px; }
 #size-results .axle .near, #size-results .axle .stock { grid-column: 1 / -1; }
+
+/* A partner's offer under its button, and the trademark notice under a kind of gear. */
+.duel .deal { margin: 6px 0 0; font-size: 0.78rem; color: var(--text-2); line-height: 1.35; }
+.duel .deal b { color: var(--text); letter-spacing: 0.02em; }
+.kind .tm { margin-top: 6px; font-size: 0.72rem; color: var(--text-2); }

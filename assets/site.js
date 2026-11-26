@@ -36,3 +36,9 @@
   };
   window.trackyChip();
 })();
+
+// RaceBox's offer for Tracky drivers: 20 % off to the end of 2026, 15 % from 1 January 2027 (ticket 573713).
+(function () {
+  if (Date.now() < Date.UTC(2027, 0, 1)) return;
+  document.querySelectorAll("[data-deal]").forEach(function (el) { el.textContent = "15 % off"; });
+})();

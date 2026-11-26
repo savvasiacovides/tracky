@@ -13,7 +13,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import guide, tyres_data  # noqa: E402
 
-VERSION = "20261125"  # bump to refresh cached CSS and JS
+VERSION = "20261127"  # bump to refresh cached CSS and JS
 NAV = [("features", "Features", "/#app"), ("gear", "Gear", "/gear/"), ("tyres", "Tyres", "/tyres/"), ("support", "Support", "/support/")]
 FOOT = [
     ("Tracky", [("Features", "/#app"), ("Free and Pro", "/#pro"), ("Join the test", "/#join")]),
@@ -192,7 +192,7 @@ def gear():
                honest="“Tested with Tracky” means we have used it with Tracky in our own cars. Everything else here works with Tracky’s published support but has not been through our own testing yet, and we say so.",
                rules='<div><b>Facts, not hype</b><p>Every figure is the maker’s own unless it says ours. We say plainly what we have tested and what we have not.</p></div>'
                      '<div><b>Every choice, one verdict</b><p>We show more than one option for each kind of gear and tell you which one we would buy and why.</p></div>'
-                     '<div><b>Partner links</b><p>Amazon links earn Tracky a small commission, at no cost to you, whichever product you choose. As an Amazon Associate, Tracky earns from qualifying purchases.</p></div>',
+                     '<div><b>Partner links</b><p>RaceBox is our partner: its link gives you a discount and earns Tracky a commission. Amazon links earn Tracky a small commission, at no cost to you. As an Amazon Associate, Tracky earns from qualifying purchases.</p></div>',
                head_title="Tracky – Gear: GPS, OBD, cameras and heart rate compared",
                desc="GPS receivers, OBD readers, cameras and heart-rate straps for Tracky: three choices each, compared, with the one we would buy.",
                path="/gear/")

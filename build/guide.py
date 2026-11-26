@@ -7,7 +7,9 @@ TAG = "trackyapp-21"
 def amz(asin): return f"https://www.amazon.co.uk/dp/{asin}?tag={TAG}"
 from urllib.parse import quote
 def rd(path): return "https://www.awin1.com/cread.php?awinmid=11823&awinaffid=3164653&ued=" + quote("https://www.reifendirekt.de" + path, safe="")
-def href(ref): return rd(ref[3:]) if ref.startswith("RD:") else amz(ref)
+def href(ref): return ref if ref.startswith("https://") else rd(ref[3:]) if ref.startswith("RD:") else amz(ref)
+# RaceBox, our direct partner (ticket 573713): the link applies the code TRACKY20 by itself.
+RACEBOX = "https://racebox.pro/campaign/TRACKY20"
 
 ICON = {
  "hr": '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 40S7 30 7 18a9 9 0 0 1 17-4 9 9 0 0 1 17 4c0 12-17 22-17 22z"/><path d="M12 22h7l3-6 4 12 3-6h7"/></svg>',
@@ -23,10 +25,10 @@ KINDS = [
   why="The iPhone gives Tracky one position a second. At 160 km/h that is 44 metres between points, so the line, the sectors and the lap time are partly guessed. A 25 Hz receiver gives Tracky a point every 1.8 metres at the same speed.",
   verdict=[("Our pick: RaceBox Mini.", "It is the receiver Tracky is developed and tested with, Tracky wakes it when you press START, and it fixes the biggest weakness of timing with a phone. Buy the Mini S instead only if you want the receiver to keep recording when the phone is not in the car. The Dual XGPS160 gives 10 positions a second, works with many other apps and is approved by Apple for use with Tracky, but we have not tested it with Tracky yet.")],
   prods=[
-   dict(name="RaceBox Mini", brand="RaceBox", asin="B0B46TK6R9", badge="Our pick", top=True, forwho="For anyone timing laps with Tracky",
+   dict(name="RaceBox Mini", brand="RaceBox", url=RACEBOX, code="TRACKY20", shop="RaceBox", badge="Our pick", top=True, forwho="For anyone timing laps with Tracky",
         status=("yes","Tested with Tracky"), facts=[("25 Hz","positions a second"),("10 cm","accuracy, maker’s figure"),("1100 mAh","battery"),("106 g","weight")],
         pros=["The receiver Tracky is built and tested with","Woken by Tracky when you press START"], cons=["Needs the phone connected to record"]),
-   dict(name="RaceBox Mini S", brand="RaceBox", asin="B0C8JCB8TZ", badge="Records on its own", forwho="For drivers who leave the phone in the paddock",
+   dict(name="RaceBox Mini S", brand="RaceBox", url=RACEBOX, code="TRACKY20", shop="RaceBox", badge="Records on its own", forwho="For drivers who leave the phone in the paddock",
         status=("","Same receiver family, not yet tested by us"), facts=[("25 Hz","positions a second"),("130 min","recording at 25 Hz without a phone"),("325 min","at 10 Hz"),("1100 mAh","battery")],
         pros=["Keeps recording with no phone connected","Same 25 Hz and accuracy as the Mini"], cons=["Costs more than the Mini","Not yet tested with Tracky"]),
    dict(name="Dual XGPS160", brand="Dual", asin="B00E65TNYE", badge="Works with any app", forwho="For drivers who also use it with other apps",
@@ -45,13 +47,13 @@ KINDS = [
   why="Your lap tells you where you were slow. The OBD reader tells you why: revs, throttle, speed and temperatures from the car itself, on the same graph as every lap.",
   verdict=[("Our pick: OBDLink MX+.", "It is the reader we use in our own cars. In our own car it delivered about 30 rev readings a second. It also reads more of a car’s networks than the others here. If you want to spend less, the Carista OBD works with Tracky and is a fraction of the price. The OBDLink CX suits BMW and MINI owners who also code their car with BimmerCode.")],
   prods=[
-   dict(name="OBDLink MX+", brand="OBDLink", asin="B07JFRFJG6", badge="Our pick", top=True, forwho="For the fastest engine data",
+   dict(name="OBDLink MX+", shown="OBDLink® MX+™", brand="OBDLink", asin="B07JFRFJG6", badge="Our pick", top=True, forwho="For the fastest engine data",
         status=("yes","Tested with Tracky in our cars"), facts=[("~30 / s","rev readings in our car"),("STN2255","chip, faster than ELM327"),("MS-CAN, SW-CAN","extra networks"),("Classic","Bluetooth, made for iPhone")],
         pros=["The quickest data we have measured","Also reads MS-CAN and SW-CAN networks"], cons=["The most expensive here"]),
    dict(name="Carista OBD", brand="Carista", asin="B0BBS73F6J", badge="Best value", forwho="For engine data on a budget",
         status=("yes","Tested with Tracky"), facts=[("Bluetooth LE","connects to iPhone"),("ELM327","v1.4 command set"),("Diagnostics","in Carista’s own app")],
         pros=["Works with Tracky out of the box","Costs a fraction of the MX+"], cons=["We have not measured its data rate yet"]),
-   dict(name="OBDLink CX", brand="OBDLink", asin="B08NFLL3NT", badge="For BMW and MINI", forwho="For BMW and MINI owners who code",
+   dict(name="OBDLink CX", shown="OBDLink® CX™", brand="OBDLink", asin="B08NFLL3NT", badge="For BMW and MINI", forwho="For BMW and MINI owners who code",
         status=("","Supported by Tracky, not yet tested by us"), facts=[("Bluetooth 5.1","LE"),("HS-CAN","pins 6 and 14 only"),("<1 mA","sleep current"),("BimmerCode","co-developed")],
         pros=["Made with BimmerCode for coding","Can stay plugged in"], cons=["Does not support every OBD-II protocol","Not yet tested with Tracky"]),
   ],
@@ -62,7 +64,8 @@ KINDS = [
    ("Tested with Tracky",["Yes","Yes","Not yet"],[0,1]),
    ("Price",["AMZ:B07JFRFJG6","AMZ:B0BBS73F6J","AMZ:B08NFLL3NT"],[]),
   ]),
-  own="<b>Already have a reader?</b> Most Bluetooth LE OBD readers that speak the ELM327 language work with Tracky, whatever they are called. Plug it in, switch the ignition on and add it in Tracky. Not every car sends gear or oil pressure over standard OBD."),
+  own="<b>Already have a reader?</b> Most Bluetooth LE OBD readers that speak the ELM327 language work with Tracky, whatever they are called. Plug it in, switch the ignition on and add it in Tracky. Not every car sends gear or oil pressure over standard OBD.",
+  note="OBDLink® is a registered trademark of OBD Solutions, LLC."),
 
  dict(id="video", nav="Cameras", icon="cam", title="Camera: watch every lap back",
   why="Video shows what the data cannot: your hands, the kerbs, the traffic. Tracky puts your speed, gap and revs over the video and lines it up with the lap.",
@@ -147,7 +150,7 @@ def cell_val(v):
 def plate(k, p):
     slug = re.sub(r"[^a-z0-9]+", "-", p["name"].lower()).strip("-")
     if os.path.exists(os.path.join(SITE, "gear", "img", slug + ".webp")):
-        return f'<div class="shot"><img src="/gear/img/{slug}.webp" alt="{e(p["name"])}" loading="lazy"></div>'
+        return f'<div class="shot"><img src="/gear/img/{slug}.webp" alt="{e(p.get("shown", p["name"]))}" loading="lazy"></div>'
     return f'<div class="shot drawn">{drawn(k, p)}</div>'
 
 def col(k, name, idx, side, hidden):
@@ -157,7 +160,7 @@ def col(k, name, idx, side, hidden):
     out = []
     if p:
         st, sttext = p["status"]
-        out.append(f'<div class="c-top {side}" data-c="{idx}"{h}>{plate(k,p)}<span class="tag">{e(p["badge"])}</span><h3{' class="wrap"' if k.get("wrap") else ''}>{e(p["name"])}</h3><p class="for">{e(p["forwho"])}</p><span class="status {st}">{e(sttext)}</span></div>')
+        out.append(f'<div class="c-top {side}" data-c="{idx}"{h}>{plate(k,p)}<span class="tag">{e(p["badge"])}</span><h3{' class="wrap"' if k.get("wrap") else ''}>{e(p.get("shown", p["name"]))}</h3><p class="for">{e(p["forwho"])}</p><span class="status {st}">{e(sttext)}</span></div>')
     else:
         out.append(f'<div class="c-top {side}" data-c="{idx}"{h}><div class="shot"><div class="plate">{ICON[k["icon"]]}<strong>{e(name)}</strong></div></div><span class="tag">Free</span><h3>{e(name)}</h3><p class="for">What you have without extra gear</p></div>')
     for label, vals, best in t["rows"]:
@@ -167,7 +170,11 @@ def col(k, name, idx, side, hidden):
     if p:
         pc = "".join(f'<li class="p">{e(x)}</li>' for x in p["pros"]) + "".join(f'<li class="c">{e(x)}</li>' for x in p["cons"])
         out.append(f'<ul class="pc c-row {side}" data-c="{idx}"{h}>{pc}</ul>')
-        if p.get("url"): buy = link(p["url"], "Buy now", "button" + (" quiet" if side=="b" else ""))
+        if p.get("code"):
+            # A partner's own shop: the link applies the code; the code is shown too, for the checkout.
+            buy = (link(p["url"], f'Buy from {p["shop"]}', "button" + (" quiet" if side=="b" else ""))
+                   + f'<p class="deal"><span data-deal>20 % off</span> with code <b>{e(p["code"])}</b>, applied by the link</p>')
+        elif p.get("url"): buy = link(p["url"], "Buy now", "button" + (" quiet" if side=="b" else ""))
         elif p.get("asin"): buy = link(p["asin"], "See price on Amazon", "button" + (" quiet" if side=="b" else ""))
         else: buy = f'<span class="free">{e(p.get("nobuy", "Not sold by our partners"))}</span>'
         out.append(f'<div class="c-buy {side}" data-c="{idx}"{h}>{buy}</div>')
@@ -188,7 +195,7 @@ def duel(k):
     return (f'<div class="duel" data-pick="{pk}"><div class="vs"><span class="me">Our pick</span><span class="vs-word">vs</span>'
             f'<div class="chips" role="tablist" aria-label="Compare our pick with">{chips}</div></div>'
             f'<div class="grid">{"".join(cells)}</div>'
-            f'<p class="src">Figures from each maker unless marked as ours. Purple: best in the row. {"Prices change, so you see them when you tap Buy now." if k["id"]=="tyres" else "Prices change, so they are on Amazon."}</p></div>')
+            f'<p class="src">Figures from each maker unless marked as ours. Purple: best in the row. {"Prices change, so you see them when you tap Buy now." if k["id"]=="tyres" else "Prices change, so you see them in the shop."}</p></div>')
 
 def kind(k):
     head, rest = k["verdict"][0]
@@ -197,7 +204,8 @@ def kind(k):
     verdict = (f'<details class="verdict"><summary><b>{e(head)}</b> {e(first)}</summary><p>{e(more)}</p></details>' if more
                else f'<div class="verdict"><p><b>{e(head)}</b> {e(first)}</p></div>')
     return (f'<section class="kind" id="{k["id"]}" aria-labelledby="{k["id"]}-h"><div class="wrap"><h2 id="{k["id"]}-h">{e(k["title"])}</h2>'
-            f'<p class="why">{e(k["why"])}</p>{verdict}{duel(k)}<p class="own">{k["own"]}</p></div></section>')
+            f'<p class="why">{e(k["why"])}</p>{verdict}{duel(k)}<p class="own">{k["own"]}</p>'
+            + (f'<p class="tm">{e(k["note"])}</p>' if k.get("note") else "") + '</div></section>')
 
 
 DUEL_SCRIPT = """<script>
